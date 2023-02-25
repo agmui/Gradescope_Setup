@@ -14,3 +14,4 @@ upload
     * file check
     * semgrep setup
 * implement partial credit
+* add doc about running tests localy
