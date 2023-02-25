@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-# needs to be here or else gradescope wont run
 # Set up autograder files
 
-#cp /autograder/submission/<student's file> /autograder/source/
+cp /autograder/submission/* /autograder/source/
 
-#cd /autograder/source/
+cd /autograder/source/
 
-#python3 run_tests.py
+python3 run_tests.py

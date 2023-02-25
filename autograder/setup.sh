@@ -16,10 +16,7 @@ git-svn(){
 cd /autograder/source
 # clone subdirectory
 git-svn https://github.com/agmui/gradescope_semgrep.git hw/$assignment
-echo "copying dir out"
 cp -r $assignment/* .
-pwd
-ls
 cd /
 apt-get install -y python3 python3-pip python3-dev
 
