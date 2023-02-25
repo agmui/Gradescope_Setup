@@ -12,7 +12,7 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     def test_us1tests(self):
         """autograder integration tests"""
-        process = subprocess.Popen(['./semgrep --config rule.yaml'], stdout=subprocess.PIPE, encoding='UTF-8')
+        process = subprocess.Popen(['./semgrep --config rule.yaml ../src/hybrid_threads.c'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
         self.assertTrue("OK" in result)

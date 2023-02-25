@@ -1,0 +1,7 @@
+rules:
+- id: is-comparison
+  languages:
+    - c
+  message: test
+  pattern: __thread ...
+  severity: ERROR
