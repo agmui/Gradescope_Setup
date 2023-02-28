@@ -3,8 +3,8 @@
 
 cp /autograder/submission/* /autograder/source/
 
-cd /autograder/source/hybrid_threads
-git pull
+# cd /autograder/source/hybrid_threads
+svn up /autograder/source/hybrid_threads
 cd /autograder/source/
 
 python3 run_tests.py
