@@ -13,12 +13,10 @@ apt-get install -y subversion
 #   fi  
 # }
 
-cd /autograder/source
 # clone subdirectory
 #git-svn https://github.com/agmui/gradescope_semgrep.git hw/$assignment
-svn checkout https://github.com/agmui/gradescope_semgrep/trunk/hw/$assignment
-cp -r $assignment/* .
-cd /
+svn checkout https://github.com/agmui/gradescope_semgrep/trunk/hw/$assignment /autograder/source
+
 apt-get install -y python3 python3-pip python3-dev
 
 pip3 install -r /autograder/source/requirements.txt
