@@ -3,19 +3,15 @@ rules:
     languages:
       - c
     message: test
-    patterns:
-      - pattern: |
-          pthread_mutex_t $MUTEX;
+    pattern: pthread_mutex_t $MUTEX;
     severity: ERROR
 
   - id: condition var
     languages:
       - c
-    message: test
-    patterns:
-      - pattern: |
-          pthread_cond_t $COND_VAR;
-    severity: ERROR
+    message: test4
+    pattern: pthread_cond_t $COND_VAR;
+    severity: INFO
 
   - id: mutex init
     languages:
@@ -24,7 +20,7 @@ rules:
     pattern-either:
       - pattern: pthread_mutex_init(&$MUTEX, 0);
       - pattern: $MUTEX = PTHREAD_MUTEX_INITIALIZER;
-    severity: ERROR
+    severity: INFO
 
   - id: thread function
     languages:
@@ -50,4 +46,4 @@ rules:
             ...
           }
 
-    severity: ERROR
+    severity: INFO
