@@ -21,7 +21,7 @@ os.system("make clean")
 os.system("make")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
-        pass
+        print("test")
 
     @weight(0)
     @number("1")
