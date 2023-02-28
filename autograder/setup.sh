@@ -3,18 +3,7 @@
 assignment="hybrid_threads"
 
 apt-get install -y subversion 
-# git-svn(){
-#   if [[ ! -z "$1" && ! -z "$2" ]]; then
-#           echo "Starting clone/copy ..."
-#           repo=$(echo $1 | sed 's/\/$\|.git$//')
-#           svn export "$repo/trunk/$2"
-#   else
-#           echo "Use: git-svn <repository> <subdirectory>"
-#   fi  
-# }
 
-# clone subdirectory
-#git-svn https://github.com/agmui/gradescope_semgrep.git hw/$assignment
 svn checkout https://github.com/agmui/gradescope_semgrep/trunk/hw/$assignment /autograder/source
 
 apt-get install -y python3 python3-pip python3-dev

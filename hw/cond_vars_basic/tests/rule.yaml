@@ -1,0 +1,53 @@
+rules:
+  - id: mutex
+    languages:
+      - c
+    message: test
+    patterns:
+      - pattern: |
+          pthread_mutex_t $MUTEX;
+    severity: ERROR
+
+  - id: condition var
+    languages:
+      - c
+    message: test
+    patterns:
+      - pattern: |
+          pthread_cond_t $COND_VAR;
+    severity: ERROR
+
+  - id: mutex init
+    languages:
+      - c
+    message: test2
+    pattern-either:
+      - pattern: pthread_mutex_init(&$MUTEX, 0);
+      - pattern: $MUTEX = PTHREAD_MUTEX_INITIALIZER;
+    severity: ERROR
+
+  - id: thread function
+    languages:
+      - c
+    message: test3
+    patterns:
+      - pattern: |
+          void *thread(void *arg) {
+            ...
+            pthread_mutex_lock(&$MUTEX);
+            while($THREAD_NUM>2){
+              pthread_cond_wait(&$COND_VAR,&$MUTEX);
+            }
+            $THREAD_NUM++;
+            pthread_mutex_unlock(&$MUTEX);
+            ...
+            sleep(1);
+            pthread_mutex_lock(&$MUTEX);
+            $THREAD_NUM--;
+            pthread_mutex_unlock(&$MUTEX);
+            ...
+            pthread_cond_signal(&$COND_VAR);
+            ...
+          }
+
+    severity: ERROR

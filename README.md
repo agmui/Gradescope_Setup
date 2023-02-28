@@ -15,4 +15,4 @@ upload
     * semgrep setup
 * implement partial credit
 * add doc about running tests localy
-* make the clone sub happen on regrade
+* setup github deploy_key
