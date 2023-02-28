@@ -3,7 +3,7 @@ import os
 from gradescope_utils.autograder_utils.json_test_runner import JSONTestRunner
 
 print("==========cloning===============")
-cmd = "svn export \"https://github.com/agmui/gradescope_semgrep/trunk/hybrid_threads\""
+cmd = "svn export \"https://github.com/agmui/gradescope_semgrep/trunk/hw/hybrid_threads\""
 os.system(cmd)
 os.system("cp -r hybrid_threads/* .")
 
