@@ -4,7 +4,7 @@ rules:
       - c
     message: test
     pattern: pthread_mutex_t $MUTEX;
-    severity: ERROR
+    severity: INFO
 
   - id: condition var
     languages:
@@ -25,7 +25,7 @@ rules:
   - id: thread function
     languages:
       - c
-    message: test3
+    message: test3 # TODO:
     patterns:
       - pattern: |
           void *thread(void *arg) {
