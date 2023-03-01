@@ -1,0 +1,65 @@
+rules:
+  - id: mutex
+    languages:
+      - c
+    message: test
+    pattern: pthread_mutex_t $MUTEX;
+    severity: INFO
+
+  - id: condition var
+    languages:
+      - c
+    message: test4
+    pattern: pthread_cond_t $COND_VAR;
+    severity: INFO
+
+  - id: mutex init
+    languages:
+      - c
+    message: test2
+    pattern-either:
+      - pattern: pthread_mutex_init(&$MUTEX, 0);
+      - pattern: $MUTEX = PTHREAD_MUTEX_INITIALIZER;
+    severity: INFO
+
+  - id: producer functions
+    languages:
+      - c
+    message: test3
+    patterns:
+      - pattern: |
+          void * producer(void *arg) {
+            ...
+            pthread_mutex_lock(&$MUTEX);
+            while($LAST_VALID_INDEX+1>=BUFFERSIZE)
+            pthread_cond_wait(&$COND_VAR_PRODUCER,&$MUTEX);
+            ...
+            buffer[$LAST_VALID_INDEX + 1] = $VALUE;
+            $LAST_VALID_INDEX++;
+            ...
+            pthread_mutex_unlock(&$MUTEX);
+            pthread_cond_signal(&$COND_VAR_CONSUMER);
+            ...
+          }
+    severity: INFO
+
+  - id: consumer functions
+    languages:
+      - c
+    message: test3
+    patterns:
+      - pattern: |
+          void * consumer(void *arg) {
+            ...
+              pthread_mutex_lock(&$MUTEX);
+              while($LAST_VALID_INDEX<0)
+              pthread_cond_wait(&$COND_VAR_CONSUMER,&$MUTEX);
+              value = buffer[$LAST_VALID_INDEX];
+              $LAST_VALID_INDEX--;
+              ...
+              pthread_mutex_unlock(&$MUTEX);
+              pthread_cond_signal(&$COND_VAR_PRODUCER);
+              sleep(1);
+            ...
+          }
+    severity: INFO

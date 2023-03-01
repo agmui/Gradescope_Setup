@@ -46,7 +46,7 @@ def run_semgrep(file_name):
 
 inorder_result = run_semgrep("inorder")  # TODO: write in read me yaml file and c file must have the same name
 max_result = run_semgrep("max")
-# prodcons_result = run_semgrep("prodcons_condvar")
+prodcons_result = run_semgrep("prodcons_condvar")
 
 
 class TestIntegration(unittest.TestCase):

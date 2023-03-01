@@ -1,49 +1,42 @@
 rules:
-  - id: mutex
-    languages:
-      - c
-    message: test
-    pattern: pthread_mutex_t $MUTEX;
-    severity: INFO
-
-  - id: condition var
-    languages:
-      - c
-    message: test4
-    pattern: pthread_cond_t $COND_VAR;
-    severity: INFO
-
-  - id: mutex init
-    languages:
-      - c
-    message: test2
-    pattern-either:
-      - pattern: pthread_mutex_init(&$MUTEX, 0);
-      - pattern: $MUTEX = PTHREAD_MUTEX_INITIALIZER;
-    severity: INFO
-
-  - id: thread function
-    languages:
-      - c
-    message: test3 # TODO:
-    patterns:
-      - pattern: |
+- id: test
+  mode: join
+  join:
+    rules:
+      - id: t1
+        pattern: |
           void *thread(void *arg) {
             ...
             pthread_mutex_lock(&$MUTEX);
-            while($THREAD_NUM>2){
+            while($THREAD_NUM1){
               pthread_cond_wait(&$COND_VAR,&$MUTEX);
             }
-            $THREAD_NUM++;
+            $THREAD_NUM2;
             pthread_mutex_unlock(&$MUTEX);
             ...
             sleep(1);
             pthread_mutex_lock(&$MUTEX);
-            $THREAD_NUM--;
-            pthread_mutex_unlock(&$MUTEX);
+            $THREAD_NUM3;
+            pthread_mutex_unlock(&mutex);
             ...
-            pthread_cond_signal(&$COND_VAR);
-            ...
+            pthread_cond_signal(&c);
           }
+        languages: [c]
 
-    severity: INFO
+      - id: t2
+        languages: [c]
+        patterns:
+          - pattern-inside: |
+              void *thread(void *arg){
+                ...
+              }
+          - pattern-either:
+            - pattern: |
+                $THREAD_NUM3--;
+            - pattern: |
+                $THREAD_NUM3-=1;
+            
+    on:
+    - 't1.$THREAD_NUM3 == t2.$THREAD_NUM3'
+  message: hi
+  severity: ERROR
