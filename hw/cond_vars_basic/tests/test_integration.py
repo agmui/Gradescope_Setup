@@ -2,6 +2,8 @@ import subprocess
 import re
 
 
+# TODO: multiple missing case
+
 # import unittest
 # from gradescope_utils.autograder_utils.decorators import weight, tags, number
 
@@ -17,20 +19,158 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
-def ordered_pattern(file_arr, bounding_func, pattern_arr):
+def ordered_pattern(pattern_arr, start_index, truncated_file_arr):
+    # ========================= substring search ========================
+    truncated_file_arr = truncated_file_arr[start_index:]
+    format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+    past = -1
+    line_num = 0
+    errors = 0
+    for sub_str in pattern_arr:
+        if not isinstance(sub_str, list):  # to wrap substring in arr
+            sub_str = [sub_str]
+        for comment_index in sub_str:
+            for c in ['(', ')', '+', '=']:  # formatting input for re
+                comment_index = comment_index.replace(c, '\\' + c)
+            arr = [line for line in truncated_file_arr if re.findall(comment_index, line)]
+            if len(arr) != 0:
+                line_num = truncated_file_arr.index(arr[0])
+                truncated_file_arr[line_num] = ""  # delete line so it does not get used again
+                break
+        if line_num < past:
+            format_arr[line_num] = 'w'
+            errors += 1
+        elif line_num == past:
+            if type(format_arr[line_num]) == str:
+                format_arr[line_num] = sub_str
+            else:
+                format_arr[line_num].append(sub_str[0])
+            errors += 1
+        else:
+            format_arr[line_num] = 'o'
+
+        past = line_num
+
+    # ========================= printing output ========================
+    # finding last non 'n'
+    for i, c in enumerate(reversed(format_arr)):
+        if c != 'n':
+            last_pattern = start_index + len(format_arr) - i - 1
+            break
+
+    print_out = ""
+    s = of_set + start_index
+    for i, line in enumerate(file_arr[s:]):
+        match format_arr[i]:
+            case 'o':
+                print_out += f'{bcolors.OKGREEN}{s + i + 1:4d} | {line}{bcolors.ENDC}\n'
+            case 'w':
+                print_out += f'{bcolors.WARNING}{s+ i + 1:4d} | {line} \t\t out of order{bcolors.ENDC}\n'
+            case 'n':
+                print_out += f'{s+ i + 1:4d} | {line}\n'
+            case _:  # missing/error case
+                print_out += f'{s+ i + 1:4d} | {line}\n'
+                print_out += f'{bcolors.FAIL} missing {format_arr[i]}{bcolors.ENDC}\n'
+        if start_index + i == last_pattern:
+            return errors, last_pattern, print_out
+
+    return errors, last_pattern, print_out
+
+
+"""
+# reading file into arr
+file = open("../src/inorder.c")
+file_arr = file.read().split('\n')
+file.close()
+
+# must define bounding function area of code is in
+# bounding_func = "void *thread(void *arg)"
+# inorder_pattern_arr = [  # wild cards are defined by .*
+#     "pthread_mutex_lock(.*)",
+#     "while(.*)",
+#     "pthread_cond_wait(.*)",
+#     [".*++;", ".*+=.*"],
+#     "pthread_mutex_unlock(.*)",
+#     ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"]
+# ]
+# ordered_pattern(file_arr, bounding_func, inorder_pattern_arr)
+"""
+
+file = open("../src/max.c")
+file_arr = file.read().split('\n')
+file.close()
+
+bounding_func = "void *thread(void *arg)"
+max_pattern_arr = [
+    "pthread_mutex_lock(",
+    "while",
+    "pthread_cond_wait(",
+    "++;",
+    "pthread_mutex_unlock(",
+    "sleep(1)",
+    "pthread_mutex_lock(",
+    "--;",
+    "pthread_mutex_unlock(",
+    ["pthread_cond_signal(", "pthread_cond_broadcast("]
+]
+# ordered_pattern(file_arr, bounding_func, max_pattern_arr)
+
+graph_convert = {
+    'root': [
+        "pthread_mutex_lock(.*)",
+        "while(.*)",
+        "pthread_cond_wait(.*)"
+    ],
+    'plus_rout': [
+        "++;",
+        "pthread_mutex_unlock(.*)",
+        "sleep(1)",
+        "pthread_mutex_lock(.*)",
+        "--;",
+    ],
+    'min_rout': [
+        "--;",
+        "pthread_mutex_unlock(.*)",
+        "sleep(1)",
+        "pthread_mutex_lock(.*)",
+        "++;",
+    ],
+    'unlock_first': [
+        "pthread_mutex_unlock(.*)",
+        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"]
+    ],
+    'signal_first': [
+        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
+        "pthread_mutex_unlock(.*)",
+    ],
+}
+decision_graph = {'root': ['plus_rout', 'min_rout'],
+                  'plus_rout': ['unlock_first', 'signal_first'],
+                  'min_rout': ['unlock_first', 'signal_first'],
+                  'unlock_first': [],
+                  'signal_first': [],
+                  }
+
+# use DFS to search graph
+
+of_set = 0  # TODO: pass in to init_ordered
+
+
+def init_ordered(file_arr, bounding_func):
     # ====================  getting function scope ====================
-    start_index: int = -1
+    global of_set
+    of_set = -1
     end_index: int = 0
     cur_count = 0
     for i, line in enumerate(file_arr):
         if bounding_func in line:
-            start_index = i
-        if start_index != -1:
+            of_set = i
+        if of_set != -1:
             if '{' in line:
                 cur_count += 1
             if '}' in line:
                 cur_count -= 1
-            if cur_count == 0 and start_index != i:
+            if cur_count == 0 and of_set != i:
                 end_index = i
                 break
 
@@ -40,61 +180,37 @@ def ordered_pattern(file_arr, bounding_func, pattern_arr):
             file_arr[i] = line[:comment_index]
 
     # truncate file_arr to only the function scope
-    file_arr = file_arr[start_index:end_index + 1]
-
-    # ========================= substring search ========================
-    format_arr = ['n'] * len(file_arr)  # for printing output
-    past = 0
-    line_num = 0
-    for sub_str in pattern_arr:
-        if not isinstance(sub_str, list):  # to wrap substring in arr
-            sub_str = [sub_str]
-        for comment_index in sub_str:
-            for c in ['(', ')', '+', '=']:
-                comment_index = comment_index.replace(c, '\\' + c)
-            arr = [line for line in file_arr if re.findall(comment_index, line)]
-            if len(arr) != 0:
-                line_num = file_arr.index(arr[0])
-                # file_arr[line_num] = ""
-        if line_num < past:
-            format_arr[line_num] = 'w'
-        elif line_num == past:
-            format_arr[line_num] = sub_str
-        else:
-            format_arr[line_num] = 'o'
-
-        past = line_num
-
-    # ========================= printing output ========================
-    for i, line in enumerate(file_arr):
-        match format_arr[i]:
-            case 'o':
-                print(f'{bcolors.OKGREEN}{start_index + i + 1:4d} | {file_arr[i]}{bcolors.ENDC}')
-            case 'w':
-                print(f'{bcolors.WARNING}{start_index + i + 1:4d} | {file_arr[i]} \t\t out of order{bcolors.ENDC}')
-            case 'n':
-                print(f'{start_index + i + 1:4d} | {file_arr[i]}')
-            case _:  # error case
-                print(f'{start_index + i + 1:4d} | {file_arr[i]}')
-                print(bcolors.FAIL + "missing", format_arr[i], bcolors.ENDC)
+    return file_arr[of_set:end_index + 1]
 
 
-# reading file into arr
-file = open("../src/inorder.c")
-file_arr = file.read().split('\n')
-file.close()
+truncated_file_arr = init_ordered(file_arr, bounding_func)
 
-# must define bounding function area of code is in
-bounding_func = "void *thread(void *arg)"
-pattern_arr = [  # wild cards are defined by .*
-    "pthread_mutex_lock(.*)",
-    "while(.*)",
-    "pthread_cond_wait(.*)",
-    [".*++;", ".*+=.*"],
-    "pthread_mutex_unlock(.*)",
-    ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"]
-]
-ordered_pattern(file_arr, bounding_func, pattern_arr)
+
+def graph_search(node):
+    global start_index
+    # print("route:", node)
+    num_of_s = len(decision_graph[node])
+    num_of_err = [0] * num_of_s
+    print_outs = [""]*num_of_s
+    start_index_cp = start_index
+    for i, successor in enumerate(decision_graph[node]):
+        # print("trying", successor)
+        num_of_err[i], start_index, print_outs[i] = ordered_pattern(graph_convert[successor], start_index_cp + 1, truncated_file_arr)
+        if num_of_err[i] == 0:
+            print(print_outs[0], end='')
+            graph_search(successor)
+            return
+    if num_of_s == 0:
+        return
+    successor_index = num_of_err.index(min(num_of_err))
+    print(print_outs[successor_index], end='')
+    graph_search(decision_graph[node][successor_index])
+
+
+# runs root for the first time
+err, start_index, print_out = ordered_pattern(graph_convert['root'], 0, truncated_file_arr)
+print(print_out, end='')
+graph_search('root')
 
 # class TestIntegration(unittest.TestCase):
 #     def setUp(self):
