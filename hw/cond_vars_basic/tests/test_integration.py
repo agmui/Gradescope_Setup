@@ -16,10 +16,10 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
-def ordered_pattern(pattern_arr, start_index, off_set, truncated_file_arr):
+def ordered_pattern(pattern_arr, func_off_set, inner_func_offset, file_arr):
     # ========================= substring search ========================
-    truncated_file_arr = truncated_file_arr[start_index:]
-    format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+    file_arr = file_arr[inner_func_offset:]
+    format_arr: list = ['n'] * len(file_arr)  # for printing output
     past = -1
     line_num = 0
     errors = 0
@@ -29,10 +29,10 @@ def ordered_pattern(pattern_arr, start_index, off_set, truncated_file_arr):
         for comment_index in sub_str:
             for c in ['(', ')', '+', '=']:  # formatting input for re
                 comment_index = comment_index.replace(c, '\\' + c)
-            arr = [line for line in truncated_file_arr if re.findall(comment_index, line)]
+            arr = [line for line in file_arr if re.findall(comment_index, line)]
             if len(arr) != 0:
-                line_num = truncated_file_arr.index(arr[0])
-                truncated_file_arr[line_num] = ""  # delete line so it does not get used again
+                line_num = file_arr.index(arr[0])
+                file_arr[line_num] = ""  # delete line so it does not get used again
                 break
         if line_num < past:
             format_arr[line_num] = 'w'
@@ -52,11 +52,11 @@ def ordered_pattern(pattern_arr, start_index, off_set, truncated_file_arr):
     # finding last non 'n'
     for i, c in enumerate(reversed(format_arr)):
         if c != 'n':
-            last_pattern = start_index + len(format_arr) - i - 1
+            last_pattern = inner_func_offset + len(format_arr) - i - 1
             break
 
     print_out = ""
-    s = off_set + start_index
+    s = func_off_set + inner_func_offset
     for i, line in enumerate(file_arr[s:]):
         match format_arr[i]:
             case 'o':
@@ -68,7 +68,7 @@ def ordered_pattern(pattern_arr, start_index, off_set, truncated_file_arr):
             case _:  # missing/error case
                 print_out += f'{s + i + 1:4d} | {line}\n'
                 print_out += f'{bcolors.FAIL} missing {format_arr[i]}{bcolors.ENDC}\n'
-        if start_index + i == last_pattern:
+        if inner_func_offset + i == last_pattern:
             return errors, last_pattern, print_out
 
     return errors, last_pattern, print_out
@@ -144,11 +144,12 @@ graph_convert = {
 decision_graph = {
     'head': ['root'],
     'root': ['plus_rout', 'min_rout'],
-                  'plus_rout': ['unlock_first', 'signal_first'],
-                  'min_rout': ['unlock_first', 'signal_first'],
-                  'unlock_first': [],
-                  'signal_first': [],
-                  }
+    'plus_rout': ['unlock_first', 'signal_first'],
+    'min_rout': ['unlock_first', 'signal_first'],
+    'unlock_first': [],
+    'signal_first': [],
+}
+
 
 # use greedy DFS to search graph
 
@@ -178,32 +179,28 @@ def init_ordered(file_arr, bounding_func):
     return file_arr[off_set:end_index + 1], off_set
 
 
-truncated_file_arr, off_set = init_ordered(file_arr, bounding_func)
-
-
-def graph_search(node, off_set, start_index):
+def graph_search(node, func_offset, inner_func_offset, file_arr):
     num_of_s = len(decision_graph[node])
     num_of_err = [0] * num_of_s
     print_outs = [""] * num_of_s
-    start_index_cp = start_index
+    start_index_cp = inner_func_offset  # TODO: change var name
     for i, successor in enumerate(decision_graph[node]):
-        num_of_err[i], start_index, print_outs[i] = ordered_pattern(graph_convert[successor], start_index_cp + 1,
-                                                                    off_set, truncated_file_arr)
+        num_of_err[i], inner_func_offset, print_outs[i] = ordered_pattern(graph_convert[successor], func_offset,
+                                                                          start_index_cp + 1,
+                                                                          file_arr)
         if num_of_err[i] == 0:
             print(print_outs[0], end='')
-            graph_search(successor, off_set, start_index)
+            graph_search(successor, func_offset, inner_func_offset, file_arr)
             return
     if num_of_s == 0:
         return
     successor_index = num_of_err.index(min(num_of_err))
     print(print_outs[successor_index], end='')
-    graph_search(decision_graph[node][successor_index], off_set, start_index)
+    graph_search(decision_graph[node][successor_index], func_offset, inner_func_offset, file_arr)
 
 
-# err, start_index, print_out = ordered_pattern(graph_convert['root'], 0, off_set, truncated_file_arr)
-# print(print_out, end='')
-# graph_search('root', off_set, start_index)
-graph_search('head', off_set-1, 0)
+truncated_file_arr, offset = init_ordered(file_arr, bounding_func)
+graph_search('head', offset, 0, truncated_file_arr)
 
 # class TestIntegration(unittest.TestCase):
 #     def setUp(self):
