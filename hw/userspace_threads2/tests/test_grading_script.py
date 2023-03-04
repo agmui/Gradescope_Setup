@@ -18,9 +18,10 @@ def ascii_art():
     print(Art)
 
 
+os.chdir("cd ../src")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
-        os.system("cd ../src")
+        pass
 
     @weight(0)
     @number("1")

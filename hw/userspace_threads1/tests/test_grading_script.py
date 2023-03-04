@@ -19,10 +19,10 @@ def ascii_art():
 
 
 os.system("apt install -y valgrind")
+os.chdir("../src")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         os.system("make tests.bin")
-        os.system("cd ../src")
 
     @weight(0)
     @number("1")

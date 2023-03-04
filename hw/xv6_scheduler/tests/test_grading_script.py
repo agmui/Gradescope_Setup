@@ -17,7 +17,7 @@ def ascii_art():
     Art = text2art("test", "rand")  # random font mode
     print(Art)
 
-
+os.chdir("../src")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
@@ -27,8 +27,8 @@ class TestIntegration(unittest.TestCase):
     def test_make_grade(self):
         """autograder us1tests.c tests"""
         os.system("sudo apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu")
-        os.system("tar xf ../src/submit-lab-sched.tar")
-        process = subprocess.Popen(['../src/make grade'], stdout=subprocess.PIPE, encoding='UTF-8')
+        os.system("tar xf submit-lab-sched.tar")
+        process = subprocess.Popen(['make grade'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
         self.assertTrue("OK" in result)

@@ -58,7 +58,7 @@ os.chdir('./src')
 os.system("make clean")
 os.system("make")
 
-
+os.chdir("../src/")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass

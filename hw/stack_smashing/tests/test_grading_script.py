@@ -19,6 +19,7 @@ def ascii_art():
 
 os.system("apt install -y gdb gdb-multiarch gcc-multilib python2")
 os.system("bash -c \"$(curl -fsSL https://gef.blah.cat/sh)\"")
+os.chdir("../src")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass

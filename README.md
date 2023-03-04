@@ -1,4 +1,4 @@
-# gradescope_semgrep
+# gradescope setup
 
 ## gradescope configuration
 To setup which assignment to grade go into `setup.sh` and change the

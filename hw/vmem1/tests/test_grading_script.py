@@ -18,6 +18,7 @@ def ascii_art():
     print(Art)
 
 
+os.chdir("cd ../src")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
@@ -31,9 +32,9 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_output(self):
         """autograder output tests"""
-        os.system("../src/pagedforth > ../src/testout.txt")
+        os.system("pagedforth > testout.txt")
         
-        process = subprocess.Popen(['diff ../src/finaloutput.txt ../src/testout.txt'], stdout=subprocess.PIPE, encoding='UTF-8')
+        process = subprocess.Popen(['diff .finaloutput.txt testout.txt'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
         self.assertTrue("OK" in result)

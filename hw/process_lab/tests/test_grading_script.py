@@ -18,6 +18,7 @@ def ascii_art():
     print(Art)
 
 
+os.chdir("../src")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
@@ -26,8 +27,8 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_make_grade(self):
         """autograder us1tests.c tests"""
-        os.system("../src/make")
-        process = subprocess.Popen(['../src/simple_test.bin'], stdout=subprocess.PIPE, encoding='UTF-8')
+        os.system("make")
+        process = subprocess.Popen(['simple_test.bin'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
         self.assertTrue("OK" in result)
