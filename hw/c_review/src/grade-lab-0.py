@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-import re
-from gradelib import *
+from hw.c_review.tests.gradelib import *
 
 r = Runner(save("xv6.out"))
 
