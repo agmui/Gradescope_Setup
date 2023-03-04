@@ -17,7 +17,7 @@ def ascii_art():
     Art = text2art("test", "rand")  # random font mode
     print(Art)
 
-os.chdir("../src")
+os.chdir("src")
 r = Runner(save("xv6.out"))
 class TestIntegration(unittest.TestCase):
     def setUp(self):
