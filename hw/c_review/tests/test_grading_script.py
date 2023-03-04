@@ -23,16 +23,16 @@ class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
 
-    @number("1")
     @weight(5)
+    @number("1")
     def test_add_with_pointers():
         """warmup, add with pointers"""
         r.run_qemu(shell_script(['warmup 1']))
         r.match("^test_add_with_pointers\\(\\d+\\): OK\.",
                 no=[".*Assertion FAILED.*"])
 
-    @number("2")
     @weight(5)
+    @number("2")
     def test_ensure_correct_order():
         """warmup, ensure correct order"""
         r.run_qemu(shell_script(['warmup 2']))
@@ -43,53 +43,53 @@ class TestIntegration(unittest.TestCase):
         r.match("^test_ensure_correct_order\\(\\d+\\): OK\.",
                 no=[".*Assertion FAILED.*"])
 
-    @number("3")
     @weight(10)
+    @number("3")
     def test_special_equals():
         """warmup, special equals"""
         r.run_qemu(shell_script(['warmup 3']))
         r.match("^test_special_equals\\(\\d+\\): OK\.",
                 no=[".*Assertion FAILED.*"])
 
-    @number("4")
     @weight(10)
+    @number("4")
     def test_string_with_q():
         """warmup, string with q"""
         r.run_qemu(shell_script(['warmup 4']))
         r.match("^test_string_with_q\\(\\d+\\): OK\.",
                 no=[".*Assertion FAILED.*"])
 
-    @number("5")
     @weight(2)
+    @number("5")
     def test_sleep_no_args():
         """sleep, no arguments"""
         r.run_qemu(shell_script(['sleep']))
         r.match(no=["exec .* failed", "$ sleep\n$"])
 
-    @number("6")
     @weight(3)
+    @number("6")
     def test_sleep_returns():
         """sleep, returns"""
         r.run_qemu(shell_script(['sleep', 'echo OK']))
         r.match("^OK$", no=["exec .* failed", "$ sleep\n$"])
 
-    @number("7")
     @weight(15)
+    @number("7")
     def test_sleep():
         """sleep, makes syscall"""
         r.run_qemu(shell_script(['sleep 10', 'echo FAIL']),
                 stop_breakpoint('sys_sleep'))
         r.match("\\$ sleep 10", no=['FAIL'])
 
-    @number("8")
     @weight(20)
+    @number("8")
     def test_arraylist():
         """arraylist, all"""
         r.run_qemu(shell_script(['arraylist']))
         r.match(".*OK.", no=[".*Assertion FAILED.*"])
 
-    @number("9")
     @weight(20)
+    @number("9")
     def test_find_curdir():
         """find, in current directory"""
         fn = random_str()
@@ -99,8 +99,8 @@ class TestIntegration(unittest.TestCase):
         ]))
         r.match('\./%s' % fn)
 
-    @number("10")
     @weight(10)
+    @number("10")
     def test_find_recursive():
         """find, recursive"""
         needle = random_str()
