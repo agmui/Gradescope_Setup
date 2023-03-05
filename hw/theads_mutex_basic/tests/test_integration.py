@@ -1,5 +1,5 @@
 import subprocess
-import re
+import re, os
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number
 
@@ -188,9 +188,9 @@ def format_output(file_arr, format_arr, total_offset):
                 print(f'{total_offset + i + 1:4d} | {line}\n', end='')
                 print(f'{bcolors.FAIL} missing {format_arr[i]}{bcolors.ENDC}\n', end='')
 
-
-# ========== inorder ==========
-print("========== inorder.c ==========")
+os.chdir("src")
+# ========== factoring ==========
+print("========== factoring.c ==========")
 inorder_decision_graph = {
     'head': ['root'],
     'root': ['unlock_first', 'signal_first'],
@@ -214,13 +214,19 @@ inorder_graph_convert = {
     ],
 }
 
-truncated_file_arr, offset = init_ordered("../src/inorder.c", "void *thread(void *arg)")
+truncated_file_arr, offset = init_ordered("factoring.c", "void *thread(void *arg)")
 format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
 inorder_errors, format_arr = graph_search('head', 0, truncated_file_arr, inorder_decision_graph, inorder_graph_convert,
                                           format_arr)
 # format_output(truncated_file_arr, format_arr, offset)
 # print("errors:", inorder_errors)
 
+# ========== thread sorting ==========
+print("========== threadSort.c ==========")
+# ========== add a lot ==========
+print("========== add_a_lot.c ==========")
+# ========== red_blue_purple ==========
+print("========== red_blue_purple.c ==========")
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):

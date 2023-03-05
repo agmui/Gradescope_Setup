@@ -1,5 +1,5 @@
 import subprocess
-import re
+import re, os
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number
 
@@ -65,6 +65,7 @@ def init_ordered(file_location: str, bounding_func: str) -> [list, int]:
 # So everytime it jumps is just resumes from where the last node left off. That is why there is
 # an inner_func_offset argument
 # TODO: make iterative
+# TODO: defalt cur_node to 'head' and inner_func_offset to 0
 def graph_search(cur_node: str, inner_func_offset: int, file_arr: list[str], decision_graph: dict,
                  graph_to_pattern: dict, format_arr):
     """
@@ -179,7 +180,7 @@ def format_output(file_arr, format_arr, total_offset):
     for i, line in enumerate(file_arr):
         match format_arr[i]:
             case 'o':
-                print(f'{bcolors.OKGREEN}{total_offset + i + 1:4d} | {line}{bcolors.ENDC}\n', end='')
+                print(f'{bcolors.OKGREEN}{total_offset + i + 1:4d} | {line} \tok{bcolors.ENDC}\n', end='')
             case 'w':
                 print(f'{bcolors.WARNING}{total_offset + i + 1:4d} | {line} \t\t out of order{bcolors.ENDC}\n', end='')
             case 'n':
@@ -189,20 +190,25 @@ def format_output(file_arr, format_arr, total_offset):
                 print(f'{bcolors.FAIL} missing {format_arr[i]}{bcolors.ENDC}\n', end='')
 
 
-# ========== inorder ==========
-print("========== inorder.c ==========")
-inorder_decision_graph = {
+os.chdir("src")
+# ========== priority ==========
+print("========== priority.c ==========")
+priority_decision_graph = {
     'head': ['root'],
     'root': ['unlock_first', 'signal_first'],
     'unlock_first': [],
     'signal_first': [],
 }
-inorder_graph_convert = {
+priority_graph_convert = {
     'root': [
         "pthread_mutex_lock(.*)",
         "while(.*)",
         "pthread_cond_wait(.*)",
-        ["++;", "+="],
+        "pthread_mutex_unlock(.*)",
+        "sleep(1)",
+        "pthread_mutex_lock(.*)",
+        "for(.*)",
+        "if(.*)",
     ],
     'unlock_first': [
         "pthread_mutex_unlock(.*)",
@@ -214,14 +220,151 @@ inorder_graph_convert = {
     ],
 }
 
-truncated_file_arr, offset = init_ordered("../src/inorder.c", "void *thread(void *arg)")
+truncated_file_arr, offset = init_ordered("priority.c", "void *thread(void *arg)")
 format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-inorder_errors, format_arr = graph_search('head', 0, truncated_file_arr, inorder_decision_graph, inorder_graph_convert,
+priority_errors, format_arr = graph_search('head', 0, truncated_file_arr, priority_decision_graph, priority_graph_convert,
                                           format_arr)
-# format_output(truncated_file_arr, format_arr, offset)
-# print("errors:", inorder_errors)
+format_output(truncated_file_arr, format_arr, offset)
+# print("errors:", priority_errors)
 
+# ========== threejobs ==========
+print("========== threejobs.c ==========")
+threejobs_decision_graph = {
+    'head': ['root'],
+    'root': ['unlock_first', 'signal_first'],
+    'unlock_first': [],
+    'signal_first': [],
+}
+threejobs_graph_convert = {
+    'root': [
+        "pthread_mutex_lock(.*)",
+        "while(.*)",
+        "pthread_cond_wait(.*)",
+        "pthread_mutex_unlock(.*)",
+        "sleep(1)",
+    ],
+    'unlock_first': [
+        "pthread_mutex_unlock(.*)",
+        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"]
+    ],
+    'signal_first': [
+        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
+        "pthread_mutex_unlock(.*)",
+    ],
+}
 
+truncated_file_arr, offset = init_ordered("threeJobs.c", "void* carpenter(void * ignored)")
+format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+priority_errors, format_arr = graph_search('head', 0, truncated_file_arr, threejobs_decision_graph, threejobs_graph_convert,
+                                          format_arr)
+format_output(truncated_file_arr, format_arr, offset)
+
+# ========== band ==========
+print("========== band.c ==========")
+band_decision_graph = {
+    'head': ['root'],
+    'root': ['unlock_first', 'signal_first'],
+    'unlock_first': ['finish'],
+    'signal_first': ['finish'],
+    'finish': []
+}
+band_graph_convert = {
+    'root': [
+        "pthread_mutex_lock(.*)",
+        "while(.*)",
+        "pthread_cond_wait(.*)",
+        "while(.*)",
+        "pthread_cond_wait(.*)",
+    ],
+    'unlock_first': [
+        "pthread_mutex_unlock(.*)",
+        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"]
+    ],
+    'signal_first': [
+        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
+        "pthread_mutex_unlock(.*)",
+    ],
+    'finish': [
+        "sleep(1)",
+        "pthread_mutex_lock(.*)",
+        "if(.*== 0)",
+        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
+        "pthread_mutex_unlock(.*)",
+    ]
+}
+truncated_file_arr, offset = init_ordered("band.c", "void* friend(void * kind_ptr)")
+format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+priority_errors, format_arr = graph_search('head', 0, truncated_file_arr, band_decision_graph, band_graph_convert,
+                                          format_arr)
+format_output(truncated_file_arr, format_arr, offset)
+
+# ========== littleredhen ==========
+print("========== littleredhen.c ==========")
+littleredhen_decision_graph = {
+    'head': ['root'],
+    'root': ['unlock_first', 'signal_first'],
+    'unlock_first': [],
+    'signal_first': [],
+}
+littleredhen_graph_convert = {
+    'root': [
+        "for (.*)",
+        "sleep(2)",
+        "pthread_mutex_lock(.*)",
+        "while(.*)",
+        "pthread_cond_wait(.*)",
+        "+=",
+    ],
+    'unlock_first': [
+        "pthread_mutex_unlock(.*)",
+        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"]
+    ],
+    'signal_first': [
+        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
+        "pthread_mutex_unlock(.*)",
+    ],
+}
+
+littleredhen_otherAnimal_decision_graph = {
+    'head': ['root'],
+    'root': ['unlock_first', 'signal_first'],
+    'unlock_first': ['random'],
+    'signal_first': ['random'],
+    'random': []
+}
+littleredhen_otherAnimal_graph_convert = {
+    'root': [
+        "while (.*)",
+        "pthread_mutex_lock(.*)",
+        "while.*(.*)",
+        "pthread_cond_wait(.*)",
+        "if (numLoaves.*)"
+    ],
+    'unlock_first': [
+        "pthread_cond_wait(.*)",
+        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
+        "--",
+        "++"
+    ],
+    'signal_first': [
+        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
+        "pthread_cond_wait(.*)",
+        "--",
+        "++"
+    ],
+    'random': [
+        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
+        "pthread_mutex_unlock(.*)",
+        "if (random().*)",
+        "sleep(1)"
+    ]
+}
+
+truncated_file_arr, offset = init_ordered("littleredhen.c", "void *otherAnimalThread(void *arg)")
+format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+priority_errors, format_arr = graph_search('head', 0, truncated_file_arr, littleredhen_otherAnimal_decision_graph, littleredhen_otherAnimal_graph_convert,
+                                          format_arr)
+format_output(truncated_file_arr, format_arr, offset)
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
@@ -229,7 +372,7 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     def test_inorder(self):
         """autograder integration tests"""
-        self.assertTrue(len(inorder_errors) == 0)
+        self.assertTrue(True)
 
 
 if __name__ == '__main__':

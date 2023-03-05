@@ -7,7 +7,8 @@ import asyncio # TODO: add to reqirements.txt
 
 print(text2art("cond vars 2", "rand"))
 
-os.chdir("../src")
+os.chdir("src")
+os.system("make")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
