@@ -28,9 +28,9 @@ class TestIntegration(unittest.TestCase):
     def test_simple(self):
         """autograder simple_tests"""
         os.system("make simple_test")
-        process = subprocess.Popen(['./simple_test.bin'], stdout=subprocess.PIPE, encoding='UTF-8')
-        result, error = process.communicate()
         print("if the autograder does not work for this one email muian@rose-hulman.edu and tell them they are an idiot and tell them to fix it")
+        process = subprocess.Popen(['./simple_test'], stdout=subprocess.PIPE, encoding='UTF-8')
+        result, error = process.communicate()
         print(result)
         self.assertTrue("OK" in result)
 
