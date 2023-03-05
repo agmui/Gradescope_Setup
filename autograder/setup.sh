@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-assignment="c_review"
+assignment="heap_manager"
 
 apt-get install -y subversion 
 
