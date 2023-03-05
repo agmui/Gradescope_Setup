@@ -18,7 +18,8 @@ def ascii_art():
     print(Art)
 
 
-os.system("apt install -y valgrind")
+os.system("apt update > /dev/null && apt upgrade > /dev/null")
+os.system("apt install -y valgrind > /dev/null")
 os.chdir("src")
 os.system("make tests.bin")
 class TestIntegration(unittest.TestCase):
