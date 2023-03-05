@@ -40,6 +40,7 @@ For example to run `test_grading_script.py` for c_review run `python3 tests/test
 ## writing tests for test_integration.py
 this file is my atempt at over enginering something bc i wanted to be lazy when grading
 ##### TODO:
+* hybrid threads auto run multi tests and simple shell auto run tests
 * test fail help msg
 * check for over sending files
 * setup the file dir for each assignment

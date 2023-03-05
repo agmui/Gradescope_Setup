@@ -55,7 +55,7 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     @number("4a")
     def test_create_para_a(self):
-        """autograder create_para tests"""
+        """autograder create_para try1 tests"""
         process = subprocess.Popen(['./create_para_tests'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
@@ -64,7 +64,7 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     @number("4b")
     def test_create_para_b(self):
-        """autograder create_para tests"""
+        """autograder create_para try2 tests"""
         process = subprocess.Popen(['./create_para_tests'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
@@ -73,7 +73,7 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     @number("4c")
     def test_create_para_c(self):
-        """autograder create_para tests"""
+        """autograder create_para try3 tests"""
         process = subprocess.Popen(['./create_para_tests'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
