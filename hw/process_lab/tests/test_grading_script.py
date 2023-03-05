@@ -9,7 +9,7 @@ import asyncio # TODO: add to reqirements.txt
 os.chdir("src")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
-        pass
+        print("If you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help")
 
     @weight(0)
     @number("1")

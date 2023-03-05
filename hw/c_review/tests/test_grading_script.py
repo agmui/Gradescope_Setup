@@ -94,12 +94,12 @@ tests=TESTS
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
-        pass
+        print("if you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help")
 
     def test_add_with_pointers(self):
         """autograder add with pointers tests"""
         print(text2art("heap manager", "rand"))
-        self.assertTrue(tests[0].ok)
+        self.assertTrue(tests[0].ok, "If you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0")
     def test_ensure_correct_order(self):
         """autograder ensure_correct_order tests"""
         self.assertTrue(tests[1].ok)

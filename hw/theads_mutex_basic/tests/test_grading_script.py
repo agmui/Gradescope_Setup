@@ -10,7 +10,7 @@ os.chdir("../src")
 print(text2art("stack smashing", "rand"))
 class TestIntegration(unittest.TestCase):
     def setUp(self):
-        pass
+        print("if you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help")
 
     @weight(0)
     @number("1")
