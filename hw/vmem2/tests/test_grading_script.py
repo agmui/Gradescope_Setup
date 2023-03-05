@@ -7,7 +7,7 @@ from gradelib import *
 from gradelib import TESTS
 
 os.chdir("src")
-os.system("apt update > /dev/null && apt upgrade > /dev/null")
+os.system("apt update -y > /dev/null && apt upgrade -y > /dev/null")
 os.system("apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu > /dev/null")
 os.system("tar xf submit-lab-5.tar")
 os.system("make > /dev/null")
@@ -55,7 +55,7 @@ class TestIntegration(unittest.TestCase):
 
     def test_cowtest(self):
         """cowtest"""
-        print(TESTS.title, TESTS.complete , TESTS.ok, TESTS.on_finish)
+        print(TESTS[0].title, TESTS[0].complete , TESTS[0].ok, TESTS[0].on_finish)
         self.assertTrue(TESTS[0].ok)
 
     def test_simple(self):
