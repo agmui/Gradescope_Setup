@@ -54,7 +54,7 @@ def test_coalesce_basic1():
 
 
 @test(10, "rhmm, test coalesce basic 2")
-def test_coalesce_basic1():
+def test_coalesce_basic2():
     r.run_qemu(shell_script(['lab01test 4']))
     r.match("^test_coalesce_basic2\\(\\d+\\): OK\.",
             no=[".*Assertion FAILED.*"])
@@ -112,43 +112,43 @@ class TestIntegration(unittest.TestCase):
         self.assertTrue(TESTS[0].ok)
 
     def test_basic_alloc(self):
-        """autograder basic case tests"""
+        """autograder basic alloc tests"""
         self.assertTrue(TESTS[1].ok)
 
     def test_basic_free(self):
-        """autograder basic case tests"""
+        """autograder basic free tests"""
         self.assertTrue(TESTS[2].ok)
 
     def test_coalesce_basic1(self):
-        """autograder basic case tests"""
+        """autograder coalesce basic1 tests"""
         self.assertTrue(TESTS[3].ok)
 
-    def test_coalesce_basic1(self):
-        """autograder basic case tests"""
+    def test_coalesce_basic2(self):
+        """autograder coalesce basic2 tests"""
         self.assertTrue(TESTS[4].ok)
 
     def test_coalesce3(self):
-        """autograder basic case tests"""
+        """autograder coalesce basic3 tests"""
         self.assertTrue(TESTS[5].ok)
 
     def test_foce_alignment(self):
-        """autograder basic case tests"""
+        """autograder foce alignment tests"""
         self.assertTrue(TESTS[6].ok)
 
     def test_too_small_blocks(self):
-        """autograder basic case tests"""
+        """autograder too small blocks tests"""
         self.assertTrue(TESTS[7].ok)
 
     def test_gracefully_run_out_of_memory(self):
-        """autograder basic case tests"""
+        """autograder gracefully run out of mem tests"""
         self.assertTrue(TESTS[8].ok)
 
     def test_stress_big_heap_chunks(self):
-        """autograder basic case tests"""
+        """autograder biiiggg yoshi tests"""
         self.assertTrue(TESTS[9].ok)
 
     def test_stress_overlapping(self):
-        """autograder basic case tests"""
+        """autograder stress overlapping tests"""
         self.assertTrue(TESTS[10].ok)
 
 if __name__ == '__main__':
