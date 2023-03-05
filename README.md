@@ -19,6 +19,14 @@ upload
     * there must be a gradescope_utils class imported
 (example test file)
     * each test must start with prefix `test_...`
+
+### writing tests for xv6 labs
+follow the c_review as a template guide
+copy .glbinit.tmpl... into src
+copy `grade-lab-5.py`'s code into `test_grading_script.py`
+
+## running tests localy
+## running tests in grade scope
 ##### TODO:
 * check for over sending files
 * setup the file dir for each assignment
