@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-assignment="vmem2"
+assignment="process_lab"
 
 apt-get install -y subversion 
 
