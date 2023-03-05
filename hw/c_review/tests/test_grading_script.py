@@ -98,6 +98,7 @@ class TestIntegration(unittest.TestCase):
 
     def test_add_with_pointers(self):
         """autograder tests"""
+        print(TESTS[0].__name__, TESTS[0].title, TESTS[0].complete , TESTS[0].ok, TESTS[0].on_finish)
         self.assertTrue(tests[0].ok)
     def test_ensure_correct_order(self):
         """autograder tests"""
