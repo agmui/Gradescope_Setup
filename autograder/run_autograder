@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Set up autograder files
 
-cp /autograder/submission/* /autograder/source/
-
 svn up /autograder/source #/hybrid_threads
+
+cp /autograder/submission/* /autograder/source/src
 
 cd /autograder/source/
 
