@@ -60,7 +60,7 @@ def test(points, title=None, parent=None):
             POSSIBLE += points
             if points:
                 print("%s: %s" % (title, \
-                                  (color("red", "FAIL") if fail else color("green", "OK"))), end=' ')
+                    (color("red", "FAIL") if fail else color("green", "OK"))), end=' ')
             if time.time() - start > 0.1:
                 print("(%.1fs)" % (time.time() - start), end=' ')
             print()
@@ -89,7 +89,7 @@ def end_part(name):
     def show_part():
         global PART_TOTAL, PART_POSSIBLE
         print("Part %s score: %d/%d" % \
-              (name, TOTAL - PART_TOTAL, POSSIBLE - PART_POSSIBLE))
+            (name, TOTAL - PART_TOTAL, POSSIBLE - PART_POSSIBLE))
         print()
         PART_TOTAL, PART_POSSIBLE = TOTAL, POSSIBLE
     show_part.title = ""
@@ -469,7 +469,7 @@ class Runner():
                 print("""\
 Failed to shutdown QEMU.  You might need to 'killall qemu' or
 'killall qemu.real'.
-                """)
+""")
                 raise
 
     def __monitor_start(self, output):

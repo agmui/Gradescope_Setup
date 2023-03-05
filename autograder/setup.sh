@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-assignment="hybrid_threads"
+assignment="c_review"
 
 apt-get install -y subversion 
 
