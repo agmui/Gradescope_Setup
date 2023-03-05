@@ -179,7 +179,7 @@ def format_output(file_arr, format_arr, total_offset):
     for i, line in enumerate(file_arr):
         match format_arr[i]:
             case 'o':
-                print(f'{bcolors.OKGREEN}{total_offset + i + 1:4d} | {line}{bcolors.ENDC}\n', end='')
+                print(f'{bcolors.OKGREEN}{total_offset + i + 1:4d} | {line} \tok{bcolors.ENDC}\n', end='')
             case 'w':
                 print(f'{bcolors.WARNING}{total_offset + i + 1:4d} | {line} \t\t out of order{bcolors.ENDC}\n', end='')
             case 'n':
