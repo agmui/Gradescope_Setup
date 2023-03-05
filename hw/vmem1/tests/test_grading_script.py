@@ -29,7 +29,7 @@ class TestIntegration(unittest.TestCase):
         """autograder output tests"""
         os.system("pagedforth > testout.txt")
         
-        process = subprocess.Popen(['diff .finaloutput.txt testout.txt'], stdout=subprocess.PIPE, encoding='UTF-8')
+        process = subprocess.Popen(['diff finaloutput.txt testout.txt'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
         self.assertTrue("OK" in result)
