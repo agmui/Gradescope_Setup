@@ -5,7 +5,7 @@ from art import *
 from gradelib import *
 
 os.chdir("src")
-# os.system("sudo apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu")
+os.system("sudo apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu")
 
 r = Runner(save("xv6.out"))
 
