@@ -17,9 +17,10 @@ def ascii_art():
     Art = text2art("test", "rand")  # random font mode
     print(Art)
 
+os.system("apt update -y > /dev/null && apt upgrade -y > /dev/null")
 os.system("apt install -y gdb gdb-multiarch gcc-multilib python2")
 os.system("bash -c \"$(curl -fsSL https://gef.blah.cat/sh)\"")
-os.chdir("../src")
+os.chdir("src")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
@@ -28,9 +29,9 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_make_grade(self):
         """autograder us1tests.c tests"""
-        # process = subprocess.Popen(['../src/make grade'], stdout=subprocess.PIPE, encoding='UTF-8')
-        # result, error = process.communicate()
-        # print(result)
+        process = subprocess.Popen(['./part8 $(python2 part8.py)'], stdout=subprocess.PIPE, encoding='UTF-8')
+        result, error = process.communicate()
+        print(result)
         self.assertTrue(True)
 
 

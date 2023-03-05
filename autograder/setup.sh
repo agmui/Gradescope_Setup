@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-assignment="hybrid_threads"
+assignment="stack_smashing"
 
 apt-get install -y subversion 
 
