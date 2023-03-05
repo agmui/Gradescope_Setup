@@ -25,8 +25,8 @@ class TestIntegration(unittest.TestCase):
 
     @weight(0)
     @number("1")
-    def test_make_grade(self):
-        """autograder us1tests.c tests"""
+    def test_simple(self):
+        """autograder simple_tests"""
         os.system("make simple_test")
         process = subprocess.Popen(['./simple_test.bin'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
