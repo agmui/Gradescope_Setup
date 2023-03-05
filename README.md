@@ -39,11 +39,13 @@ For example to run `test_grading_script.py` for c_review run `python3 tests/test
 
 ## writing tests for test_integration.py
 this file is my atempt at over enginering something bc i wanted to be lazy when grading
+NOTE: `*` and `.` need to be escaped or else it will break re
 ##### TODO:
 * make set contains
 * hybrid threads auto run multi tests and simple shell auto run tests
 * test fail help msg
 * check for over sending files
+* set up automatic styling and deadspace removal for integration tests
 * setup the file dir for each assignment
     * file check
 * implement partial credit
@@ -57,8 +59,8 @@ this file is my atempt at over enginering something bc i wanted to be lazy when 
     * <del>vmem1
     * <del>vmem2
     * thread & muxtex Basics
-    * cond vars basic
-    * cond vars 2
+    * <del>cond vars basic
+    * <del>cond vars 2
     * <del>userspace_threads1
     * <del>userspace_threads2
     * <del>hybrid_threads

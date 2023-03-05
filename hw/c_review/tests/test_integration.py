@@ -1,7 +1,7 @@
 import subprocess
-import re
+import re, os
 import unittest
-from gradescope_utils.autograder_utils.decorators import weight, tags, number
+from gradescope_utils.autograder_utils.decorators import weight, tags, number, visibility
 
 
 # TODO: remove white space in file before scan
@@ -179,7 +179,7 @@ def format_output(file_arr, format_arr, total_offset):
     for i, line in enumerate(file_arr):
         match format_arr[i]:
             case 'o':
-                print(f'{bcolors.OKGREEN}{total_offset + i + 1:4d} | {line}{bcolors.ENDC}\n', end='')
+                print(f'{bcolors.OKGREEN}{total_offset + i + 1:4d} | {line} \tok{bcolors.ENDC}\n', end='')
             case 'w':
                 print(f'{bcolors.WARNING}{total_offset + i + 1:4d} | {line} \t\t out of order{bcolors.ENDC}\n', end='')
             case 'n':
@@ -189,47 +189,298 @@ def format_output(file_arr, format_arr, total_offset):
                 print(f'{bcolors.FAIL} missing {format_arr[i]}{bcolors.ENDC}\n', end='')
 
 
-# ========== inorder ==========
-# print("========== inorder.c ==========")
-inorder_decision_graph = {
-    'head': ['root'],
-    'root': ['unlock_first', 'signal_first'],
-    'unlock_first': [],
-    'signal_first': [],
-}
-inorder_graph_convert = {
-    'root': [
-        "pthread_mutex_lock(.*)",
-        "while(.*)",
-        "pthread_cond_wait(.*)",
-        ["++;", "+="],
-    ],
-    'unlock_first': [
-        "pthread_mutex_unlock(.*)",
-        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"]
-    ],
-    'signal_first': [
-        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
-        "pthread_mutex_unlock(.*)",
-    ],
-}
-
-# truncated_file_arr, offset = init_ordered("src/inorder.c", "void *thread(void *arg)")
-# format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-# inorder_errors, format_arr = graph_search('head', 0, truncated_file_arr, inorder_decision_graph, inorder_graph_convert,
-#                                           format_arr)
-# format_output(truncated_file_arr, format_arr, offset)
-# print("errors:", inorder_errors)
-
-
+os.chdir("src/user")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
 
     @weight(0)
-    def test_inorder(self):
-        """autograder integration tests"""
-        self.assertTrue(True)
+    @visibility('hidden')
+    def test_arraylist(self):
+        """autograder arraylist test"""
+        # ========== arraylist ==========
+        print("========== arraylist.c ==========")
+        arraylist_decision_graph = {
+            'head': ['root'],
+            'root': []
+        }
+        arraylist_graph_convert = {
+            'root': [
+                ".*malloc(sizeof(struct arraylist))",
+                "->size = 0",
+                "->capacity = DEF_ARRAY_LIST_CAPACITY",
+                "->list = .*malloc(.*)",
+                "return .*"
+            ],
+        }
+
+        truncated_file_arr, offset = init_ordered("arraylist.c", "struct arraylist *al_new(void)")
+        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, arraylist_decision_graph, arraylist_graph_convert,
+                                                format_arr)
+        format_output(truncated_file_arr, format_arr, offset)
+        # print("errors:", inorder_errors)
+
+        self.assertTrue(len(errors)==0)
+
+    @weight(0)
+    @visibility('hidden')
+    def test_al_free(self):
+        """autograder al_free test"""
+        # ========== al_free ==========
+        print("========== al_free ==========")
+        al_free_decision_graph = {
+            'head': ['root'],
+            'root': []
+        }
+        al_free_graph_convert = {
+            'root': [
+                "free(.*->list)",
+                "free(.*);",
+            ],
+        }
+
+        truncated_file_arr, offset = init_ordered("arraylist.c", "void al_free(struct arraylist *al)")
+        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, al_free_decision_graph, al_free_graph_convert,
+                                                format_arr)
+        format_output(truncated_file_arr, format_arr, offset)
+        # print("errors:", inorder_errors)
+
+        self.assertTrue(len(errors)==0)
+
+    @weight(0)
+    @visibility('hidden')
+    def test_al_get_at(self):
+        """autograder al_get_at test"""
+        # ========== al_get_at ==========
+        print("========== al_get_at ==========")
+        al_get_at_decision_graph = {
+            'head': ['root'],
+            'root': []
+        }
+        al_get_at_graph_convert = {
+            'root': [
+                "if(pos>.*->size.*)",
+                "return 0xffffffff",
+                "return .*->list[pos];"
+            ],
+        }
+
+        truncated_file_arr, offset = init_ordered("arraylist.c", "int al_get_at(struct arraylist *al, int pos)")
+        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, al_get_at_decision_graph, al_get_at_graph_convert, format_arr)
+        format_output(truncated_file_arr, format_arr, offset)
+        # print("errors:", inorder_errors)
+
+        self.assertTrue(len(errors)==0)
+
+    @weight(0)
+    @visibility('hidden')
+    def test_al_resize(self):
+        """autograder al_resize test"""
+        # ========== al_resize ==========
+        print("========== al_resize ==========")
+        decision_graph = {
+            'head': ['malloc_first','cap_first'],
+            'malloc_first': [],
+            'cap_first': [],
+        }
+        graph_convert = {
+            'malloc_first': [
+                ".*malloc(.*->capacity\*2.*)",
+                ".*->capacity\*2;",
+                "for(.*)",
+                ".*->list[i].*",
+                "free(.*)"
+            ],
+            'cap_first': [
+                ".*->capacity\*2;",
+                ".*malloc(.*->capacity\*2.*)",
+                "for(.*)",
+                ".*->list[i].*",
+                "free(.*)"
+            ],
+        }
+
+        truncated_file_arr, offset = init_ordered("arraylist.c", "void al_resize(struct arraylist *al)")
+        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, decision_graph, graph_convert, format_arr)
+        format_output(truncated_file_arr, format_arr, offset)
+        # print("errors:", inorder_errors)
+
+        self.assertTrue(len(errors)==0)
+
+    @weight(0)
+    @visibility('hidden')
+    def test_al_append(self):
+        """autograder al_append test"""
+        # ========== al_append ==========
+        print("========== al_append ==========")
+        decision_graph = {
+            'head': ['root'],
+            'root': []
+        }
+        graph_convert = {
+            'root': [
+                "if(.*->size.*>.*->capacity)",
+                "al_resize(.*)",
+                ".*->list[.*->size] = val",
+                ".*->size = .*->size+1"
+            ],
+        }
+
+        truncated_file_arr, offset = init_ordered("arraylist.c", "void al_append(struct arraylist *al, int val)")
+        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, decision_graph, graph_convert, format_arr)
+        format_output(truncated_file_arr, format_arr, offset)
+        # print("errors:", inorder_errors)
+
+        self.assertTrue(len(errors)==0)
+
+    @weight(0)
+    @visibility('hidden')
+    def test_sleep(self):
+        """autograder sleep test"""
+        # ========== sleep ==========
+        print("========== sleep.c ==========")
+        decision_graph = {
+            'head': ['root'],
+            'root': []
+        }
+        graph_convert = {
+            'root': [
+                "if(argc.*)",
+                "printf(.*)",
+                "sleep(.*argv.*)",
+                "exit(0)"
+            ],
+        }
+
+        truncated_file_arr, offset = init_ordered("sleep.c", "int main(int argc, char **argv)")
+        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, decision_graph, graph_convert, format_arr)
+        format_output(truncated_file_arr, format_arr, offset)
+        # print("errors:", inorder_errors)
+
+        self.assertTrue(len(errors)==0)
+
+    @weight(0)
+    @visibility('hidden')
+    def test_warmup(self):
+        """autograder warmup test"""
+        # ========== warmup ==========
+        print("========== warmup.c ==========")
+        decision_graph = {
+            'head': ['root'],
+            'root': []
+        }
+        graph_convert = {
+            'root': [
+                ["return \*val1+\*val2", "return \*val2+\*val1"]
+            ],
+        }
+
+        truncated_file_arr, offset = init_ordered("warmup.c", "int add_with_pointers(int *val1, int *val2)")
+        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, decision_graph, graph_convert, format_arr)
+        format_output(truncated_file_arr, format_arr, offset)
+        # print("errors:", inorder_errors)
+
+        self.assertTrue(len(errors)==0)
+    
+    @weight(0)
+    @visibility('hidden')
+    def test_ensure_correct_order(self):
+        """autograder ensure correct order test"""
+        # ========== ensure correct order ==========
+        print("========== ensure_correct_order ==========")
+        decision_graph = {
+            'head': ['root'],
+            'root': []
+        }
+        graph_convert = {
+            'root': [
+                ["if(\*should_be_smaller>\*should_be_larger)", "if(\*should_be_larger<\*should_be_smaller)"],
+                "int .* = \*should_be_smaller;",
+                "\*should_be_smaller = \*should_be_larger;",
+                "\*should_be_larger = .*;"
+            ],
+        }
+
+        truncated_file_arr, offset = init_ordered("warmup.c", "void ensure_correct_order(int *should_be_smaller, int *should_be_larger)")
+        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, decision_graph, graph_convert, format_arr)
+        format_output(truncated_file_arr, format_arr, offset)
+        # print("errors:", inorder_errors)
+        self.assertTrue(len(errors)==0)
+
+    @weight(0)
+    @visibility('hidden')
+    def test_special_equals(self):
+        """autograder special_equals test"""
+        # ========== special equals ==========
+        print("========== special_equals ==========")
+        decision_graph = {
+            'head': ['multi', 'oneline'],
+            'multi': [],
+            'oneline': []
+        }
+        graph_convert = {
+            'multi': [
+                "if(.*)",
+                "if(.*)",
+                "return 2",
+                "return 1",
+                "return 0",
+            ],
+            'oneline': [
+                "if(.*).*return .*",
+                "if(.*).*return .*",
+                "return 0"
+            ]
+        }
+
+        truncated_file_arr, offset = init_ordered("warmup.c", "int special_equals(int *val1, int *val2)")
+        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, decision_graph, graph_convert, format_arr)
+        format_output(truncated_file_arr, format_arr, offset)
+        # print("errors:", inorder_errors)
+
+        self.assertTrue(len(errors)==0)
+
+    @weight(0)
+    @visibility('hidden')
+    def test_string_with_q(self):
+        """autograder string_with_q test"""
+        # ========== string with q ==========
+        print("========== string_with_q ==========")
+        decision_graph = {
+            'head': ['before', 'after'],
+            'before': [],
+            'after': []
+        }
+        graph_convert = {
+            'before': [
+                "\*output = 0",
+                ["while(.*)", "for(.*)"],
+                "if(.*)",
+                "if(.*)",
+            ],
+            'after': [
+                ["while(.*)", "for(.*)"],
+                "if(.*)",
+                "if(.*)",
+                "\*output = 0",
+            ]
+        }
+
+        truncated_file_arr, offset = init_ordered("warmup.c", "void string_with_q(char *s1, char *s2, char **output)")
+        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, decision_graph, graph_convert, format_arr)
+        format_output(truncated_file_arr, format_arr, offset)
+        # print("errors:", inorder_errors)
+        self.assertTrue(len(errors)==0)
 
 
 if __name__ == '__main__':
