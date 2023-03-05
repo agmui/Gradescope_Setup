@@ -55,7 +55,7 @@ class TestIntegration(unittest.TestCase):
 
     def test_cowtest(self):
         """cowtest"""
-        print( TESTS.__name__ , TESTS.title, TESTS.complete , TESTS.ok, TESTS.on_finish )
+        print(TESTS.title, TESTS.complete , TESTS.ok, TESTS.on_finish)
         self.assertTrue(TESTS[0].ok)
 
     def test_simple(self):
