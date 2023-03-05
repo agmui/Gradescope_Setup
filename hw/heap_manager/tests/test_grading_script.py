@@ -21,7 +21,7 @@ def ascii_art():
 os.chdir("src")
 os.system("apt update > /dev/null && apt upgrade > /dev/null")
 os.system("apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu > /dev/null")
-os.system("tar xf submit-lab-0.tar")
+os.system("tar xf submit-lab-1.tar")
 os.system("make > /dev/null")
 
 r = Runner(save("xv6.out"))
