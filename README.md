@@ -9,6 +9,7 @@ upload
 
 (image)
 
+* bc of src dir rembember to put `os.chdir("src")` somewhere in your python test files`
 ## writing tests
 * add guide on how to download gradescope submissions
 * unit tests in `test_integration.py` should be the same number of rules in `rules.yaml`
@@ -20,14 +21,26 @@ upload
 (example test file)
     * each test must start with prefix `test_...`
 
+
 ### writing tests for xv6 labs
 follow the c_review as a template guide
 copy .glbinit.tmpl... into src
 copy `grade-lab-5.py`'s code into `test_grading_script.py`
+copy all the imports in c_review's `test_grading_script.py` 
+copy `gradelib.py` into the test dir
+write multiple tests for gradescopes autograder by checking the `TESTS` array (look at c_review `test_grading_script.py` as a guide)
 
 ## running tests localy
+You should run from top dir of the assignment
+For example to run `test_grading_script.py` for c_review run `python3 tests/test_grading_script.py`
+
 ## running tests in grade scope
+
+
+## writing tests for test_integration.py
+this file is my atempt at over enginering something bc i wanted to be lazy when grading
 ##### TODO:
+* test fail help msg
 * check for over sending files
 * setup the file dir for each assignment
     * file check

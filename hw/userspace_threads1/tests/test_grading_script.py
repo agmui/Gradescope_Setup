@@ -19,10 +19,11 @@ def ascii_art():
 
 
 os.system("apt install -y valgrind")
-os.chdir("../src")
+os.chdir("src")
+os.system("make tests.bin")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
-        os.system("make tests.bin")
+        pass
 
     @weight(0)
     @number("1")
@@ -30,8 +31,7 @@ class TestIntegration(unittest.TestCase):
         """autograder tests.bin 1 tests"""
         process = subprocess.Popen(['./tests.bin', '1'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
-        # print("==========test1=========")
-        # print(result)
+        print(result)
         self.assertTrue("OK" in result)
 
     @weight(0)
@@ -40,8 +40,7 @@ class TestIntegration(unittest.TestCase):
         """autograder test.bin 2 tests"""
         process = subprocess.Popen(['./tests.bin', '2'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
-        # print("==========test2=========")
-        # print(result)
+        print(result)
         self.assertTrue("OK" in result)
 
     @weight(0)
@@ -50,8 +49,7 @@ class TestIntegration(unittest.TestCase):
         """autograder test.bin 3 tests"""
         process = subprocess.Popen(['./tests.bin', '3'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
-        # print("==========test3=========")
-        # print(result)
+        print(result)
         self.assertTrue("OK" in result)
 
     @weight(0)
@@ -60,8 +58,7 @@ class TestIntegration(unittest.TestCase):
         """autograder test.bin 4 tests"""
         process = subprocess.Popen(['./tests.bin', '4'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
-        # print("==========test4=========")
-        # print(result)
+        print(result)
         self.assertTrue("OK" in result)
 
     @weight(0)
@@ -70,8 +67,7 @@ class TestIntegration(unittest.TestCase):
         """autograder test.bin 5 tests"""
         process = subprocess.Popen(['./tests.bin', '5'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
-        # print("==========test5=========")
-        # print(result)
+        print(result)
         self.assertTrue("OK" in result)
 
     @weight(0)
@@ -81,5 +77,5 @@ class TestIntegration(unittest.TestCase):
         cmd = "valgrind ./tests.bin 5".split(' ')
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
-        # print("==========test5=========")
+        print("==========test5=========")
         self.assertTrue(True, "there is a memory leak")
