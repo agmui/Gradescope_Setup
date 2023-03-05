@@ -18,16 +18,11 @@ def ascii_art():
     print(Art)
 
 
-os.chdir("cd ../src")
+os.chdir("src")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
 
-# Step 1: manages to catch segfaults 	20
-# Step 1: works correctly and matches output 	40
-# Step 2: produces some files 	15
-# Step 2: seems to be swapping pages in and out but not with FIFO algorithm 	15
-# Step 2: works correctly and matches output 	50
     @weight(0)
     @number("1")
     def test_output(self):

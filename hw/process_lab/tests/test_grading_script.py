@@ -32,7 +32,7 @@ class TestIntegration(unittest.TestCase):
         process = subprocess.Popen(['./simple_test'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
-        self.assertTrue("Test Timed Out" in result)
+        self.assertTrue("Test Timed Out" in result and "Test Passed" in result)
 
 
 if __name__ == '__main__':
