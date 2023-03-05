@@ -98,6 +98,7 @@ class TestIntegration(unittest.TestCase):
 
     def test_add_with_pointers(self):
         """autograder add with pointers tests"""
+        print(text2art("heap manager", "rand"))
         self.assertTrue(tests[0].ok)
     def test_ensure_correct_order(self):
         """autograder ensure_correct_order tests"""

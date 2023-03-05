@@ -5,20 +5,8 @@ from gradescope_utils.autograder_utils.decorators import weight, tags, number, p
 from art import *
 import asyncio # TODO: add to reqirements.txt
 
-def ascii_art():
-    art_1 = art("coffee")  # return art as str in normal mode
-    print("a coffee cup for u", art_1)
-    # Return ASCII text (default font) and default chr_ignore=True
-    Art = text2art("art")
-    print(Art)
-    # Return ASCII text with block font
-    Art = text2art("art", font='block', chr_ignore=True)
-    print(Art)
-    Art = text2art("test", "rand")  # random font mode
-    print(Art)
 
-
-os.system("apt update > /dev/null && apt upgrade > /dev/null")
+os.system("apt update -y > /dev/null && apt upgrade -y > /dev/null")
 os.system("apt install -y valgrind > /dev/null")
 os.chdir("src")
 os.system("make tests.bin")
@@ -30,6 +18,7 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_1(self):
         """autograder tests.bin 1 tests"""
+        print(text2art("stack smashing", "rand"))
         process = subprocess.Popen(['./tests.bin', '1'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
@@ -78,5 +67,4 @@ class TestIntegration(unittest.TestCase):
         cmd = "valgrind ./tests.bin 5".split(' ')
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
-        print("==========test5=========")
         self.assertTrue(True, "there is a memory leak")

@@ -5,18 +5,6 @@ from gradescope_utils.autograder_utils.decorators import weight, tags, number, p
 from art import *
 import asyncio # TODO: add to reqirements.txt
 
-def ascii_art():
-    art_1 = art("coffee")  # return art as str in normal mode
-    print("a coffee cup for u", art_1)
-    # Return ASCII text (default font) and default chr_ignore=True
-    Art = text2art("art")
-    print(Art)
-    # Return ASCII text with block font
-    Art = text2art("art", font='block', chr_ignore=True)
-    print(Art)
-    Art = text2art("test", "rand")  # random font mode
-    print(Art)
-
 
 async def async_run_cmd(cmd):
     print("running:", cmd)
@@ -59,6 +47,7 @@ os.system("make clean")
 os.system("make")
 
 os.chdir("../src/")
+print(text2art("cond vars basic", "rand"))
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass

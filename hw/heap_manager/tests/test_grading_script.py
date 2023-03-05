@@ -6,18 +6,6 @@ from art import *
 from gradelib import *
 from gradelib import TESTS
 
-def ascii_art():
-    art_1 = art("coffee")  # return art as str in normal mode
-    print("a coffee cup for u", art_1)
-    # Return ASCII text (default font) and default chr_ignore=True
-    Art = text2art("art")
-    print(Art)
-    # Return ASCII text with block font
-    Art = text2art("art", font='block', chr_ignore=True)
-    print(Art)
-    Art = text2art("test", "rand")  # random font mode
-    print(Art)
-
 os.chdir("src")
 os.system("apt update -y > /dev/null && apt upgrade -y > /dev/null")
 os.system("apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu > /dev/null")
@@ -109,6 +97,7 @@ class TestIntegration(unittest.TestCase):
 
     def test_basic_case(self):
         """autograder basic case tests"""
+        print(text2art("heap manager", "rand"))
         self.assertTrue(TESTS[0].ok)
 
     def test_basic_alloc(self):

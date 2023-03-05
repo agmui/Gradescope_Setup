@@ -48,3 +48,16 @@ this file is my atempt at over enginering something bc i wanted to be lazy when 
 * implement partial credit
 * add doc about running tests localy
 * setup github deploy_key
+* **write basic tests:**
+    * <del>c_review
+    * <del>heap manager
+    * simple shell manager
+    * <del>process lab
+    * <del>vmem1
+    * <del>vmem2
+    * thread & muxtex Basics
+    * cond vars basic
+    * cond vars 2
+    * <del>userspace_threads1
+    * <del>userspace_threads2
+    * <del>hybrid_threads

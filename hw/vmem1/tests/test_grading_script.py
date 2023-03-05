@@ -5,18 +5,6 @@ from gradescope_utils.autograder_utils.decorators import weight, tags, number, p
 from art import *
 import asyncio # TODO: add to reqirements.txt
 
-def ascii_art():
-    art_1 = art("coffee")  # return art as str in normal mode
-    print("a coffee cup for u", art_1)
-    # Return ASCII text (default font) and default chr_ignore=True
-    Art = text2art("art")
-    print(Art)
-    # Return ASCII text with block font
-    Art = text2art("art", font='block', chr_ignore=True)
-    print(Art)
-    Art = text2art("test", "rand")  # random font mode
-    print(Art)
-
 
 os.chdir("src")
 class TestIntegration(unittest.TestCase):
@@ -27,6 +15,7 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_output(self):
         """autograder output tests"""
+        print(text2art("stack smashing", "rand"))
         print("if the autograder does not work email muian@rose-hulman.edu and tell them they are an idiot and tell them to fix it\n")
         os.system("make")
         os.system("./pagedforth > testout.txt")

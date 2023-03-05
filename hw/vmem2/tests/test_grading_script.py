@@ -12,18 +12,6 @@ os.system("apt install -y build-essential gdb-multiarch qemu-system-misc gcc-ris
 os.system("tar xf submit-lab-5.tar")
 os.system("make > /dev/null")
 
-def ascii_art():
-    art_1 = art("coffee")  # return art as str in normal mode
-    print("a coffee cup for u", art_1)
-    # Return ASCII text (default font) and default chr_ignore=True
-    Art = text2art("art")
-    print(Art)
-    # Return ASCII text with block font
-    Art = text2art("art", font='block', chr_ignore=True)
-    print(Art)
-    Art = text2art("test", "rand")  # random font mode
-    print(Art)
-
 r = Runner(save("xv6.out"))
 
 @test(0, "running cowtest")
@@ -55,6 +43,7 @@ class TestIntegration(unittest.TestCase):
 
     def test_cowtest(self):
         """cowtest"""
+        print(text2art("stack smashing", "rand"))
         self.assertTrue(TESTS[0].ok)
 
     def test_simple(self):
