@@ -27,6 +27,7 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_output(self):
         """autograder output tests"""
+        print("if the autograder does not work email muian@rose-hulman.edu and tell them they are an idiot and tell them to fix it\n")
         os.system("make")
         os.system("./pagedforth > testout.txt")
         
