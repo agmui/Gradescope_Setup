@@ -6,7 +6,7 @@ from gradelib import *
 from gradelib import TESTS
 
 os.chdir("src")
-os.system("apt update && apt upgrade > /dev/null")
+os.system("apt update > /dev/null && apt upgrade > /dev/null")
 os.system("apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu > /dev/null")
 os.system("tar xf submit-lab-0.tar")
 
