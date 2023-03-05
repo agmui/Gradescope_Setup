@@ -3,6 +3,7 @@ import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit
 from art import *
 from gradelib import *
+from gradelib import TESTS
 
 os.chdir("src")
 os.system("sudo apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu")
@@ -84,7 +85,8 @@ def test_find_recursive():
             './%s/%s/%s' % (dirs[0], dirs[1], needle),
             './%s/%s' % (dirs[2], needle))
 
-tests = run_tests()
+run_tests()
+tests=TESTS
 
 
 class TestIntegration(unittest.TestCase):

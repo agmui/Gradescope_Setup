@@ -121,7 +121,6 @@ def run_tests():
                 test()
         if not limit:
             print("Score: %d/%d" % (TOTAL, POSSIBLE))
-        return TESTS
     except KeyboardInterrupt:
         pass
     if TOTAL < POSSIBLE:
