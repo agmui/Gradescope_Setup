@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-assignment="vmem1"
+assignment="userspace_threads1"
 
 apt-get install -y subversion 
 

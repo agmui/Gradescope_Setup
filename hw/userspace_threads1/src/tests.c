@@ -10,7 +10,6 @@ int count;
 void add_10_to_count()
 {
   for(int i = 0; i < 10; i++) {
-    printf("in child");
     yield();
     count = count + 1;
   }
