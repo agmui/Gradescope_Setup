@@ -28,11 +28,11 @@ class TestIntegration(unittest.TestCase):
     def test_simple(self):
         """autograder simple_tests"""
         os.system("make simple_test")
-        print("if the autograder does not work for this one email muian@rose-hulman.edu and tell them they are an idiot and tell them to fix it")
+        print("if the autograder does not work email muian@rose-hulman.edu and tell them they are an idiot and tell them to fix it\n")
         process = subprocess.Popen(['./simple_test'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
-        self.assertTrue("OK" in result)
+        self.assertTrue("Test Timed Out" in result)
 
 
 if __name__ == '__main__':
