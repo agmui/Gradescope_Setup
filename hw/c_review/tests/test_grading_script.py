@@ -97,35 +97,34 @@ class TestIntegration(unittest.TestCase):
         pass
 
     def test_add_with_pointers(self):
-        """autograder tests"""
-        print(TESTS[0].__name__, TESTS[0].title, TESTS[0].complete , TESTS[0].ok, TESTS[0].on_finish)
+        """autograder add with pointers tests"""
         self.assertTrue(tests[0].ok)
     def test_ensure_correct_order(self):
-        """autograder tests"""
+        """autograder ensure_correct_order tests"""
         self.assertTrue(tests[1].ok)
     def test_special_equals(self):
-        """autograder tests"""
+        """autograder special equals tests"""
         self.assertTrue(tests[2].ok)
     def test_string_with_q(self):
-        """autograder tests"""
+        """autograde stirng with q tests"""
         self.assertTrue(tests[3].ok)
     def test_no_arguments(self):
-        """autograder tests"""
+        """autograder no arguments tests"""
         self.assertTrue(tests[4].ok)
     def test_returns(self):
-        """autograder tests"""
+        """autograder returns tests"""
         self.assertTrue(tests[5].ok)
     def test_makes_syscall(self):
-        """autograder tests"""
+        """autograder makes syscall tests"""
         self.assertTrue(tests[6].ok)
     def test_all(self):
-        """autograder tests"""
+        """autograder all tests"""
         self.assertTrue(tests[7].ok)
     def test_in_current_directory(self):
-        """autograder tests"""
+        """autograder in current dir tests"""
         self.assertTrue(tests[8].ok)
     def test_recursive(self):
-        """autograder tests"""
+        """autograder recursive tests"""
         self.assertTrue(tests[9].ok)
 
 
