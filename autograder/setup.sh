@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-assignment="userspace_threads1"
+assignment="userspace_threads2"
 
 apt-get install -y subversion 
 

@@ -18,7 +18,7 @@ def ascii_art():
     print(Art)
 
 
-os.chdir("cd ../src")
+os.chdir("src")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
