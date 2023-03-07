@@ -6,7 +6,7 @@ from art import *
 import asyncio # TODO: add to reqirements.txt
 
 
-os.chdir("../src")
+os.chdir("src")
 print(text2art("stack smashing", "rand"))
 class TestIntegration(unittest.TestCase):
     def setUp(self):
