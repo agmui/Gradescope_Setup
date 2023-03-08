@@ -15,25 +15,25 @@ from minify import minify_source
 
 # for colored output
 class bcolors:
-    # HEADER = ''
-    # OKBLUE = ''
-    # OKCYAN = ''
-    # OKGREEN = ''
-    # WARNING = ''
-    # FAIL =''
-    # ENDC =''
-    # BOLD =''
-    # UNDERLINE = ''
+    HEADER = ''
+    OKBLUE = ''
+    OKCYAN = ''
+    OKGREEN = ''
+    WARNING = ''
+    FAIL = ''
+    ENDC = ''
+    BOLD = ''
+    UNDERLINE = ''
 
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+    # HEADER = '\033[95m'
+    # OKBLUE = '\033[94m'
+    # OKCYAN = '\033[96m'
+    # OKGREEN = '\033[92m'
+    # WARNING = '\033[93m'
+    # FAIL = '\033[91m'
+    # ENDC = '\033[0m'
+    # BOLD = '\033[1m'
+    # UNDERLINE = '\033[4m'
 
 
 def init_ordered(file_location: str, bounding_func: str) -> [list, int]:
@@ -352,7 +352,7 @@ class TestIntegration(unittest.TestCase):
             'root': [
                 "if(.*->size.*->capacity)",
                 "al_resize(.*)",
-                ".*->list.*->size.*= val",
+                ".*->list.*->size=val",
                 [".*->size++", ".*->size.*+.*1"]
             ],
         }
