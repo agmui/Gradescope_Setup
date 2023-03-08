@@ -2,6 +2,7 @@ import subprocess
 import re, os
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, visibility
+from minify import minify_source
 
 
 # TODO: (minify) remove white space in file before scan
@@ -14,25 +15,25 @@ from gradescope_utils.autograder_utils.decorators import weight, tags, number, v
 
 # for colored output
 class bcolors:
-    HEADER = ''
-    OKBLUE = ''
-    OKCYAN = ''
-    OKGREEN = ''
-    WARNING = ''
-    FAIL =''
-    ENDC =''
-    BOLD =''
-    UNDERLINE = ''
+    # HEADER = ''
+    # OKBLUE = ''
+    # OKCYAN = ''
+    # OKGREEN = ''
+    # WARNING = ''
+    # FAIL =''
+    # ENDC =''
+    # BOLD =''
+    # UNDERLINE = ''
 
-    # HEADER = '\033[95m'
-    # OKBLUE = '\033[94m'
-    # OKCYAN = '\033[96m'
-    # OKGREEN = '\033[92m'
-    # WARNING = '\033[93m'
-    # FAIL = '\033[91m'
-    # ENDC = '\033[0m'
-    # BOLD = '\033[1m'
-    # UNDERLINE = '\033[4m'
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 
 def init_ordered(file_location: str, bounding_func: str) -> [list, int]:
@@ -85,11 +86,11 @@ def graph_search(cur_node: str, inner_func_offset: int, file_arr: list[str], dec
     NOTE: once it has reached the end of the graph it does not go back and check the other nodes
 
     :param cur_node: the current node that is being scanned
-    :param func_offset: offset from the top of the page to the function
     :param inner_func_offset: offset from the top of the function to the line focused on
     :param file_arr: The parsed file array that is being scanned
     :param decision_graph: graph that is searched on
     :param graph_to_pattern: translation between nodes in the graph to the patterned array
+    :param format_arr: array for formating output
     """
     num_of_s = len(decision_graph[cur_node])  # number of successors of the current node
     if num_of_s == 0:  # terminating case
@@ -128,11 +129,13 @@ def ordered_pattern(pattern_arr: list, inner_func_offset, file_arr: list, format
     Total offset is so the formatted output has the correct line numbers relative to the original file.
 
     :param pattern_arr: the pattern list that is to be searched
-    :param func_offset: total offset from the top of the file
+    :param inner_func_offset: offset within the function
     :param file_arr: the portion of the file that will be searched
     :return: dict of errors, last pattern line number it stopped at, formatted output for terminal
+    :param format_arr: array for format coloring
     """
     # ========================= substring search ========================
+    file_arr = minify_source(file_arr)
     code_arr = file_arr.copy()
     past = inner_func_offset - 1
     line_num = inner_func_offset
@@ -202,6 +205,8 @@ def format_output(file_arr, format_arr, total_offset):
 
 
 os.chdir("user")
+
+
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
@@ -225,12 +230,13 @@ class TestIntegration(unittest.TestCase):
 
         truncated_file_arr, offset = init_ordered("arraylist.c", "struct arraylist *al_new(void)")
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-        errors, format_arr = graph_search('head', 0, truncated_file_arr, arraylist_decision_graph, arraylist_graph_convert,
-                                                format_arr)
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, arraylist_decision_graph,
+                                          arraylist_graph_convert,
+                                          format_arr)
         format_output(truncated_file_arr, format_arr, offset)
         # print("errors:", inorder_errors)
 
-        self.assertTrue(len(errors)==0)
+        self.assertTrue(len(errors) == 0)
 
     @weight(0)
     @visibility('hidden')
@@ -252,11 +258,11 @@ class TestIntegration(unittest.TestCase):
         truncated_file_arr, offset = init_ordered("arraylist.c", "void al_free(struct arraylist *al)")
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
         errors, format_arr = graph_search('head', 0, truncated_file_arr, al_free_decision_graph, al_free_graph_convert,
-                                                format_arr)
+                                          format_arr)
         format_output(truncated_file_arr, format_arr, offset)
         # print("errors:", inorder_errors)
 
-        self.assertTrue(len(errors)==0)
+        self.assertTrue(len(errors) == 0)
 
     @weight(0)
     @visibility('hidden')
@@ -272,28 +278,29 @@ class TestIntegration(unittest.TestCase):
         }
         al_get_at_graph_convert = {
             'root': [
-                ["if.*(pos.*>.*->size.*)","if.*(pos.*>.*->capacity.*)"],
-                ["return 0xffffffff","return -1"],
+                ["if.*(pos.*>.*->size.*)", "if.*(pos.*>.*->capacity.*)"],
+                ["return 0xffffffff", "return -1"],
                 "return .*->list[pos];"
             ],
             'alt': [
-                ["if.*(pos.*<.*->size.*)","if.*(pos.*<.*->capacity.*)"],
-                ["return .*->list.*[pos];",".*->list.*+.*"],
-                ["return 0xffffffff","return -1"]
+                ["if.*(pos.*<.*->size.*)", "if.*(pos.*<.*->capacity.*)"],
+                ["return .*->list.*[pos];", ".*->list.*+.*"],
+                ["return 0xffffffff", "return -1"]
             ],
             'oneline': [
                 ["return.*pos.*0.&&.pos.<.*->size).*?.*->list[pos].*:.*0xffffffff",
-                "return.*pos.*0.&&.pos.<.*->size).*?.*0xffffffff :.*->list[pos]"]
+                 "return.*pos.*0.&&.pos.<.*->size).*?.*0xffffffff :.*->list[pos]"]
             ]
         }
 
         truncated_file_arr, offset = init_ordered("arraylist.c", "int al_get_at(struct arraylist *al, int pos)")
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-        errors, format_arr = graph_search('head', 0, truncated_file_arr, al_get_at_decision_graph, al_get_at_graph_convert, format_arr)
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, al_get_at_decision_graph,
+                                          al_get_at_graph_convert, format_arr)
         format_output(truncated_file_arr, format_arr, offset)
         # print("errors:", inorder_errors)
 
-        self.assertTrue(len(errors)==0)
+        self.assertTrue(len(errors) == 0)
 
     @weight(0)
     @visibility('hidden')
@@ -302,23 +309,23 @@ class TestIntegration(unittest.TestCase):
         # ========== al_resize ==========
         print("========== al_resize ==========")
         decision_graph = {
-            'head': ['malloc_first','cap_first'],
+            'head': ['malloc_first', 'cap_first'],
             'malloc_first': [],
             'cap_first': [],
         }
         graph_convert = {
             'malloc_first': [
-                [".*malloc(.*->capacity\*2.*)",".*malloc(2.*->capacity.*)"],
+                [".*malloc(.*->capacity\*2.*)", ".*malloc(2.*->capacity.*)"],
                 # ".*->capacity\*2;",
                 "for.*(.*)",
-                [".*->list[i].*",".*->list.*+.*i"],
+                [".*->list[i].*", ".*->list.*+.*i"],
                 "free(.*)"
             ],
             'cap_first': [
                 ".*->capacity\*2;",
                 ".*malloc(.*->capacity\*2.*)",
                 "for(.*)",
-                [".*->list[i].*",".*->list.*+.*i"],
+                [".*->list[i].*", ".*->list.*+.*i"],
                 "free(.*)"
             ],
         }
@@ -329,7 +336,7 @@ class TestIntegration(unittest.TestCase):
         format_output(truncated_file_arr, format_arr, offset)
         # print("errors:", inorder_errors)
 
-        self.assertTrue(len(errors)==0)
+        self.assertTrue(len(errors) == 0)
 
     @weight(0)
     @visibility('hidden')
@@ -343,10 +350,10 @@ class TestIntegration(unittest.TestCase):
         }
         graph_convert = {
             'root': [
-                "if.*(.*->size.*->capacity)",
+                "if(.*->size.*->capacity)",
                 "al_resize(.*)",
                 ".*->list.*->size.*= val",
-                [".*->size++",".*->size.*+.*1"]
+                [".*->size++", ".*->size.*+.*1"]
             ],
         }
 
@@ -356,7 +363,7 @@ class TestIntegration(unittest.TestCase):
         format_output(truncated_file_arr, format_arr, offset)
         # print("errors:", inorder_errors)
 
-        self.assertTrue(len(errors)==0)
+        self.assertTrue(len(errors) == 0)
 
     @weight(0)
     @visibility('hidden')
@@ -383,7 +390,7 @@ class TestIntegration(unittest.TestCase):
         format_output(truncated_file_arr, format_arr, offset)
         # print("errors:", inorder_errors)
 
-        self.assertTrue(len(errors)==0)
+        self.assertTrue(len(errors) == 0)
 
     @weight(0)
     @visibility('hidden')
@@ -407,8 +414,8 @@ class TestIntegration(unittest.TestCase):
         format_output(truncated_file_arr, format_arr, offset)
         # print("errors:", inorder_errors)
 
-        self.assertTrue(len(errors)==0)
-    
+        self.assertTrue(len(errors) == 0)
+
     @weight(0)
     @visibility('hidden')
     def test_ensure_correct_order(self):
@@ -421,19 +428,21 @@ class TestIntegration(unittest.TestCase):
         }
         graph_convert = {
             'root': [
-                ["if.*(\*should_be_smaller.*>.*\*should_be_larger)", "if.*(\*should_be_larger.*<.*\*should_be_smaller)"],
+                ["if.*(\*should_be_smaller.*>.*\*should_be_larger)",
+                 "if.*(\*should_be_larger.*<.*\*should_be_smaller)"],
                 "int .* = \*should_be_smaller;",
                 "\*should_be_smaller = \*should_be_larger;",
                 "\*should_be_larger = .*;"
             ],
         }
 
-        truncated_file_arr, offset = init_ordered("warmup.c", "void ensure_correct_order(int *should_be_smaller, int *should_be_larger)")
+        truncated_file_arr, offset = init_ordered("warmup.c",
+                                                  "void ensure_correct_order(int *should_be_smaller, int *should_be_larger)")
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
         errors, format_arr = graph_search('head', 0, truncated_file_arr, decision_graph, graph_convert, format_arr)
         format_output(truncated_file_arr, format_arr, offset)
         # print("errors:", inorder_errors)
-        self.assertTrue(len(errors)==0)
+        self.assertTrue(len(errors) == 0)
 
     @weight(0)
     @visibility('hidden')
@@ -442,7 +451,7 @@ class TestIntegration(unittest.TestCase):
         # ========== special equals ==========
         print("========== special_equals ==========")
         decision_graph = {
-            'head': ['elseif','multi', 'oneline'],
+            'head': ['elseif', 'multi', 'oneline'],
             'elseif': [],
             'multi': [],
             'oneline': []
@@ -475,7 +484,7 @@ class TestIntegration(unittest.TestCase):
         format_output(truncated_file_arr, format_arr, offset)
         # print("errors:", inorder_errors)
 
-        self.assertTrue(len(errors)==0)
+        self.assertTrue(len(errors) == 0)
 
     @weight(0)
     @visibility('hidden')
@@ -508,7 +517,7 @@ class TestIntegration(unittest.TestCase):
         errors, format_arr = graph_search('head', 0, truncated_file_arr, decision_graph, graph_convert, format_arr)
         format_output(truncated_file_arr, format_arr, offset)
         # print("errors:", inorder_errors)
-        self.assertTrue(len(errors)==0)
+        self.assertTrue(len(errors) == 0)
 
 
 if __name__ == '__main__':
