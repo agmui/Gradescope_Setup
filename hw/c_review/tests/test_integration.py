@@ -272,12 +272,12 @@ class TestIntegration(unittest.TestCase):
         }
         al_get_at_graph_convert = {
             'root': [
-                ["if.*(pos.*>.*->size.*)","if.*(pos.*>.*->capacity.*)"]
-                ["return 0xffffffff","return -1"]
+                ["if.*(pos.*>.*->size.*)","if.*(pos.*>.*->capacity.*)"],
+                ["return 0xffffffff","return -1"],
                 "return .*->list[pos];"
             ],
             'alt': [
-                ["if.*(pos.*<.*->size.*)","if.*(pos.*<.*->capacity.*)"]
+                ["if.*(pos.*<.*->size.*)","if.*(pos.*<.*->capacity.*)"],
                 "return .*->list.*[pos];",
                 ["return 0xffffffff","return -1"]
             ],
