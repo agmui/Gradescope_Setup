@@ -272,14 +272,14 @@ class TestIntegration(unittest.TestCase):
         }
         al_get_at_graph_convert = {
             'root': [
-                "if.*(pos.*>.*->size.*)",
-                "return 0xffffffff",
+                ["if.*(pos.*>.*->size.*)","if.*(pos.*>.*->capacity.*)"]
+                ["return 0xffffffff","return -1"]
                 "return .*->list[pos];"
             ],
             'alt': [
-                "if.*(pos.*<.*->size.*)",
+                ["if.*(pos.*<.*->size.*)","if.*(pos.*<.*->capacity.*)"]
                 "return .*->list.*[pos];",
-                "return 0xffffffff"
+                ["return 0xffffffff","return -1"]
             ],
             'oneline': [
                 ["return.*pos.*0.&&.pos.<.*->size).*?.*->list[pos].*:.*0xffffffff",
@@ -346,7 +346,7 @@ class TestIntegration(unittest.TestCase):
                 "if(.*->size.*->capacity)",
                 "al_resize(.*)",
                 ".*->list.*->size.*= val",
-                ".*->size+.*"
+                [".*->size++",".*->size.*+.*1"]
             ],
         }
 
