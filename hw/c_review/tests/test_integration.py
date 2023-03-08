@@ -189,6 +189,8 @@ def format_output(file_arr, format_arr, total_offset):
                 print(f'{bcolors.FAIL} missing {format_arr[i]}{bcolors.ENDC}\n', end='')
 
 
+os.system("ls")
+os.system("ls src")
 os.chdir("src/user")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
