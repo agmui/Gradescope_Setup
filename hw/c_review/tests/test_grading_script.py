@@ -97,35 +97,35 @@ class TestIntegration(unittest.TestCase):
         print("if you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help")
 
     def test_add_with_pointers(self):
-        """autograder add with pointers tests"""
+        """unittest: add with pointers"""
         print(text2art("heap manager", "rand"))
         self.assertTrue(tests[0].ok, "If you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0")
     def test_ensure_correct_order(self):
-        """autograder ensure_correct_order tests"""
+        """unittest: ensure_correct_order"""
         self.assertTrue(tests[1].ok)
     def test_special_equals(self):
-        """autograder special equals tests"""
+        """unittest: special equals"""
         self.assertTrue(tests[2].ok)
     def test_string_with_q(self):
-        """autograde stirng with q tests"""
+        """autograde stirng with q"""
         self.assertTrue(tests[3].ok)
     def test_no_arguments(self):
-        """autograder no arguments tests"""
+        """unittest: no arguments"""
         self.assertTrue(tests[4].ok)
     def test_returns(self):
-        """autograder returns tests"""
+        """unittest: returns"""
         self.assertTrue(tests[5].ok)
     def test_makes_syscall(self):
-        """autograder makes syscall tests"""
+        """unittest: makes syscall"""
         self.assertTrue(tests[6].ok)
     def test_all(self):
-        """autograder all tests"""
+        """unittest: all"""
         self.assertTrue(tests[7].ok)
     def test_in_current_directory(self):
-        """autograder in current dir tests"""
+        """unittest: in current dir"""
         self.assertTrue(tests[8].ok)
     def test_recursive(self):
-        """autograder recursive tests"""
+        """unittest: recursive"""
         self.assertTrue(tests[9].ok)
 
 
