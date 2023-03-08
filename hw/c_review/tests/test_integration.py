@@ -491,12 +491,12 @@ class TestIntegration(unittest.TestCase):
         graph_convert = {
             'before': [
                 "\*output = 0",
-                ["while(.*)", "for(.*)"],
+                ["while.*(.*)", "for.*(.*)"],
                 "if.*(.*)",
                 "if.*(.*)",
             ],
             'after': [
-                ["while(.*)", "for(.*)"],
+                ["while.*(.*)", "for.*(.*)"],
                 "if.*(.*)",
                 "if.*(.*)",
                 "\*output = 0",
