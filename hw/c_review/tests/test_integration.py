@@ -265,9 +265,10 @@ class TestIntegration(unittest.TestCase):
         # ========== al_get_at ==========
         print("========== al_get_at ==========")
         al_get_at_decision_graph = {
-            'head': ['root', 'alt'],
+            'head': ['root', 'alt', 'oneline'],
             'root': [],
-            'alt': []
+            'alt': [],
+            'oneline': []
         }
         al_get_at_graph_convert = {
             'root': [
@@ -280,6 +281,10 @@ class TestIntegration(unittest.TestCase):
                 "return .*->list.*[pos];",
                 "return 0xffffffff"
             ],
+            'oneline': [
+                ["return.*pos.*0.&&.pos.<.*->size).*?.*->list[pos].*:.*0xffffffff",
+                "return.*pos.*0.&&.pos.<.*->size).*?.*0xffffffff :.*->list[pos]"]
+            ]
         }
 
         truncated_file_arr, offset = init_ordered("arraylist.c", "int al_get_at(struct arraylist *al, int pos)")
@@ -340,7 +345,7 @@ class TestIntegration(unittest.TestCase):
             'root': [
                 "if(.*->size.*->capacity)",
                 "al_resize(.*)",
-                ".*->list.*->size = val",
+                ".*->list.*->size.*= val",
                 ".*->size+.*"
             ],
         }
@@ -487,13 +492,13 @@ class TestIntegration(unittest.TestCase):
             'before': [
                 "\*output = 0",
                 ["while(.*)", "for(.*)"],
-                "if(.*)",
-                "if(.*)",
+                "if.*(.*)",
+                "if.*(.*)",
             ],
             'after': [
                 ["while(.*)", "for(.*)"],
-                "if(.*)",
-                "if(.*)",
+                "if.*(.*)",
+                "if.*(.*)",
                 "\*output = 0",
             ]
         }
