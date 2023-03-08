@@ -14,25 +14,25 @@ from gradescope_utils.autograder_utils.decorators import weight, tags, number, v
 
 # for colored output
 class bcolors:
-    # HEADER = ''
-    # OKBLUE = ''
-    # OKCYAN = ''
-    # OKGREEN = ''
-    # WARNING = ''
-    # FAIL =''
-    # ENDC =''
-    # BOLD =''
-    # UNDERLINE = ''
+    HEADER = ''
+    OKBLUE = ''
+    OKCYAN = ''
+    OKGREEN = ''
+    WARNING = ''
+    FAIL =''
+    ENDC =''
+    BOLD =''
+    UNDERLINE = ''
 
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+    # HEADER = '\033[95m'
+    # OKBLUE = '\033[94m'
+    # OKCYAN = '\033[96m'
+    # OKGREEN = '\033[92m'
+    # WARNING = '\033[93m'
+    # FAIL = '\033[91m'
+    # ENDC = '\033[0m'
+    # BOLD = '\033[1m'
+    # UNDERLINE = '\033[4m'
 
 
 def init_ordered(file_location: str, bounding_func: str) -> [list, int]:
@@ -278,7 +278,7 @@ class TestIntegration(unittest.TestCase):
             ],
             'alt': [
                 ["if.*(pos.*<.*->size.*)","if.*(pos.*<.*->capacity.*)"],
-                "return .*->list.*[pos];",
+                ["return .*->list.*[pos];",".*->list.*+.*"],
                 ["return 0xffffffff","return -1"]
             ],
             'oneline': [
@@ -311,14 +311,14 @@ class TestIntegration(unittest.TestCase):
                 [".*malloc(.*->capacity\*2.*)",".*malloc(2.*->capacity.*)"],
                 # ".*->capacity\*2;",
                 "for.*(.*)",
-                [".*->list[i].*",".*->list+i"],
+                [".*->list[i].*",".*->list.*+.*i"],
                 "free(.*)"
             ],
             'cap_first': [
                 ".*->capacity\*2;",
                 ".*malloc(.*->capacity\*2.*)",
                 "for(.*)",
-                ".*->list[i].*",
+                [".*->list[i].*",".*->list.*+.*i"],
                 "free(.*)"
             ],
         }
@@ -343,7 +343,7 @@ class TestIntegration(unittest.TestCase):
         }
         graph_convert = {
             'root': [
-                "if(.*->size.*->capacity)",
+                "if.*(.*->size.*->capacity)",
                 "al_resize(.*)",
                 ".*->list.*->size.*= val",
                 [".*->size++",".*->size.*+.*1"]
