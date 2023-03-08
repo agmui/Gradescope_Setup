@@ -4,14 +4,26 @@ import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, visibility
 
 
-# TODO: remove white space in file before scan
+# TODO: (minify) remove white space in file before scan
 # TODO: make scan go down then up from offset
 # TODO: when scanning there is a bug that if there is a shared pattern in two different sections and one section and the
+# TODO: if there is a missing the above line does not go green/ warning
+# TODO: do multi line or replacement
 # top section does not contain the pattern the bottem pattern gets taken up so by consequence there is a "out of order"
 # error in the first section and a missing error in the second section
 
 # for colored output
 class bcolors:
+    # HEADER = ''
+    # OKBLUE = ''
+    # OKCYAN = ''
+    # OKGREEN = ''
+    # WARNING = ''
+    # FAIL =''
+    # ENDC =''
+    # BOLD =''
+    # UNDERLINE = ''
+
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKCYAN = '\033[96m'
@@ -179,14 +191,14 @@ def format_output(file_arr, format_arr, total_offset):
     for i, line in enumerate(file_arr):
         match format_arr[i]:
             case 'o':
-                print(f'{bcolors.OKGREEN}{total_offset + i + 1:4d} | {line} \tok{bcolors.ENDC}\n', end='')
+                print(f'{bcolors.OKGREEN}\tok  {total_offset + i + 1:4d} | {line}{bcolors.ENDC}\n', end='')
             case 'w':
-                print(f'{bcolors.WARNING}{total_offset + i + 1:4d} | {line} \t\t out of order{bcolors.ENDC}\n', end='')
+                print(f'{bcolors.WARNING}out of order{total_offset + i + 1:4d} | {line} {bcolors.ENDC}\n', end='')
             case 'n':
-                print(f'{total_offset + i + 1:4d} | {line}\n', end='')
+                print(f'\t    {total_offset + i + 1:4d} | {line}\n', end='')
             case _:  # missing/error case
-                print(f'{total_offset + i + 1:4d} | {line}\n', end='')
-                print(f'{bcolors.FAIL} missing {format_arr[i]}{bcolors.ENDC}\n', end='')
+                print(f'\t    {total_offset + i + 1:4d} | {line}\n', end='')
+                print(f'{bcolors.FAIL}\t missing {format_arr[i]}{bcolors.ENDC}\n', end='')
 
 
 os.chdir("user")
@@ -207,10 +219,7 @@ class TestIntegration(unittest.TestCase):
         arraylist_graph_convert = {
             'root': [
                 ".*malloc(sizeof(struct arraylist))",
-                "->size = 0",
-                "->capacity = DEF_ARRAY_LIST_CAPACITY",
-                "->list = .*malloc(.*)",
-                "return .*"
+                ["->size = 0", "->capacity = DEF_ARRAY_LIST_CAPACITY", "->list = .*malloc(.*)", "return .*"],
             ],
         }
 
@@ -256,14 +265,20 @@ class TestIntegration(unittest.TestCase):
         # ========== al_get_at ==========
         print("========== al_get_at ==========")
         al_get_at_decision_graph = {
-            'head': ['root'],
-            'root': []
+            'head': ['root', 'alt'],
+            'root': [],
+            'alt': []
         }
         al_get_at_graph_convert = {
             'root': [
-                "if(pos>.*->size.*)",
+                "if.*(pos.*>.*->size.*)",
                 "return 0xffffffff",
                 "return .*->list[pos];"
+            ],
+            'alt': [
+                "if.*(pos.*<.*->size.*)",
+                "return .*->list.*[pos];",
+                "return 0xffffffff"
             ],
         }
 
@@ -288,10 +303,10 @@ class TestIntegration(unittest.TestCase):
         }
         graph_convert = {
             'malloc_first': [
-                ".*malloc(.*->capacity\*2.*)",
-                ".*->capacity\*2;",
-                "for(.*)",
-                ".*->list[i].*",
+                [".*malloc(.*->capacity\*2.*)",".*malloc(2.*->capacity.*)"],
+                # ".*->capacity\*2;",
+                "for.*(.*)",
+                [".*->list[i].*",".*->list+i"],
                 "free(.*)"
             ],
             'cap_first': [
@@ -323,10 +338,10 @@ class TestIntegration(unittest.TestCase):
         }
         graph_convert = {
             'root': [
-                "if(.*->size.*>.*->capacity)",
+                "if(.*->size.*->capacity)",
                 "al_resize(.*)",
-                ".*->list[.*->size] = val",
-                ".*->size = .*->size+1"
+                ".*->list.*->size = val",
+                ".*->size+.*"
             ],
         }
 
@@ -350,9 +365,9 @@ class TestIntegration(unittest.TestCase):
         }
         graph_convert = {
             'root': [
-                "if(argc.*)",
+                "if.*(argc.*)",
                 "printf(.*)",
-                "sleep(.*argv.*)",
+                "sleep(.*)",
                 "exit(0)"
             ],
         }
@@ -377,7 +392,7 @@ class TestIntegration(unittest.TestCase):
         }
         graph_convert = {
             'root': [
-                ["return \*val1+\*val2", "return \*val2+\*val1"]
+                ["return \*val1.*+.*\*val2", "return \*val2.*+.*\*val1"]
             ],
         }
 
@@ -401,7 +416,7 @@ class TestIntegration(unittest.TestCase):
         }
         graph_convert = {
             'root': [
-                ["if(\*should_be_smaller>\*should_be_larger)", "if(\*should_be_larger<\*should_be_smaller)"],
+                ["if.*(\*should_be_smaller.*>.*\*should_be_larger)", "if.*(\*should_be_larger.*<.*\*should_be_smaller)"],
                 "int .* = \*should_be_smaller;",
                 "\*should_be_smaller = \*should_be_larger;",
                 "\*should_be_larger = .*;"
@@ -422,21 +437,29 @@ class TestIntegration(unittest.TestCase):
         # ========== special equals ==========
         print("========== special_equals ==========")
         decision_graph = {
-            'head': ['multi', 'oneline'],
+            'head': ['elseif','multi', 'oneline'],
+            'elseif': [],
             'multi': [],
             'oneline': []
         }
         graph_convert = {
+            'elseif': [
+                "if.*(.*)",
+                "return 2",
+                "if.*(.*)",
+                "return 1",
+                "return 0",
+            ],
             'multi': [
-                "if(.*)",
-                "if(.*)",
+                "if.*(.*)",
+                "if.*(.*)",
                 "return 2",
                 "return 1",
                 "return 0",
             ],
             'oneline': [
-                "if(.*).*return .*",
-                "if(.*).*return .*",
+                "if.*(.*).*return .*",
+                "if.*(.*).*return .*",
                 "return 0"
             ]
         }
