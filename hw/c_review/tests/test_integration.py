@@ -431,16 +431,24 @@ class TestIntegration(unittest.TestCase):
         print("========== ensure_correct_order ==========")
         decision_graph = {
             'head': ['root'],
-            'root': []
+            'root': [],
+            'flip': []
         }
         graph_convert = {
             'root': [
                 ["if.*(\*should_be_smaller.*>.*\*should_be_larger)",
                  "if.*(\*should_be_larger.*<.*\*should_be_smaller)"],
-                ["int .*=\*should_be_smaller;", "int .*=\*should_be_larger;"],
+                "int .*=\*should_be_smaller;",
                 "\*should_be_smaller=\*should_be_larger;",
                 "\*should_be_larger=.*;"
             ],
+            'flip': [
+                ["if.*(\*should_be_smaller.*>.*\*should_be_larger)",
+                 "if.*(\*should_be_larger.*<.*\*should_be_smaller)"],
+                "int .*=\*should_be_larger;"
+                "\*should_be_larger=\*should_be_smaller;",
+                "\*should_be_larger=.*;"
+            ]
         }
 
         truncated_file_arr, offset = init_ordered("warmup.c",
