@@ -278,13 +278,13 @@ class TestIntegration(unittest.TestCase):
         }
         al_get_at_graph_convert = {
             'root': [
-                ["if.*(pos.*>.*->size.*)", "if.*(pos.*>.*->capacity.*)"],
+                ["if.*(pos.*<.*->size.*)", "if(.*->size.*>pos)", "if.*(pos.*<.*->capacity.*)", "if(.*->capacity>pos)"],
                 ["return 0xffffffff", "return -1"],
-                "return .*->list[pos];"
+                "return.*->list.*[pos].*"
             ],
             'alt': [
                 ["if.*(pos.*<.*->size.*)", "if.*(pos.*<.*->capacity.*)"],
-                ["return .*->list.*[pos];", ".*->list.*+.*"],
+                ["return.*->list.*[pos];", ".*->list.*+.*"],
                 ["return 0xffffffff", "return -1"]
             ],
             'oneline': [
@@ -352,7 +352,7 @@ class TestIntegration(unittest.TestCase):
             'root': [
                 "if(.*->size.*->capacity)",
                 "al_resize(.*)",
-                ".*->list.*->size=val",
+                ".*->list.*->size.*=val;",
                 [".*->size++", ".*->size.*+.*1"]
             ],
         }
@@ -404,7 +404,7 @@ class TestIntegration(unittest.TestCase):
         }
         graph_convert = {
             'root': [
-                ["return \*val1.*+.*\*val2", "return \*val2.*+.*\*val1"]
+                ["return\*val1.*+.*\*val2", "return\*val2.*+.*\*val1"]
             ],
         }
 
@@ -430,9 +430,9 @@ class TestIntegration(unittest.TestCase):
             'root': [
                 ["if.*(\*should_be_smaller.*>.*\*should_be_larger)",
                  "if.*(\*should_be_larger.*<.*\*should_be_smaller)"],
-                "int .* = \*should_be_smaller;",
-                "\*should_be_smaller = \*should_be_larger;",
-                "\*should_be_larger = .*;"
+                "int .*=\*should_be_smaller;",
+                "\*should_be_smaller=\*should_be_larger;",
+                "\*should_be_larger=.*;"
             ],
         }
 
@@ -499,16 +499,16 @@ class TestIntegration(unittest.TestCase):
         }
         graph_convert = {
             'before': [
-                "\*output = 0",
-                ["while.*(.*)", "for.*(.*)"],
-                "if.*(.*)",
-                "if.*(.*)",
+                "\*output=0",
+                ["while(.*)", "for(.*)"],
+                "if(.*)",
+                "if(.*)",
             ],
             'after': [
-                ["while.*(.*)", "for.*(.*)"],
-                "if.*(.*)",
-                "if.*(.*)",
-                "\*output = 0",
+                ["while(.*)", "for(.*)"],
+                "if(.*)",
+                "if(.*)",
+                "\*output=0",
             ]
         }
 
