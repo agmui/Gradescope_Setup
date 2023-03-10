@@ -309,16 +309,17 @@ class TestIntegration(unittest.TestCase):
         # ========== al_resize ==========
         print("========== al_resize ==========")
         decision_graph = {
-            'head': ['malloc_first', 'cap_first'],
+            'head': ['malloc_first', 'cap_first', 'memcopy'],
             'malloc_first': [],
             'cap_first': [],
+            'memcopy': []
         }
         graph_convert = {
             'malloc_first': [
                 [".*malloc(.*->capacity\*2.*)", ".*malloc(2.*->capacity.*)"],
-                # ".*->capacity\*2;",
                 "for.*(.*)",
                 [".*->list[i].*", ".*->list.*+.*i"],
+                ".*->capacity\*2;",
                 "free(.*)"
             ],
             'cap_first': [
@@ -328,6 +329,12 @@ class TestIntegration(unittest.TestCase):
                 [".*->list[i].*", ".*->list.*+.*i"],
                 "free(.*)"
             ],
+            'memcopy': [
+                [".*malloc(.*->capacity\*2.*)", ".*malloc(2.*->capacity.*)"],
+                "memcpy(.*)",
+                ".*->capacity\*2;",
+                "free(.*)"
+            ]
         }
 
         truncated_file_arr, offset = init_ordered("arraylist.c", "void al_resize(struct arraylist *al)")
@@ -451,10 +458,11 @@ class TestIntegration(unittest.TestCase):
         # ========== special equals ==========
         print("========== special_equals ==========")
         decision_graph = {
-            'head': ['elseif', 'multi', 'oneline'],
+            'head': ['elseif', 'multi', 'oneline','nest_online'],
             'elseif': [],
             'multi': [],
-            'oneline': []
+            'oneline': [],
+            'nest_oneline': []
         }
         graph_convert = {
             'elseif': [
@@ -475,6 +483,9 @@ class TestIntegration(unittest.TestCase):
                 "if.*(.*).*return .*",
                 "if.*(.*).*return .*",
                 "return 0"
+            ],
+            'nest_oneline': [
+                "return.*?2:(.*?1:0)"
             ]
         }
 
