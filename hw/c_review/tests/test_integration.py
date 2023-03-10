@@ -324,7 +324,7 @@ class TestIntegration(unittest.TestCase):
             ],
             'cap_first': [
                 ".*->capacity\*2;",
-                ".*malloc(.*->capacity\*2.*)",
+                [".*malloc(.*->capacity\*2.*)", ".*malloc(2.*->capacity.*)"],
                 "for(.*)",
                 [".*->list[i].*", ".*->list.*+.*i"],
                 "free(.*)"
@@ -437,7 +437,7 @@ class TestIntegration(unittest.TestCase):
             'root': [
                 ["if.*(\*should_be_smaller.*>.*\*should_be_larger)",
                  "if.*(\*should_be_larger.*<.*\*should_be_smaller)"],
-                "int .*=\*should_be_smaller;",
+                ["int .*=\*should_be_smaller;", "int .*=\*should_be_larger;"],
                 "\*should_be_smaller=\*should_be_larger;",
                 "\*should_be_larger=.*;"
             ],
@@ -458,7 +458,7 @@ class TestIntegration(unittest.TestCase):
         # ========== special equals ==========
         print("========== special_equals ==========")
         decision_graph = {
-            'head': ['elseif', 'multi', 'oneline','nest_oneline'],
+            'head': ['elseif', 'multi', 'oneline', 'nest_oneline'],
             'elseif': [],
             'multi': [],
             'oneline': [],
