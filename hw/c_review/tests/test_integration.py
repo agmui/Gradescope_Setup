@@ -458,7 +458,7 @@ class TestIntegration(unittest.TestCase):
         # ========== special equals ==========
         print("========== special_equals ==========")
         decision_graph = {
-            'head': ['elseif', 'multi', 'oneline','nest_online'],
+            'head': ['elseif', 'multi', 'oneline','nest_oneline'],
             'elseif': [],
             'multi': [],
             'oneline': [],
