@@ -1,0 +1,7 @@
+cowsay run: rm -rf \
+ps -a
+BG./donothing
+ps -a
+echo ==
+ps -a
+exit
