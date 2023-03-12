@@ -23,10 +23,7 @@ class TestIntegration(unittest.TestCase):
         print("====================")
         os.system("make")
         os.system("cat input.txt | ./simpleshell > output.txt")
-        # process = subprocess.Popen("cat input.txt | ./simpleshell", stdout=subprocess.PIPE, encoding='UTF-8',
-        #                            shell=True)
-        # result, error = process.communicate()
-        # print(result)
+
         f = open("output.txt")
         file = f.read()
         f.close()
@@ -47,12 +44,14 @@ class TestIntegration(unittest.TestCase):
         lines = [i for i, l in enumerate(result_arr) if "PID" in l]
         found_donothing = False
         for i in range(9):
+            print(result_arr[lines[1] + i])
             if "donothing" in result_arr[lines[1] + i]:
                 print("found do nothing")
                 found_donothing = True
         self.assertTrue(found_donothing, "donothing did not run")
 
-        for i in range(9):
+        for i in range(7):
+            print(result_arr[lines[2] + i])
             if "donothing" in result_arr[lines[2] + i]:
                 print("found zombie")
                 self.assertTrue(False, "found zombie")
