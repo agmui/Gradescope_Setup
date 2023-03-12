@@ -22,16 +22,18 @@ class TestIntegration(unittest.TestCase):
         print("NOTE: bc python is dumb this will not look nice but still will be correct")
         print("====================")
         os.system("make")
-        process = subprocess.Popen("cat input.txt | ./simpleshell", stdout=subprocess.PIPE, encoding='UTF-8',
-                                   shell=True)
-        result, error = process.communicate()
-        print(result)
-        # f = open("output.txt")
-        # file = f.read()
-        # f.close()
-        # print(file)
+        os.system("cat input.txt | ./simpleshell > output.txt")
+        # process = subprocess.Popen("cat input.txt | ./simpleshell", stdout=subprocess.PIPE, encoding='UTF-8',
+        #                            shell=True)
+        # result, error = process.communicate()
+        # print(result)
+        f = open("output.txt")
+        file = f.read()
+        f.close()
+        print(file)
+        result = file
 
-        process.wait()
+        # process.wait()
         # testing for zombies
         process = subprocess.Popen(["ps", "-a"], stdout=subprocess.PIPE, encoding='UTF-8')
         zombie_result, error = process.communicate()
