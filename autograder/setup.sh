@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-assignment="stack_smashing"
+assignment="simple_shell"
 
 apt-get install -y subversion 
 
