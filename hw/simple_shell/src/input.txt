@@ -1,7 +1,9 @@
-cowsay run: rm -rf \
+cowsay run: "rm -rf \" to turn in the assignment
 ps -a
+echo uwu:
 BG./donothing
 ps -a
-echo ==
+echo ==================== 
+echo uwu:
 ps -a
 exit
