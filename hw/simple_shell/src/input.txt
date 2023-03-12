@@ -1,7 +1,10 @@
 cowsay run: "rm -rf \" to turn in the assignment
 ps -a
+pgrep simpleshell
 BG./donothing
+pgrep donothing
 ps -a
 echo ==================== 
+pgrep donothing
 ps -a
 exit

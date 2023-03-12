@@ -135,6 +135,8 @@ upload
 
 * bc of src dir rembember to put `os.chdir("src")` somewhere in your python test files
 
+###### random note:
+gradescope does not print ps -a for what ever reason idk so for simple shell gud luck
 ##### TODO:
 * if file not uploaded do a try catch statment
 * make set contains
