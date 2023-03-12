@@ -8,7 +8,7 @@ from art import *
 os.chdir("src")
 
 
-# os.system("apt install cowsay")
+os.system("apt install cowsay")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
@@ -38,11 +38,12 @@ class TestIntegration(unittest.TestCase):
             self.assertTrue(False, "simpleshell or donothing is a zombie and did not exit")
 
         lines = [i for i, l in enumerate(result_arr) if "uwu:" == l]
+        found_donothing = False
         for i in range(15):
             if "donothing" in result_arr[lines[0] + i]:
                 print("found do nothing")
-        # print(result_arr[lines[1]])
-        # print(result_arr[lines[1]+1])
+                found_donothing = True
+        self.assertTrue(found_donothing, "donothing did not run")
         for i in range(10):
             if "donothing" in result_arr[lines[1] + i]:
                 self.assertTrue(False, "found zombie")
