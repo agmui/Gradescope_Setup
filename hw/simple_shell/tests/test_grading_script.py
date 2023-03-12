@@ -44,13 +44,13 @@ class TestIntegration(unittest.TestCase):
         print("========other tests============")
         lines = [i for i, l in enumerate(result_arr) if "PID" in l]
         found_donothing = False
-        for i in range(10):
+        for i in range(9):
             if "donothing" in result_arr[lines[1] + i]:
                 print("found do nothing")
                 found_donothing = True
         self.assertTrue(found_donothing, "donothing did not run")
 
-        for i in range(10):
+        for i in range(9):
             if "donothing" in result_arr[lines[2] + i]:
                 print("found zombie")
                 self.assertTrue(False, "found zombie")
