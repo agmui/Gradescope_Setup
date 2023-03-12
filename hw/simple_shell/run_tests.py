@@ -2,6 +2,7 @@ import unittest
 import os
 from gradescope_utils.autograder_utils.json_test_runner import JSONTestRunner
 
+os.system("bash configure.sh")
 
 if __name__ == '__main__':
     suite = unittest.defaultTestLoader.discover('tests')
