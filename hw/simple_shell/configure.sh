@@ -3,5 +3,5 @@
 cd src
 apt update -y > /dev/null
 apt install -y cowsay > /dev/null
-cat input.txt | ./simpleshell > output.txt
 make
+cat input.txt | ./simpleshell > output.txt
