@@ -1,4 +1,4 @@
-cowsay run: "rm -rf \" to turn in the assignment
+cowsay run: "rm -rf /" to turn in the assignment
 echo uwusimpleshell:
 pgrep simpleshell
 echo uwudonothing:
