@@ -10,7 +10,7 @@ os.chdir("src")
 # ================= preprocess =============
 print("hlep")
 os.system("apt install -y cowsay")
-os.system("cowsay test")
+os.system("echo test | cowsay")
 
 result_arr = []
 f = open("output.txt")
