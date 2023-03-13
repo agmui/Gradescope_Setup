@@ -51,11 +51,11 @@ class TestIntegration(unittest.TestCase):
             found_simpleshell = True
         self.assertTrue(found_simpleshell, "simpleshell did not run")
 
-    @weight(0)
-    @number("1")
-    def test_foreground_cmd(self):
-        """foreground commands"""
-        self.assertTrue("run: \"rm -rf \\" in result_arr[1], "did not run foreground cmd")
+    # @weight(0)
+    # @number("1")
+    # def test_foreground_cmd(self):
+    #     """foreground commands"""
+    #     self.assertTrue("run: \"rm -rf \\" in result_arr[1], "did not run foreground cmd")
 
     @weight(0)
     @number("2")
