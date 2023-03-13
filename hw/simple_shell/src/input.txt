@@ -1,10 +1,11 @@
 cowsay run: "rm -rf \" to turn in the assignment
-ps -a
+echo uwusimpleshell:
 pgrep simpleshell
+echo uwudonothing:
 BG./donothing
 pgrep donothing
-ps -a
-echo ==================== 
+echo
+echo ====================
+echo uwudonothing:
 pgrep donothing
-ps -a
 exit

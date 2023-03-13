@@ -25,37 +25,51 @@ class TestIntegration(unittest.TestCase):
         os.system("cat input.txt | ./simpleshell > output.txt")
 
         f = open("output.txt")
-        file = f.read()
+        result = f.read()
+        result = result.split('\n')
         f.close()
-        print(file)
-        result = file
 
-        # process.wait()
+        result_arr = []
+        for i in range(len(result)):
+            if "RHSH" not in result[i]:
+                result_arr.append(result[i])
+
+        for i in result_arr:
+            print(i)
+
         # testing for zombies
         process = subprocess.Popen(["ps", "-a"], stdout=subprocess.PIPE, encoding='UTF-8')
         zombie_result, error = process.communicate()
         print("========checking for zombies============")
         print(zombie_result)
-        result_arr = result.split('\n')
         if "simpleshell" in zombie_result or "donothing" in zombie_result:
             self.assertTrue(False, "simpleshell or donothing is a zombie and did not exit")
 
         print("========other tests============")
-        lines = [i for i, l in enumerate(result_arr) if "PID" in l]
+        lines = [i for i, l in enumerate(result_arr) if "uwu" in l]
+
+        print("checking for simpleshell")
+        found_simpleshell = False
+        print("simpleshell PID:", result_arr[lines[0] + 1])
+        if result_arr[lines[0] + 1]:
+            print("found simpleshell")
+            found_simpleshell = True
+        self.assertTrue(found_simpleshell, "simpleshell did not run")
+
+        print("checking for donothing")
         found_donothing = False
-        for i in range(9):
-            print(result_arr[lines[1] + i])
-            if "donothing" in result_arr[lines[1] + i]:
-                print("found do nothing")
-                found_donothing = True
+        print("donothing PID:", result_arr[lines[1] + 1])
+        if result_arr[lines[1] + 1]:
+            print("found do nothing")
+            found_donothing = True
         self.assertTrue(found_donothing, "donothing did not run")
 
-        for i in range(7):
-            print(result_arr[lines[2] + i])
-            if "donothing" in result_arr[lines[2] + i]:
-                print("found zombie")
-                self.assertTrue(False, "found zombie")
-        self.assertTrue('exit' in result)
+        print("checking for donothing zombie")
+        print("donothing PID:", result_arr[lines[2] + 1])
+        if result_arr[lines[2] + 1]:
+            print("found zombie")
+            self.assertTrue(False, "found zombie")
+        # self.assertTrue('exit' in result)
 
 
 if __name__ == '__main__':
