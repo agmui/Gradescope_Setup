@@ -8,6 +8,9 @@ from art import *
 os.chdir("src")
 
 # ================= preprocess =============
+print("hlep")
+os.system("cowsay test")
+
 result_arr = []
 f = open("output.txt")
 result = f.read()
