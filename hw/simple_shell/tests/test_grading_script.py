@@ -9,6 +9,7 @@ os.chdir("src")
 
 # ================= preprocess =============
 print("hlep")
+os.system("apt install -y cowsay")
 os.system("cowsay test")
 
 result_arr = []
