@@ -19,8 +19,10 @@ for i in range(len(result)):
     if "RHSH" not in result[i]:
         result_arr.append(result[i])
 
+print("==================== output ==================== ")
 for i in result_arr:
     print(i)
+print("======================================== ")
 
 lines = [i for i, l in enumerate(result_arr) if "uwu" in l or "Background" in l]
 # ====================================
