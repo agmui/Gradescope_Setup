@@ -8,6 +8,10 @@ from minify import minify_source
 # TODO: (minify) remove white space in file before scan
 # TODO: make scan go down then up from offset
 # TODO: when scanning there is a bug that if there is a shared pattern in two different sections and one section and the
+# take a look:
+# search = 'tt'
+# [m.start() for m in re.finditer('(?=%s)(?!.{1,%d}%s)' % (search, len(search)-1, search), 'ttt')]
+
 # TODO: if there is a missing the above line does not go green/ warning
 # TODO: do multi line or replacement
 # top section does not contain the pattern the bottem pattern gets taken up so by consequence there is a "out of order"
@@ -151,7 +155,7 @@ def ordered_pattern(pattern_arr: list, inner_func_offset, file_arr: list, format
         for comment_index in sub_str:
             for c in ['(', ')', '+', '=', '[', ']']:  # formatting input for re
                 comment_index = comment_index.replace(c, '\\' + c)
-            arr = [line for line in code_arr if re.findall(comment_index, line)]
+            arr = [line for line in code_arr if re.findall(comment_index, line)]  # maybe remove re
             if len(arr) != 0:
                 missing = False
                 line_num = code_arr.index(arr[0])  # NOTE: only uses first fine

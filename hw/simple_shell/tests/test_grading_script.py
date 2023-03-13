@@ -32,6 +32,11 @@ class TestIntegration(unittest.TestCase):
 
     def test_idk(self):
         """checking is simpleshell even ran"""
+        print(text2art("simple shell", "rand"))
+        print("====================")
+        print("NOTE: bc python is dumb this will not look nice but still will be correct")
+        print("====================")
+
         print("checking for simpleshell")
         found_simpleshell = False
         print("simpleshell PID:", result_arr[lines[0] + 1])
@@ -44,16 +49,12 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_foreground_cmd(self):
         """foreground commands"""
-        print(text2art("simple shell", "rand"))
-        print("====================")
-        print("NOTE: bc python is dumb this will not look nice but still will be correct")
-        print("====================")
-        print(result_arr[1])
         self.assertTrue("run: \"rm -rf \\" in result_arr[1])
 
     @weight(0)
     @number("2")
     def test_background_cmd(self):
+        """background commands"""
         print("checking for donothing")
         found_donothing = False
         print("donothing PID:", result_arr[lines[1] + 1])
