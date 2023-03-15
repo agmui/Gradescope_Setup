@@ -206,7 +206,8 @@ inorder_graph_convert = {
     ],
     'unlock_first': [
         "pthread_mutex_unlock(.*)",
-        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"]
+        # ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"]
+        "pthread_cond_signal(.*)|pthread_cond_broadcast(.*)"
     ],
     'signal_first': [
         ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
