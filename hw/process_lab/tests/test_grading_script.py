@@ -3,7 +3,7 @@ import subprocess
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit
 from art import *
-import asyncio # TODO: add to reqirements.txt
+import re
 
 
 os.chdir("src")
@@ -20,6 +20,7 @@ class TestIntegration(unittest.TestCase):
         print("if the autograder does not work email muian@rose-hulman.edu and tell them they are an idiot and tell them to fix it\n")
         process = subprocess.Popen(['./simple_test'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
+        print(result)
         self.assertTrue("Test Passed" in result, "one of the tests did not pass")
         self.assertTrue("Test Timed Out" in result, "tests did not time out")
 
