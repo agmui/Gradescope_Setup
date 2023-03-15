@@ -20,8 +20,8 @@ class TestIntegration(unittest.TestCase):
         print("if the autograder does not work email muian@rose-hulman.edu and tell them they are an idiot and tell them to fix it\n")
         process = subprocess.Popen(['./simple_test'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
-        print(result)
-        self.assertTrue("Test Timed Out" in result and "Test Passed" in result)
+        self.assertTrue("Test Passed" in result, "one of the tests did not pass")
+        self.assertTrue("Test Timed Out" in result, "tests did not time out")
 
 
 if __name__ == '__main__':
