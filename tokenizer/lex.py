@@ -52,6 +52,7 @@ def eval(expression: str, line_num: int, just_kind: bool = False) -> Exp:
         ('NEWLINE', r'\n'),  # Line endings
         ('SKIP', r'[ \t{}]+'),  # Skip over spaces and tabs
         ('ASSIGN', fr'({name})=(.*)'),  # Assignment operator
+        ('OP', r'([\w+-])([+\-*/])([\w+-])'),  # Arithmetic operators TODO: add comparators
         ('NUMBER', r'^(\d+(\.\d*)?)'),  # Integer or decimal number
         # ('BOOL', r'^(true|false)'),  # bool
         # ('END',      r';'),            # Statement terminator
@@ -61,7 +62,6 @@ def eval(expression: str, line_num: int, just_kind: bool = False) -> Exp:
         ('DEC', fr'(^{name} {name})'),  # declare variable
         ('FUNC', fr'({name})\((.*)\)'),  # function call
         ('VAR', fr'({name})'),  # Variable (that needs to be derived)
-        # ('OP', r'[+\-*/]'),  # Arithmetic operators TODO: add comparators
         ('MISMATCH', r'.'),  # Any other character
     ]
     line_start = 0
@@ -92,12 +92,6 @@ def eval(expression: str, line_num: int, just_kind: bool = False) -> Exp:
                         for i in args:  # evaluate each argument individually
                             arr.append(eval(i, line_num))
                         arg = arr
-                # case 'DEC':
-                #     value = m[1]
-                #     if just_kind:
-                #         return t
-                #     print(t)
-                #     return t
                 case 'VAR':
                     if value in keywords:
                         break
@@ -107,10 +101,19 @@ def eval(expression: str, line_num: int, just_kind: bool = False) -> Exp:
                     arg = m[2]
                     if not just_kind:
                         arg = eval(arg, line_num)
+                        # return arg  # TODO: maybe keep to remove all assigns
                 case 'NUMBER':
                     value = float(value) if '.' in value else int(value)
-                case 'BOOL':
-                    value = "true" == value
+                # case 'BOOL':
+                #     value = "true" == value
+                case 'OP':
+                    value = m[2]
+                    arg1, arg2 = m[1], m[3]
+                    if m[1] != '+' or m[1] != '-':
+                        arg1 = eval(m[1], line_num)
+                    if m[3] != '+' or m[3] != '-':
+                        arg2 = eval(m[3], line_num)
+                    arg = [arg1, arg2]
                 case 'NEWLINE':
                     line_num -= 1
                     line_start = m.end()
@@ -130,6 +133,7 @@ file = f.read()
 f.close()
 file_arr = file.split('\n')
 min_file_arr = minify.minify_source(file_arr)
+min_file_arr[:] = [i for i in min_file_arr if i != '']
 min_file = "\n".join(min_file_arr)
 code = re.split('[;{}]', min_file)
 # code = re.split('[;{}]', file)
@@ -142,4 +146,5 @@ for i, line in enumerate(reversed(code)):
 
 print("=====")
 for i in ans:
-    print(i)
+    if i:
+        print(i)
