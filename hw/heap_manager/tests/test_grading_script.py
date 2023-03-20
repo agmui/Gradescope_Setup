@@ -93,8 +93,9 @@ run_tests()
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
-        pass
-
+        print("================= please go to: =================")
+        print("https://docs.google.com/forms/d/e/1FAIpQLSfhQQLJKwMup5vkAd9BBnEZTGOpYZHjvfSJg8V4YlQKp9TufA/viewform")
+        print("thank you")
     def test_basic_case(self):
         """autograder basic case tests"""
         print(text2art("heap manager", "rand"))

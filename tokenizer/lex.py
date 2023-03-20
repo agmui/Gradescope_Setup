@@ -3,26 +3,41 @@ import re, os
 import minify
 
 
+# TODO: add fuzziness
+
 class Exp:
     def __init__(self, type, value, arg, line, column):
         self.type: str = type
         self.value: any = value
         self.arg: list = arg
-        self.line: int = line
+        self.line: int = line  # FIXME: line nums are wrong because minify removes all newlines
         self.column: int = column
 
+    def format_closure(self, tab_num):
+        if self.type == 'CLOSURE':
+            s = f'{self.type}({self.value} :\n'
+            for i in self.arg:
+                if i is not None:
+                    s += '\t' * (tab_num + 1) + i.format_closure(tab_num + 1) + '\n'
+            return s + '\t' * tab_num + ')'
+        else:
+            return f'{self.type}({self.value}{(" | " + str(self.arg)) if self.arg else ""})'
+
     def __repr__(self):
-        return f'{self.type}({self.value}{(" | " + str(self.arg)) if self.arg else ""})'
+        return self.format_closure(0)
 
     def __str__(self):
-        return f'{self.type}({self.value}{(" | " + str(self.arg)) if self.arg else ""})'
+        return self.format_closure(0)
 
 
+name = r'[a-zA-Z_-][\w-]*'  # for names of func/var and data types
 keywords = {
     'auto', 'break', 'case', 'char', 'const', 'continue', 'default', 'do', 'double', 'else', 'enum', 'extern',
     'float', 'for', 'goto', 'if', 'int', 'long', 'register', 'return', 'short', 'signed', 'sizeof', 'static',
     'struct', 'switch', 'typedef', 'union', 'unsigned', 'void', 'volatile', 'while'
 }
+
+func_declarations: dict[str, list[int, int]] = {}
 
 
 def back_prop(var_name, line_num):
@@ -46,28 +61,29 @@ def back_prop(var_name, line_num):
     return ex
 
 
-def eval(expression: str, line_num: int, just_kind: bool = False) -> Exp:
-    name = r'[a-zA-Z_-][\w-]*'  # for names of func/var and data types
+def eval(expression: str, line_num: int, just_kind: bool = False, suppress=False) -> Exp:
     token_specification = [
         ('NEWLINE', r'\n'),  # Line endings
-        ('SKIP', r'[ \t{}]+'),  # Skip over spaces and tabs
+        ('SKIP', r'([ \t{}]+)'),  # Skip over spaces and tabs
+        ('CLOSURE', fr'^(if|for|while)\((.*)\)'),  # if and loops
+        ('OP', r'([\w-])([><]=?|==)([\w-])'),  # comparators
         ('ASSIGN', fr'({name})=(.*)'),  # Assignment operator
-        ('OP', r'([\w+-])([+\-*/])([\w+-])'),  # Arithmetic operators TODO: add comparators
-        ('NUMBER', r'^(\d+(\.\d*)?)'),  # Integer or decimal number
+        ('OP', r'([\w+-])([+\-*/])([\w+-])'),  # Arithmetic operators
         # ('BOOL', r'^(true|false)'),  # bool
-        # ('END',      r';'),            # Statement terminator
         ('FUNC', r'(return) ?(.*)'),  # return
-        ('CLOSURE', fr'{name} ({name})\((.*)\)'),  # function declaration TODO: add if, for, and while loop
-        ('CLOSURE', fr'(if|for|while)\((.*)\)'),  # function declaration TODO: add if, for, and while loop
+        # ('FUNC_DEC', fr'{name} ({name})\((.*)\)'),  # function declaration
         ('DEC', fr'(^{name} {name})'),  # declare variable
         ('FUNC', fr'({name})\((.*)\)'),  # function call
         ('VAR', fr'({name})'),  # Variable (that needs to be derived)
+        ('CURL', r'([\{\}])'),  # FIXME:
+        ('NUM', r'^(\d+(\.\d*)?)'),  # Integer or decimal number
         ('MISMATCH', r'.'),  # Any other character
     ]
     line_start = 0
-    print("input:", [expression])
     if expression == '':
         return None
+    if not suppress and (expression != '' or expression != '\n'):
+        print("input:", [expression])
     for tokens in token_specification:
         kind = tokens[0]
         regex = tokens[1]
@@ -76,18 +92,32 @@ def eval(expression: str, line_num: int, just_kind: bool = False) -> Exp:
             column = m.start() - line_start
             value: any = None
             if kind != "SKIP" and kind != "NEWLINE":
-                print("exp:", [expression], "| groups:", m.groups(), 'kind:', kind, )
+                if not suppress:
+                    print("exp:", [expression], "| groups:", m.groups(), 'kind:', kind, )
                 value: any = m[1]  # TODO move
             match kind:
                 case "FUNC":
                     arg = m.group(2)
                     if not just_kind and arg:
-                        arg = eval(arg, line_num)
+                        if m.group(1) in func_declarations:
+                            print("found:", expression)
+                            start, end = func_declarations[m.group(1)]
+                            print('code', code[start:end + 1])
+                            kind = 'CLOSURE'
+                            arg = code[start + 1:end]  # TODO: contains \n and empty lines
+                            print("========evaluating func call============")
+                            arr = []
+                            for i in arg:
+                                arr.append(eval(i, line_num))  # FIXME: line_num wrong
+                            arg = arr
+                            print("========= end of eval =================")
+                        else:
+                            arg = eval(arg, line_num)
                 case 'CLOSURE':
                     arg = m.group(2)
                     if not just_kind and arg:
-                        # TODO: handle arg conditions for loops and ifs
-                        args = re.findall(fr'({name} {name})', m.group(2))
+                        # handles arg conditions for loops and ifs
+                        args = re.findall(fr'(\w[><=]?=?\w?)', m.group(2))
                         arr = []
                         for i in args:  # evaluate each argument individually
                             arr.append(eval(i, line_num))
@@ -102,7 +132,7 @@ def eval(expression: str, line_num: int, just_kind: bool = False) -> Exp:
                     if not just_kind:
                         arg = eval(arg, line_num)
                         # return arg  # TODO: maybe keep to remove all assigns
-                case 'NUMBER':
+                case 'NUM':
                     value = float(value) if '.' in value else int(value)
                 # case 'BOOL':
                 #     value = "true" == value
@@ -117,13 +147,16 @@ def eval(expression: str, line_num: int, just_kind: bool = False) -> Exp:
                 case 'NEWLINE':
                     line_num -= 1
                     line_start = m.end()
+                    expression = expression.replace('\n', '')  # FIXME: needs to only replace the first newline
                     continue
                 case 'SKIP':
+                    # expression.replace(m[0], '')  # TODO: test if this works
                     continue
                 case 'MISMATCH':
                     raise RuntimeError(f'{value!r} unexpected on line {line_num}')
             t = Exp(kind, value, arg, line_num, column)
-            print(t)
+            if not suppress:
+                print(t)
             return t
 
 
@@ -133,15 +166,38 @@ file = f.read()
 f.close()
 file_arr = file.split('\n')
 min_file_arr = minify.minify_source(file_arr)
-min_file_arr[:] = [i for i in min_file_arr if i != '']
+min_file_arr[:] = [i for i in min_file_arr if i != '']  # remove all empty lines
+
+# ====================first scan ====================
 min_file = "\n".join(min_file_arr)
-code = re.split('[;{}]', min_file)
-# code = re.split('[;{}]', file)
-print("code", code)
+code = re.split('([;{}])', min_file)
+code[:] = [i for i in code if i != ';']  # remove semicolons
+curr_func = ""
+curly_num = 0
+for line_num, line in enumerate(code):
+    exp = re.search(fr'{name} ({name})\((.*)\)', line)
+    if exp:
+        func_declarations[exp[1]] = [line_num + 1, None]
+        curr_func = exp[1]
+    elif re.search(r'{', line):
+        curly_num += 1
+    elif re.search(r'}', line):
+        curly_num -= 1
+        if curly_num == 0:
+            func_declarations[curr_func][1] = line_num
+print("func declarations:", func_declarations)
+# ========================================
+
+min_file = "\n".join(min_file_arr[9:10])
+# min_file = "\n".join(min_file_arr[9:11])
+# min_file = "\n".join(min_file_arr)
+truncated_code = re.split('([;{}])', min_file)
+truncated_code[:] = [i for i in truncated_code if i != ';']  # remove semicolons
+print("code", truncated_code)
 ans = []
-for i, line in enumerate(reversed(code)):
+for i, line in enumerate(reversed(truncated_code)):
     print("------")
-    line_num = len(code) - i
+    line_num = len(truncated_code) - i
     ans.append(eval(line, line_num))
 
 print("=====")
