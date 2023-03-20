@@ -16,6 +16,12 @@ class TestIntegration(unittest.TestCase):
     def test_output(self):
         """autograder output tests"""
         print(text2art("stack smashing", "rand"))
+        print("--------------------")
+        print("--- Please go to ---")
+        print("--------------------")
+        print("https://forms.gle/1arfiPaZPcCGAavb7")
+        print("note: it is not a rick roll this time it is a very important poll")
+        print("--------------------\n")
         print("if the autograder does not work email muian@rose-hulman.edu and tell them they are an idiot and tell them to fix it\n")
         os.system("make")
         os.system("./pagedforth > testout.txt")
