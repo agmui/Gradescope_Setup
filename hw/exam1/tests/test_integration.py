@@ -241,7 +241,6 @@ class TestIntegration(unittest.TestCase):
     @visibility('hidden')
     def test_file_search(self):
         """makefile"""
-        os.chdir('src')  # TODO: del
         f = open('make_problem/makefile')
         file = f.read()
         f.close()
@@ -296,4 +295,5 @@ class TestIntegration(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    os.chdir('src')  # TODO: del
     unittest.main()
