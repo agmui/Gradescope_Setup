@@ -1,0 +1,102 @@
+diff --git a/make_problem/makefile b/make_problem/makefile
+index c818ba6..5c2725c 100644
+--- a/make_problem/makefile
++++ b/make_problem/makefile
+@@ -4,3 +4,13 @@ all: main.bin minionsay.bin
+ .PHONY: clean all
+ clean:
+ 	rm -rf *.bin *.o
++main.bin:main.o llist.o minionsay.bin
++	gcc main.o llist.o -o main.bin
++minionsay.bin: minionsay.o
++	gcc minionsay.o -o minionsay.bin
++llist.o: llist.c llist.h
++	gcc -c llist.c llist.h 
++main.o: main.c llist.h
++	gcc -c main.c llist.h 
++minionsay.o: minionsay.c
++	gcc -c minionsay.c 
+diff --git a/prodcon.c b/prodcon.c
+index 2b3d65d..e1e2292 100644
+--- a/prodcon.c
++++ b/prodcon.c
+@@ -16,10 +16,79 @@ char random_string[MESSAGE_SIZE];
+ char *my_pid_as_string(void);
+ char *get_random_string(int);
+ 
++void prod_code(int prod_id, int write_fd, int* con_pids)
++{
++	for (int i = 0; i<NUM_MESSAGES*NUM_CONSUMERS; i++){
++		char* msg = get_random_string(prod_id);
++		write(write_fd, msg, MESSAGE_SIZE);
++	}
++	close(write_fd);
++	for (int i=0; i<NUM_CONSUMERS; i++){
++			int status;
++			waitpid(con_pids[i], &status, 0);
++			int num_read=WEXITSTATUS(status);
++			printf("Consumer %d (PID %d) consumed %d messages.\n",prod_id*10+i, con_pids[i], num_read);
++	}
++  printf("Producer %d (PID %s) finished.\n",prod_id, my_pid_as_string());
++	exit(0);
++}
++void con_code(int con_id, int read_fd)
++{
++  printf("Consumer %d (PID %s) started.\n",con_id, my_pid_as_string());
++  char buf[MESSAGE_SIZE];
++	int numRead = 0;
++	sleep(1);
++  while(read(read_fd, buf, MESSAGE_SIZE)>0){
++    printf("Consumer %d (PID %s) got string %s.\n",con_id, my_pid_as_string(), buf);
++		numRead++;
++	}
++	close(read_fd);
++  printf("Consumer %d (PID %s) finished.\n",con_id, my_pid_as_string());
++	exit(numRead);
++}
+ 
+ int main(int argc, char **argv)
+ {
+   // Add your code here...
++  printf("Master Process (PID %s) started.\n", my_pid_as_string());
++  int a=1; //just in case it somehow doesn't reach init
++  int producer_id=1;
++	for (int j=0; j<NUM_PRODUCERS; j++){
++			if (fork()==0){
++					printf("Producer %d (PID %s) started.\n",producer_id+j, my_pid_as_string());
++					int pipe_fd[2];
++					int con_pids[NUM_CONSUMERS];
++					pipe(pipe_fd);
++					for (int i = 0; i<NUM_CONSUMERS; i++){
++							a = fork();
++							if (a==0){
++									close(pipe_fd[1]);
++									con_code(i+10*(j+1), pipe_fd[0]);
++							}
++							else{
++									con_pids[i]=a;
++							}
++					}
++					if (a!=0){
++							close(pipe_fd[0]);
++							prod_code(producer_id+j, pipe_fd[1], con_pids);
++					}
++			}
++	}
++	my_pid_as_string();
++	int b = fork();
++	if (b==0){
++			execlp("pstree","pstree", "-p", pid_str, NULL);
++			exit(1);
++	}
++	else{
++			wait(NULL);//make sure that parent waits for pstree to finish
++	}
++	for (int i=0; i<NUM_PRODUCERS; i++){// wait for all of the producers
++			wait(NULL);
++	}
++	printf("Master Process (PID %s) finished.\n", my_pid_as_string());
++  
+ }
+ 
+ //////////////////////////////////////////////////////////////////////////////
