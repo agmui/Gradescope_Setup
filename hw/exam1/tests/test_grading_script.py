@@ -1,8 +1,10 @@
-import os, re
+import os
+import re
 import subprocess
 import unittest
-from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit
+
 from art import *
+from gradescope_utils.autograder_utils.decorators import weight
 
 os.system("sudo apt install -y psmisc>/dev/null")
 os.system("tar xf exam1.tar")
