@@ -6,7 +6,7 @@ import unittest
 from art import *
 from gradescope_utils.autograder_utils.decorators import weight
 
-os.system("sudo apt install -y psmisc>/dev/null")
+os.system("apt install -y psmisc>/dev/null")
 os.system("tar xf exam1.tar")
 
 os.chdir("src")
