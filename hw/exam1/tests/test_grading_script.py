@@ -15,7 +15,7 @@ os.system("tar xf exam1.tar")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         print()
-        print(text2art("Exam 1", "rand"))
+        print(text2art("Exam One", "rand"))
         print()
 
     @weight(0)

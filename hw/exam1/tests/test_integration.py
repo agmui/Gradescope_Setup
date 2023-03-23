@@ -208,7 +208,29 @@ def format_output(file_arr, format_arr, total_offset):
                 print(f'{bcolors.FAIL}\t missing {format_arr[i]}{bcolors.ENDC}\n', end='')
 
 
-os.chdir("user")
+def in_file_set(file_arr, set_arr):
+    error = 0
+    found = False
+    if not isinstance(set_arr, list):  # to wrap substring in arr
+        set_arr = [set_arr]
+    for comment_index in set_arr:
+        for c in ['(', ')', '+', '=', '[', ']']:  # formatting input for re
+            comment_index = comment_index.replace(c, '\\' + c)
+        arr = [line for line in file_arr if re.findall(comment_index, line)]  # maybe remove re
+        if len(arr) != 0:
+            found = True
+            line_num = file_arr.index(arr[0])  # NOTE: only uses first fine
+            file_arr[line_num] = ""  # delete line so it does not get used again
+            # break
+        if found:
+            print("\tfound:", arr[0])
+            # if found correct code deleted it from array, so it does not get counted twice
+            # file_arr[line_num] = ""
+        else:
+            error += 1
+            # print("\tmissing:", i)
+    print("error:", error)
+    return error
 
 
 class TestIntegration(unittest.TestCase):
@@ -217,36 +239,60 @@ class TestIntegration(unittest.TestCase):
 
     @weight(0)
     @visibility('hidden')
-    def test_string_with_q(self):
-        """autograder string_with_q test"""
-        # ========== string with q ==========
-        print("========== string_with_q ==========")
-        decision_graph = {
-            'head': ['before', 'after'],
-            'before': [],
-            'after': []
-        }
-        graph_convert = {
-            'before': [
-                "\*output=0",
-                ["while(.*)", "for(.*)"],
-                "if(.*)",
-                "if(.*)",
-            ],
-            'after': [
-                ["while(.*)", "for(.*)"],
-                "if(.*)",
-                "if(.*)",
-                "\*output=0",
-            ]
-        }
+    def test_file_search(self):
+        """makefile"""
+        os.chdir('src')  # TODO: del
+        f = open('make_problem/makefile')
+        file = f.read()
+        f.close()
+        set_arr = [
+            r"main.bin:main.o llist.o minionsay.bin",
+            r"gcc main.o llist.o -o main.bin|gcc -o main.bin main.o llist.o",
+            r"minionsay.bin: minionsay.o",
+            r"gcc minionsay.o -o minionsay.bin",
+            r"llist.o: llist.c",
+            r"gcc -c llist.c llist.h|gcc -c llist.h llist.c",
+            r"main.o: main.c llist.h",
+            r"gcc -c main.c llist.h",
+            r"minionsay.o: minionsay.c",
+            r"gcc -c minionsay.c"
+        ]
+        print("==")
+        in_file_set(file.split('\n'), set_arr)
+        print("==")
+        self.assertTrue(True)
 
-        truncated_file_arr, offset = init_ordered("warmup.c", "void string_with_q(char *s1, char *s2, char **output)")
-        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-        errors, format_arr = graph_search('head', 0, truncated_file_arr, decision_graph, graph_convert, format_arr)
-        format_output(truncated_file_arr, format_arr, offset)
-        # print("errors:", inorder_errors)
-        self.assertTrue(len(errors) == 0)
+    # @weight(0)
+    # @visibility('hidden')
+    # def test_string_with_q(self):
+    #     """makefile"""
+    #     # ========== string with q ==========
+    #     decision_graph = {
+    #         'head': ['before', 'after'],
+    #         'before': [],
+    #         'after': []
+    #     }
+    #     graph_convert = {
+    #         'before': [
+    #             "\*output=0",
+    #             ["while(.*)", "for(.*)"],
+    #             "if(.*)",
+    #             "if(.*)",
+    #         ],
+    #         'after': [
+    #             ["while(.*)", "for(.*)"],
+    #             "if(.*)",
+    #             "if(.*)",
+    #             "\*output=0",
+    #         ]
+    #     }
+    #
+    #     truncated_file_arr, offset = init_ordered("makefile", "main.bin")
+    #     format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+    #     errors, format_arr = graph_search('head', 0, truncated_file_arr, decision_graph, graph_convert, format_arr)
+    #     format_output(truncated_file_arr, format_arr, offset)
+    #     # print("errors:", inorder_errors)
+    #     self.assertTrue(True)
 
 
 if __name__ == '__main__':
