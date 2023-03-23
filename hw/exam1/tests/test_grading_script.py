@@ -7,9 +7,9 @@ from art import *
 from gradescope_utils.autograder_utils.decorators import weight
 
 os.system("apt install -y psmisc>/dev/null")
+os.chdir("src")
 os.system("tar xf exam1.tar")
 
-os.chdir("src")
 
 
 class TestIntegration(unittest.TestCase):
