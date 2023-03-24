@@ -26,7 +26,10 @@ class TestIntegration(unittest.TestCase):
         os.chdir("make_problem")
         os.system("make clean")
         os.system("make")
-        process = subprocess.Popen(['./main.bin'], stdout=subprocess.PIPE, encoding='UTF-8')
+        file_name = "./main"
+        if os.path.exists('./main.bin'):
+            file_name = './main.bin'
+        process = subprocess.Popen([file_name], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
         os.chdir("../")
