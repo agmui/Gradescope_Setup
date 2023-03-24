@@ -74,8 +74,8 @@ class TestIntegration(unittest.TestCase):
         print("https://docs.google.com/forms/d/e/1FAIpQLSfhQQLJKwMup5vkAd9BBnEZTGOpYZHjvfSJg8V4YlQKp9TufA/viewform")
         print("thank you")
 
-    def test_basic_case(self):
-        """autograder basic case tests"""
+    def test_get_buddy(self):
+        """autograder get buddy tests"""
         print(text2art("heap manager", "rand"))
         self.assertTrue(TESTS[0].ok)
 
@@ -87,20 +87,20 @@ class TestIntegration(unittest.TestCase):
         """autograder basic free tests"""
         self.assertTrue(TESTS[2].ok)
 
-    def test_coalesce_basic1(self):
-        """autograder coalesce basic1 tests"""
+    def test_wrong_size_coalesce(self):
+        """autograder wrong size coalesce tests"""
         self.assertTrue(TESTS[3].ok)
 
-    def test_coalesce_basic2(self):
-        """autograder coalesce basic2 tests"""
+    def test_graceful(self):
+        """autograder gracefully run out of memory tests"""
         self.assertTrue(TESTS[4].ok)
 
-    def test_coalesce3(self):
-        """autograder coalesce basic3 tests"""
+    def test_stress_big_heap(self):
+        """autograder stress big heap chunks tests"""
         self.assertTrue(TESTS[5].ok)
 
-    def test_foce_alignment(self):
-        """autograder foce alignment tests"""
+    def test_stress_overlap(self):
+        """autograder stress overlapping tests"""
         self.assertTrue(TESTS[6].ok)
 
 
