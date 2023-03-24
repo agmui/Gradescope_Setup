@@ -6,6 +6,8 @@ import unittest
 from art import *
 from gradescope_utils.autograder_utils.decorators import weight, number
 
+os.system("apt -y update > /dev/null")
+os.system("apt -y upgrade > /dev/null")
 os.system("apt install -y psmisc > /dev/null")
 os.chdir("src")
 os.system("tar xf exam1.tar")
