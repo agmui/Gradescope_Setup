@@ -26,13 +26,13 @@ class TestIntegration(unittest.TestCase):
         os.chdir("make_problem")
         os.system("make clean")
         os.system("make")
+        os.chdir("../")
         file_name = "./main"
         if os.path.exists('./main.bin'):
             file_name = './main.bin'
         process = subprocess.Popen([file_name], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
-        os.chdir("../")
         self.assertTrue("─────────▀▀▀▀────────▀▀▀▀" in result)
 
     @weight(0)
