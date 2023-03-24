@@ -38,7 +38,9 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     def test_prodcon(self):
         """prodcon.c test"""
-        os.system("gcc -o prodcon.bin prodcon.c")
+        os.system("sed '/printf(\"Master Process/i setvbuf(stdout, NULL, _IONBF, 0);' prodcon.c > prodcon_hacked.c")
+        os.system("gcc -o prodcon.bin prodcon_hacked.c")
+
         process = subprocess.Popen(['./prodcon.bin'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
