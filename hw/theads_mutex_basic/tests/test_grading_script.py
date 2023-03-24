@@ -6,8 +6,7 @@ from art import *
 import asyncio # TODO: add to reqirements.txt
 
 
-os.chdir("src")
-print(text2art("stack smashing", "rand"))
+# os.chdir("src")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         print("if you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help")
@@ -19,6 +18,11 @@ class TestIntegration(unittest.TestCase):
         f = open('face.txt')
         print(f.read())
         f.close()
+        print(text2art('''
+        If you don't lock 
+        before changing globals
+        I will come for you
+        in your sleep'''))
         # os.system("sudo apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu")
         # os.system("tar xf ../src/submit-lab-0.tar")
         # process = subprocess.Popen(['../src/make grade'], stdout=subprocess.PIPE, encoding='UTF-8')
