@@ -19,8 +19,9 @@ class TestIntegration(unittest.TestCase):
         print(f.read())
         f.close()
         print(text2art('''
-        If you don't lock 
-        before changing globals
+        If you change a
+        global var before
+        locking...
         I will come for you
         in your sleep'''))
         # os.system("sudo apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu")
