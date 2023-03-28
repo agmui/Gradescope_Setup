@@ -138,7 +138,8 @@ upload
 ###### random note:
 gradescope does not print ps -a for what ever reason idk so for simple shell gud luck
 ##### TODO:
-* if file not uploaded do a try catch statment
+* if file not uploaded do a try catch statment and don't run tests
+* set timers for test if they loop forever
 * make set contains
 * test fail help msg
 * check for over sending files
