@@ -22,13 +22,18 @@ class TestIntegration(unittest.TestCase):
         print("https://forms.gle/1arfiPaZPcCGAavb7")
         print("note: it is not a rick roll this time it is a very important poll")
         print("--------------------\n")
-        print("if the autograder does not work email muian@rose-hulman.edu and tell them they are an idiot and tell them to fix it\n")
+        print("LIVE DATA:")
+        print("Q: Is pineapple on pizza the Morally correct")
+        print("66.67% yes   33.3% no")
+        print("-------")
+        print("Q: Gas station sushi?")
+        print("66.67% yes   33.3% no")
         os.system("make")
         os.system("./pagedforth > testout.txt")
         
         process = subprocess.Popen(['diff', 'finaloutput.txt', 'testout.txt'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
-        print(result)
+        # print(result)
         self.assertTrue("done" in result)
 
 
