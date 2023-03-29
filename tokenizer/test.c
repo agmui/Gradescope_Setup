@@ -7,6 +7,16 @@ int if_add_with_if(int x, int y){
     }
 }
 int main(int x, int y){
-//    add(1,1);
+    add(1,1);
+
+
+
+
+
+
+
+
+
+
     if_add_with_if(1,1);
 }

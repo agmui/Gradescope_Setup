@@ -3,13 +3,13 @@ import subprocess
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit
 from art import *
-import asyncio # TODO: add to reqirements.txt
 
 
 os.chdir("src")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
-        print("If you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help")
+        # print("If you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help")
+        pass
 
     @weight(0)
     @number("1")
@@ -26,10 +26,10 @@ class TestIntegration(unittest.TestCase):
         os.system("make")
         os.system("./pagedforth > testout.txt")
         
-        process = subprocess.Popen(['diff finaloutput.txt testout.txt'], stdout=subprocess.PIPE, encoding='UTF-8')
+        process = subprocess.Popen(['diff', 'finaloutput.txt', 'testout.txt'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
-        self.assertTrue("OK" in result)
+        self.assertTrue("done" in result)
 
 
 if __name__ == '__main__':

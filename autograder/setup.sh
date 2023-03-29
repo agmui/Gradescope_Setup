@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-assignment="simple_shell"
+assignment="heap_manager2"
 
 apt-get install -y subversion 
 
