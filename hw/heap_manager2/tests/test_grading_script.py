@@ -10,7 +10,7 @@ os.chdir("src")
 os.system("apt update -y > /dev/null && apt upgrade -y > /dev/null")
 os.system(
     "apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu > /dev/null")
-os.system("tar xf submit-lab-1.tar")
+os.system("tar xf submit-lab-buddy.tar")
 os.system("make > /dev/null")
 
 r = Runner(save("xv6.out"))
