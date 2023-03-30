@@ -65,7 +65,10 @@ def test_stress_overlapping():
             no=[".*Assertion FAILED.*"])
 
 
-run_tests()
+try:
+    run_tests()
+finally:
+    pass
 
 
 class TestIntegration(unittest.TestCase):
@@ -74,31 +77,38 @@ class TestIntegration(unittest.TestCase):
         print("https://docs.google.com/forms/d/e/1FAIpQLSfhQQLJKwMup5vkAd9BBnEZTGOpYZHjvfSJg8V4YlQKp9TufA/viewform")
         print("thank you")
 
+    @weight(0)
     def test_get_buddy(self):
         """autograder get buddy tests"""
         print(text2art("heap manager", "rand"))
         self.assertTrue(TESTS[0].ok)
 
+    @weight(0)
     def test_basic_alloc(self):
         """autograder basic alloc tests"""
         self.assertTrue(TESTS[1].ok)
 
+    @weight(0)
     def test_basic_free(self):
         """autograder basic free tests"""
         self.assertTrue(TESTS[2].ok)
 
+    @weight(0)
     def test_wrong_size_coalesce(self):
         """autograder wrong size coalesce tests"""
         self.assertTrue(TESTS[3].ok)
 
+    @weight(0)
     def test_graceful(self):
         """autograder gracefully run out of memory tests"""
         self.assertTrue(TESTS[4].ok)
 
+    @weight(0)
     def test_stress_big_heap(self):
         """autograder stress big heap chunks tests"""
         self.assertTrue(TESTS[5].ok)
 
+    @weight(0)
     def test_stress_overlap(self):
         """autograder stress overlapping tests"""
         self.assertTrue(TESTS[6].ok)
