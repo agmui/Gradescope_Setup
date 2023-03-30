@@ -68,7 +68,7 @@ def test_stress_overlapping():
 try:
     run_tests()
 finally:
-    pass
+    unittest.main()
 
 
 class TestIntegration(unittest.TestCase):
