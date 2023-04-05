@@ -214,10 +214,10 @@ inorder_graph_convert = {
     ],
 }
 
-truncated_file_arr, offset = init_ordered("factoring.c", "void *thread(void *arg)")
-format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-inorder_errors, format_arr = graph_search('head', 0, truncated_file_arr, inorder_decision_graph, inorder_graph_convert,
-                                          format_arr)
+# truncated_file_arr, offset = init_ordered("factoring.c", "void *thread(void *arg)")
+# format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+# inorder_errors, format_arr = graph_search('head', 0, truncated_file_arr, inorder_decision_graph, inorder_graph_convert,
+#                                           format_arr)
 # format_output(truncated_file_arr, format_arr, offset)
 # print("errors:", inorder_errors)
 
