@@ -188,7 +188,7 @@ def format_output(file_arr, format_arr, total_offset):
                 print(f'{total_offset + i + 1:4d} | {line}\n', end='')
                 print(f'{bcolors.FAIL} missing {format_arr[i]}{bcolors.ENDC}\n', end='')
 
-os.chdir("src")
+# os.chdir("src")
 # ========== factoring ==========
 print("========== factoring.c ==========")
 inorder_decision_graph = {
