@@ -5,7 +5,7 @@ from gradescope_utils.autograder_utils.decorators import leaderboard
 
 class TestLeaderboard(unittest.TestCase):
     def setUp(self):
-        pass
+        print("running leader board")
 
     @leaderboard("high score")
     def test_leaderboard_float(self, set_leaderboard_value=None):

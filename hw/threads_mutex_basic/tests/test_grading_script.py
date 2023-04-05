@@ -6,13 +6,14 @@ from art import *
 
 
 os.chdir("src")
+os.system("make")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         print("if you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help")
 
     @weight(0)
     @number("1")
-    def test_make_grade(self):
+    def test_thread_factoring(self):
         """autograder us1tests.c tests"""
         f = open('../tests/face.txt')
         print(f.read())
@@ -23,11 +24,25 @@ class TestIntegration(unittest.TestCase):
         locking...
         I will come for you
         in your sleep'''))
-        # os.system("sudo apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu")
-        # os.system("tar xf ../src/submit-lab-0.tar")
-        # process = subprocess.Popen(['../src/make grade'], stdout=subprocess.PIPE, encoding='UTF-8')
-        # result, error = process.communicate()
-        # print(result)
+        process = subprocess.Popen(['./threadfactoring.bin'], stdout=subprocess.PIPE, encoding='UTF-8')
+        result, error = process.communicate()
+        print(result)
+        self.assertTrue(True)
+    def test_thread_sorting(self):
+        process = subprocess.Popen(['./threadSort.bin'], stdout=subprocess.PIPE, encoding='UTF-8')
+        result, error = process.communicate()
+        print(result)
+        self.assertTrue(True)
+    def test_basic_mutex(self):
+        process = subprocess.Popen(['./basicmutex.bin'], stdout=subprocess.PIPE, encoding='UTF-8')
+        result, error = process.communicate()
+        print(result)
+        self.assertTrue(True)
+
+    def test_ReadBluePurple(self):
+        process = subprocess.Popen(['./redbluepurple.bin'], stdout=subprocess.PIPE, encoding='UTF-8')
+        result, error = process.communicate()
+        print(result)
         self.assertTrue(True)
 
 
