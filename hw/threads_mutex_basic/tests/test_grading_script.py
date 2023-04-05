@@ -6,7 +6,10 @@ from art import *
 
 
 os.chdir("src")
-os.system("make")
+os.system("gcc -pthread -ggdb factoring.c -o thread_factoring.bin")
+os.system("gcc -pthread -ggdb threadSort.c -o thread_sort.bin")
+os.system("gcc -pthread -ggdb add_a_lot.c -o basic_mutex.bin")
+os.system("gcc -pthread -ggdb red_blue_purple.c -o red_blue_purple.bin")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         print("if you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help")
@@ -24,7 +27,7 @@ class TestIntegration(unittest.TestCase):
         locking...
         I will come for you
         in your sleep'''))
-        process = subprocess.Popen(['./threadfactoring.bin'], stdout=subprocess.PIPE, encoding='UTF-8')
+        process = subprocess.Popen(['./thread_factoring.bin'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
         self.assertTrue(True)
@@ -34,13 +37,13 @@ class TestIntegration(unittest.TestCase):
         print(result)
         self.assertTrue(True)
     def test_basic_mutex(self):
-        process = subprocess.Popen(['./basicmutex.bin'], stdout=subprocess.PIPE, encoding='UTF-8')
+        process = subprocess.Popen(['./basic_mutex.bin'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
         self.assertTrue(True)
 
     def test_ReadBluePurple(self):
-        process = subprocess.Popen(['./redbluepurple.bin'], stdout=subprocess.PIPE, encoding='UTF-8')
+        process = subprocess.Popen(['./red_blue_purple.bin'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
         self.assertTrue(True)
