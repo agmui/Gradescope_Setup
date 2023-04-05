@@ -3,7 +3,6 @@ import subprocess
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit
 from art import *
-import asyncio # TODO: add to reqirements.txt
 
 
 # os.chdir("src")

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-assignment="heap_manager2"
+assignment="threads_mutex_basic"
 
 apt-get install -y subversion 
 
