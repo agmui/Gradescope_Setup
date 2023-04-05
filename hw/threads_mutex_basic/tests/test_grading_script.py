@@ -5,7 +5,7 @@ from gradescope_utils.autograder_utils.decorators import weight, tags, number, p
 from art import *
 
 
-# os.chdir("src")
+os.chdir("src")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         print("if you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help")
@@ -14,7 +14,7 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_make_grade(self):
         """autograder us1tests.c tests"""
-        f = open('face.txt')
+        f = open('../tests/face.txt')
         print(f.read())
         f.close()
         print(text2art('''
