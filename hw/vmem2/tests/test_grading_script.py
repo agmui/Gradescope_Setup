@@ -43,7 +43,7 @@ class TestIntegration(unittest.TestCase):
 
     def test_cowtest(self):
         """cowtest"""
-        print(text2art("stack smashing", "rand"))
+        print(text2art("virtual memory 2", "rand"))
         self.assertTrue(TESTS[0].ok)
 
     def test_simple(self):

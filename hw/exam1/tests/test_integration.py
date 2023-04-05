@@ -233,6 +233,7 @@ def in_file_set(file_arr, set_arr):
     return error
 
 
+os.chdir('src')  # TODO: del
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
@@ -295,5 +296,4 @@ class TestIntegration(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    os.chdir('src')  # TODO: del
     unittest.main()
