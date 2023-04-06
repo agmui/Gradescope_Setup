@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-assignment="threads_mutex_basic"
+#assignment="Virtual Memory II"
+assignment=$(cat submission_metadata.json | python3 -c "import sys, json; print(json.load(sys.stdin)['assignment']['title'])")
 
 apt-get install -y subversion 
 
