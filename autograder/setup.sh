@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-#assignment="Virtual Memory II"
-assignment=$(cat submission_metadata.json | python3 -c "import sys, json; print(json.load(sys.stdin)['assignment']['title'])")
+assignment="vmem2"
+ls autograder/source
 
 apt-get install -y subversion 
 
