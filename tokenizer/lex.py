@@ -6,6 +6,8 @@ import minify
 # TODO: add fuzziness
 
 class Exp:
+    g_tab = 0
+
     def __init__(self, type, value, arg, line, column):
         self.type: str = type
         self.value: any = value
@@ -14,11 +16,17 @@ class Exp:
         self.column: int = column
 
     def format_closure(self, tab_num):
-        if self.type == 'CLOSURE':
+        if self.type == 'CURL':
+            if self.value == '{':
+                Exp.g_tab += 1
+            if self.value == '}':
+                Exp.g_tab -= 1
+            return ''
+        if self.type == 'CLOSURE' and self.value != 'if':
             s = f'{self.type}({self.value} :\n'
             for i in self.arg:
                 if i is not None:
-                    s += '\t' * (tab_num + 1) + i.format_closure(tab_num + 1) + '\n'
+                    s += '\t' * (Exp.g_tab + tab_num + 1) + i.format_closure(tab_num + 1) + '\n'
             return s + '\t' * tab_num + ')'
         else:
             return f'{self.type}({self.value}{(" | " + str(self.arg)) if self.arg else ""})'
@@ -47,16 +55,22 @@ def back_prop(var_name, line_num):
     truncated_min = "\n".join(min_file_arr[:line_num])
     truncated_code = re.split('[;{}]', truncated_min)
     for l in reversed(truncated_code):  # searching through full file
+        print("testing:", [l])
         ex = eval(l, line_num)  # TODO: fix line_num
-        print(ex)
+        # print(ex)
         if ex is None:
             continue
         if ex.type == 'NUMBER':
             break
-        if (ex.type == 'ASSIGN' or ex.type == 'DEC') and ex.value == var_name:
+        if ex.type == 'ASSIGN' and ex.value == var_name:
             # if ex.type == 'ASSIGN':
             #     ex = back_prop(min_file_arr.index(l), ex.arg)
             break
+        if ex.type == 'FUNC_DEC':
+            for i in ex.arg:
+                if i.arg == var_name:
+                    print("=====end=====")
+                    return i
     print("=====end=====")
     return ex
 
@@ -71,8 +85,8 @@ def eval(expression: str, line_num: int, just_kind: bool = False, suppress=False
         ('OP', r'([\w+-])([+\-*/])([\w+-])'),  # Arithmetic operators
         # ('BOOL', r'^(true|false)'),  # bool
         ('FUNC', r'(return) ?(.*)'),  # return
-        # ('FUNC_DEC', fr'{name} ({name})\((.*)\)'),  # function declaration
-        ('DEC', fr'(^{name} {name})'),  # declare variable
+        ('FUNC_DEC', fr'{name} ({name})\((.*)\)'),  # function declaration
+        ('DEC', fr'(^{name}) ({name})'),  # declare variable
         ('FUNC', fr'({name})\((.*)\)'),  # function call
         ('VAR', fr'({name})'),  # Variable (that needs to be derived)
         ('CURL', r'([\{\}])'),  # FIXME:
@@ -96,6 +110,11 @@ def eval(expression: str, line_num: int, just_kind: bool = False, suppress=False
                     print("exp:", [expression], "| groups:", m.groups(), 'kind:', kind, )
                 value: any = m[1]  # TODO move
             match kind:
+                case "FUNC_DEC":
+                    arr = []
+                    for i in m.group(2).split(','):
+                        arr.append(eval(i, line_num))
+                    arg = arr
                 case "FUNC":
                     arg = m.group(2)
                     if not just_kind and arg:
@@ -108,7 +127,8 @@ def eval(expression: str, line_num: int, just_kind: bool = False, suppress=False
                             print("========evaluating func call============")
                             arr = []
                             for i in arg:
-                                arr.append(eval(i, line_num))  # FIXME: line_num wrong
+                                jump_line_num = func_declarations[value]
+                                arr.append(eval(i, jump_line_num[0]-1))  # FIXME: line_num wrong
                             arg = arr
                             print("========= end of eval =================")
                         else:
@@ -122,6 +142,9 @@ def eval(expression: str, line_num: int, just_kind: bool = False, suppress=False
                         for i in args:  # evaluate each argument individually
                             arr.append(eval(i, line_num))
                         arg = arr
+                case 'DEC':
+                    value = m.group(1)
+                    arg = m.group(2)
                 case 'VAR':
                     if value in keywords:
                         break
@@ -176,7 +199,7 @@ curr_func = ""
 curly_num = 0
 for line_num, line in enumerate(code):
     exp = re.search(fr'{name} ({name})\((.*)\)', line)
-    if exp:
+    if exp and curly_num == 0:
         func_declarations[exp[1]] = [line_num + 1, None]
         curr_func = exp[1]
     elif re.search(r'{', line):
@@ -188,7 +211,7 @@ for line_num, line in enumerate(code):
 print("func declarations:", func_declarations)
 # ========================================
 
-min_file = "\n".join(min_file_arr[9:10])
+min_file = "\n".join(min_file_arr[:12])
 # min_file = "\n".join(min_file_arr[9:11])
 # min_file = "\n".join(min_file_arr)
 truncated_code = re.split('([;{}])', min_file)
@@ -196,8 +219,8 @@ truncated_code[:] = [i for i in truncated_code if i != ';']  # remove semicolons
 print("code", truncated_code)
 ans = []
 for i, line in enumerate(reversed(truncated_code)):
-    print("------")
     line_num = len(truncated_code) - i
+    print("------", line_num, "------")
     ans.append(eval(line, line_num))
 
 print("=====")
