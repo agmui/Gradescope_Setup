@@ -52,13 +52,24 @@ def back_prop(var_name, line_num):
     print("=====back prop=====")
     print('looking for:', var_name, 'line_num:', line_num)
     ex: Exp = None
-    truncated_min = "\n".join(min_file_arr[:line_num])
-    truncated_code = re.split('[;{}]', truncated_min)
-    for l in reversed(truncated_code):  # searching through full file
-        print("testing:", [l])
-        ex = eval(l, line_num)  # TODO: fix line_num
-        # print(ex)
+    truncated_code = min_file_arr[:line_num]
+    # truncated_min = "\n".join(min_file_arr[:line_num])
+    # truncated_code = re.split('[;{}]', truncated_min)
+    curl_count = 0
+    for l in reversed(truncated_code):  # searching from line_num to top of page
+        # print("testing:", [l])
+        ex: Exp = eval(l, line_num, curl_count > 0)
         if ex is None:
+            continue
+        if ex.type == 'CURL':
+            # for closures backprop should only exit closures and never enter one
+            if ex.value == '{' and curl_count != 0:  # exiting a closure
+                curl_count -= 1
+            else:  # skipping a closure
+                curl_count += 1
+            continue
+        if curl_count > 0:  # currently inside a closure so it needs to ignore all the code
+            print("skip")
             continue
         if ex.type == 'NUMBER':
             break
@@ -111,10 +122,11 @@ def eval(expression: str, line_num: int, just_kind: bool = False, suppress=False
                 value: any = m[1]  # TODO move
             match kind:
                 case "FUNC_DEC":
-                    arr = []
-                    for i in m.group(2).split(','):
-                        arr.append(eval(i, line_num))
-                    arg = arr
+                    if not just_kind:
+                        arr = []
+                        for i in m.group(2).split(','):
+                            arr.append(eval(i, line_num))
+                        arg = arr
                 case "FUNC":
                     arg = m.group(2)
                     if not just_kind and arg:
@@ -128,7 +140,7 @@ def eval(expression: str, line_num: int, just_kind: bool = False, suppress=False
                             arr = []
                             for i in arg:
                                 jump_line_num = func_declarations[value]
-                                arr.append(eval(i, jump_line_num[0]-1))  # FIXME: line_num wrong
+                                arr.append(eval(i, jump_line_num[0] - 1))  # FIXME: line_num wrong
                             arg = arr
                             print("========= end of eval =================")
                         else:
@@ -211,8 +223,8 @@ for line_num, line in enumerate(code):
 print("func declarations:", func_declarations)
 # ========================================
 
-min_file = "\n".join(min_file_arr[:12])
-# min_file = "\n".join(min_file_arr[9:11])
+# min_file = "\n".join(min_file_arr[:12])
+min_file = "\n".join(min_file_arr[9:])
 # min_file = "\n".join(min_file_arr)
 truncated_code = re.split('([;{}])', min_file)
 truncated_code[:] = [i for i in truncated_code if i != ';']  # remove semicolons
