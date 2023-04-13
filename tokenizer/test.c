@@ -1,10 +1,10 @@
 x=2;
 int add(int x, int y) {
-    y=x;
+    add(1,1);
 }
 int if_add_with_if(int x,int y)
 {
-    x=add(1,1);
+    add(1,1);
 //    if (x>1){
 //        x=1;
 //    }

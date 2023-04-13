@@ -13,7 +13,7 @@ class Exp:
         self.type: str = type
         self.value: any = value
         self.arg: list = arg
-        self.line: int = line  # FIXME: line nums are wrong because minify removes all newlines
+        self.line: int = line
         self.column: int = column
 
     def format_closure(self, tab_num):
@@ -141,8 +141,10 @@ def eval(expression: str, line_num: int, just_kind: bool = False, suppress=False
                             arr = []
                             for i in arg:
                                 jump_line_num = func_declarations[value]
-                                # arr.append(eval(i, jump_line_num[0] - 1))  # FIXME: line_num wrong
-                                arr.append(eval(i, jump_line_num[0]))  # FIXME: line_num wrong
+                                if line_num < jump_line_num[0] or line_num > jump_line_num[1]:
+                                    arr.append(eval(i, jump_line_num[0]))
+                                else:
+                                    kind = "recursive_call"
                             arg = arr
                             print("========= end of eval =================")
                         else:
