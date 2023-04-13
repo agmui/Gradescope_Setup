@@ -34,7 +34,7 @@ main(int argc, char **argv)
 {
 	thread_num = 0;
     pthread_mutex_init(&mutex, 0);
-        
+
 	pthread_t threads[8];
 	int i;
 	char *letters = "abcdefgh";

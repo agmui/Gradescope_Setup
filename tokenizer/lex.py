@@ -3,6 +3,7 @@ import re, os
 import minify
 
 
+# NOTE: the line numbers are based on the filter.c line-numbers not the original file
 # TODO: add fuzziness
 
 class Exp:
@@ -61,12 +62,12 @@ def back_prop(var_name, line_num):
         ex: Exp = eval(l, line_num, curl_count > 0)
         if ex is None:
             continue
-        if ex.type == 'CURL':
+        if ex.type == 'CURL' or (ex.type == 'FUNC_DEC' and curl_count > 0):
             # for closures backprop should only exit closures and never enter one
-            if ex.value == '{' and curl_count != 0:  # exiting a closure
-                curl_count -= 1
-            else:  # skipping a closure
+            if ex.value == '}':  # skipping a closure
                 curl_count += 1
+            elif curl_count != 0:  # and (ex.value == '{' or ex.type == 'FUNC_DEC'):  # exiting a closure
+                curl_count -= 1
             continue
         if curl_count > 0:  # currently inside a closure so it needs to ignore all the code
             print("skip")
@@ -88,7 +89,7 @@ def back_prop(var_name, line_num):
 
 def eval(expression: str, line_num: int, just_kind: bool = False, suppress=False) -> Exp:
     token_specification = [
-        ('NEWLINE', r'\n'),  # Line endings
+        # ('NEWLINE', r'\n'),  # Line endings
         ('SKIP', r'([ \t{}]+)'),  # Skip over spaces and tabs
         ('CLOSURE', fr'^(if|for|while)\((.*)\)'),  # if and loops
         ('OP', r'([\w-])([><]=?|==)([\w-])'),  # comparators
@@ -100,7 +101,7 @@ def eval(expression: str, line_num: int, just_kind: bool = False, suppress=False
         ('DEC', fr'(^{name}) ({name})'),  # declare variable
         ('FUNC', fr'({name})\((.*)\)'),  # function call
         ('VAR', fr'({name})'),  # Variable (that needs to be derived)
-        ('CURL', r'([\{\}])'),  # FIXME:
+        ('CURL', r'([\{\}])'),
         ('NUM', r'^(\d+(\.\d*)?)'),  # Integer or decimal number
         ('MISMATCH', r'.'),  # Any other character
     ]
@@ -140,7 +141,8 @@ def eval(expression: str, line_num: int, just_kind: bool = False, suppress=False
                             arr = []
                             for i in arg:
                                 jump_line_num = func_declarations[value]
-                                arr.append(eval(i, jump_line_num[0] - 1))  # FIXME: line_num wrong
+                                # arr.append(eval(i, jump_line_num[0] - 1))  # FIXME: line_num wrong
+                                arr.append(eval(i, jump_line_num[0]))  # FIXME: line_num wrong
                             arg = arr
                             print("========= end of eval =================")
                         else:
@@ -179,11 +181,11 @@ def eval(expression: str, line_num: int, just_kind: bool = False, suppress=False
                     if m[3] != '+' or m[3] != '-':
                         arg2 = eval(m[3], line_num)
                     arg = [arg1, arg2]
-                case 'NEWLINE':
-                    line_num -= 1
-                    line_start = m.end()
-                    expression = expression.replace('\n', '')  # FIXME: needs to only replace the first newline
-                    continue
+                # case 'NEWLINE':
+                #     line_num -= 1
+                #     line_start = m.end()
+                #     expression = expression.replace('\n', '')  # FIXME: needs to only replace the first newline
+                #     continue
                 case 'SKIP':
                     # expression.replace(m[0], '')  # TODO: test if this works
                     continue
@@ -203,10 +205,10 @@ file_arr = file.split('\n')
 min_file_arr = minify.minify_source(file_arr)
 min_file_arr[:] = [i for i in min_file_arr if i != '']  # remove all empty lines
 
-# ====================first scan ====================
-min_file = "\n".join(min_file_arr)
+min_file = "".join(min_file_arr)
 code = re.split('([;{}])', min_file)
-code[:] = [i for i in code if i != ';']  # remove semicolons
+code = [i for i in code if not(i == ';' or i == '')]  # remove semicolons
+# ==================== first scan ====================
 curr_func = ""
 curly_num = 0
 for line_num, line in enumerate(code):
@@ -223,15 +225,16 @@ for line_num, line in enumerate(code):
 print("func declarations:", func_declarations)
 # ========================================
 
-# min_file = "\n".join(min_file_arr[:12])
-min_file = "\n".join(min_file_arr[9:])
-# min_file = "\n".join(min_file_arr)
-truncated_code = re.split('([;{}])', min_file)
-truncated_code[:] = [i for i in truncated_code if i != ';']  # remove semicolons
+f = open("filter.c", "w")
+f.write("\n".join(code))
+f.close()
+
+offset = func_declarations['main'][0]-1
+truncated_code = code[offset:]
 print("code", truncated_code)
 ans = []
 for i, line in enumerate(reversed(truncated_code)):
-    line_num = len(truncated_code) - i
+    line_num = len(truncated_code) - i+offset
     print("------", line_num, "------")
     ans.append(eval(line, line_num))
 
