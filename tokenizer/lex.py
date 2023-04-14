@@ -49,17 +49,18 @@ keywords = {
 func_declarations: dict[str, list[int, int]] = {}
 
 
-def back_prop(var_name, line_num):
+def back_prop(var_name, line_num, past_calls):
     print("=====back prop=====")
     print('looking for:', var_name, 'line_num:', line_num)
+    line_num -= 1
     ex: Exp = None
-    truncated_code = min_file_arr[:line_num]
+    truncated_code = code[:line_num]
     # truncated_min = "\n".join(min_file_arr[:line_num])
     # truncated_code = re.split('[;{}]', truncated_min)
     curl_count = 0
     for l in reversed(truncated_code):  # searching from line_num to top of page
         # print("testing:", [l])
-        ex: Exp = eval(l, line_num, curl_count > 0)
+        ex: Exp = eval(l, line_num, curl_count > 0, past_calls)
         if ex is None:
             continue
         if ex.type == 'CURL' or (ex.type == 'FUNC_DEC' and curl_count > 0):
@@ -87,8 +88,8 @@ def back_prop(var_name, line_num):
     return ex
 
 
-def eval(expression: str, line_num: int, just_kind: bool = False, suppress=False) -> Exp:
-    token_specification = [
+def eval(expression: str, line_num: int, past_calls: set, just_kind: bool = False, suppress=False) -> Exp:
+    token_specification = (  # TODO: maybe move out of func
         # ('NEWLINE', r'\n'),  # Line endings
         ('SKIP', r'([ \t{}]+)'),  # Skip over spaces and tabs
         ('CLOSURE', fr'^(if|for|while)\((.*)\)'),  # if and loops
@@ -104,7 +105,7 @@ def eval(expression: str, line_num: int, just_kind: bool = False, suppress=False
         ('CURL', r'([\{\}])'),
         ('NUM', r'^(\d+(\.\d*)?)'),  # Integer or decimal number
         ('MISMATCH', r'.'),  # Any other character
-    ]
+    )
     line_start = 0
     if expression == '':
         return None
@@ -126,29 +127,36 @@ def eval(expression: str, line_num: int, just_kind: bool = False, suppress=False
                     if not just_kind:
                         arr = []
                         for i in m.group(2).split(','):
-                            arr.append(eval(i, line_num))
+                            arr.append(eval(i, line_num, past_calls))
                         arg = arr
                 case "FUNC":
                     arg = m.group(2)
-                    if not just_kind and arg:
-                        if m.group(1) in func_declarations:
+                    if not just_kind:# and arg:
+                        func_name = m.group(1)
+                        if func_name in past_calls:  # protect against cyclic calls
+                            print("cyclic/recursive call to", func_name)
+                            kind = "recursive_call"
+                        elif func_name in func_declarations:
+                            past_calls.add(func_name)
                             print("found:", expression)
-                            start, end = func_declarations[m.group(1)]
+                            start, end = func_declarations[func_name]
                             print('code', code[start:end + 1])
                             kind = 'CLOSURE'
                             arg = code[start + 1:end]  # TODO: contains \n and empty lines
                             print("========evaluating func call============")
                             arr = []
-                            for i in arg:
+                            for i in arg:  # protect against recursive calls
                                 jump_line_num = func_declarations[value]
                                 if line_num < jump_line_num[0] or line_num > jump_line_num[1]:
-                                    arr.append(eval(i, jump_line_num[0]))
+                                    arr.append(eval(i, jump_line_num[0], past_calls))
                                 else:
+                                    print("recursive call to", func_name)
                                     kind = "recursive_call"
                             arg = arr
                             print("========= end of eval =================")
                         else:
-                            arg = eval(arg, line_num)
+                            past_calls.add(func_name)
+                            arg = eval(arg, line_num, past_calls)
                 case 'CLOSURE':
                     arg = m.group(2)
                     if not just_kind and arg:
@@ -156,7 +164,7 @@ def eval(expression: str, line_num: int, just_kind: bool = False, suppress=False
                         args = re.findall(fr'(\w[><=]?=?\w?)', m.group(2))
                         arr = []
                         for i in args:  # evaluate each argument individually
-                            arr.append(eval(i, line_num))
+                            arr.append(eval(i, line_num, past_calls))
                         arg = arr
                 case 'DEC':
                     value = m.group(1)
@@ -164,12 +172,12 @@ def eval(expression: str, line_num: int, just_kind: bool = False, suppress=False
                 case 'VAR':
                     if value in keywords:
                         break
-                    t = back_prop(m[1], line_num)
+                    t = back_prop(m[1], line_num, past_calls)
                     return t
                 case 'ASSIGN':
                     arg = m[2]
                     if not just_kind:
-                        arg = eval(arg, line_num)
+                        arg = eval(arg, line_num, past_calls)
                         # return arg  # TODO: maybe keep to remove all assigns
                 case 'NUM':
                     value = float(value) if '.' in value else int(value)
@@ -178,10 +186,10 @@ def eval(expression: str, line_num: int, just_kind: bool = False, suppress=False
                 case 'OP':
                     value = m[2]
                     arg1, arg2 = m[1], m[3]
-                    if m[1] != '+' or m[1] != '-':
-                        arg1 = eval(m[1], line_num)
-                    if m[3] != '+' or m[3] != '-':
-                        arg2 = eval(m[3], line_num)
+                    if not (m[1] == '+' or m[1] == '-'):
+                        arg1 = eval(m[1], line_num, past_calls)
+                    if not (m[3] == '+' or m[3] == '-'):
+                        arg2 = eval(m[3], line_num, past_calls)
                     arg = [arg1, arg2]
                 # case 'NEWLINE':
                 #     line_num -= 1
@@ -209,7 +217,7 @@ min_file_arr[:] = [i for i in min_file_arr if i != '']  # remove all empty lines
 
 min_file = "".join(min_file_arr)
 code = re.split('([;{}])', min_file)
-code = [i for i in code if not(i == ';' or i == '')]  # remove semicolons
+code = [i for i in code if not (i == ';' or i == '')]  # remove semicolons
 # ==================== first scan ====================
 curr_func = ""
 curly_num = 0
@@ -231,14 +239,14 @@ f = open("filter.c", "w")
 f.write("\n".join(code))
 f.close()
 
-offset = func_declarations['main'][0]-1
+offset = func_declarations['main'][0] - 1
 truncated_code = code[offset:]
 print("code", truncated_code)
 ans = []
 for i, line in enumerate(reversed(truncated_code)):
-    line_num = len(truncated_code) - i+offset
+    line_num = len(truncated_code) - i + offset
     print("------", line_num, "------")
-    ans.append(eval(line, line_num))
+    ans.append(eval(line, line_num, set()))
 
 print("=====")
 for i in ans:
