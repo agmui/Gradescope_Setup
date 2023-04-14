@@ -94,7 +94,7 @@ def eval(expression: str, line_num: int, past_calls: set, just_kind: bool = Fals
         ('SKIP', r'([ \t{}]+)'),  # Skip over spaces and tabs
         ('CLOSURE', fr'^(if|for|while)\((.*)\)'),  # if and loops
         ('OP', r'([\w-])([><]=?|==)([\w-])'),  # comparators
-        ('ASSIGN', fr'({name})=(.*)'),  # Assignment operator
+        ('ASSIGN', fr'({name})=(.*)'),  # Assignment operator # TODO: types gets lost ex: int y = x;
         ('OP', r'([\w+-])([+\-*/])([\w+-])'),  # Arithmetic operators
         # ('BOOL', r'^(true|false)'),  # bool
         ('FUNC', r'(return) ?(.*)'),  # return
@@ -124,19 +124,19 @@ def eval(expression: str, line_num: int, past_calls: set, just_kind: bool = Fals
                 value: any = m[1]  # TODO move
             match kind:
                 case "FUNC_DEC":
-                    if not just_kind:
-                        arr = []
-                        for i in m.group(2).split(','):
-                            arr.append(eval(i, line_num, past_calls))
-                        arg = arr
+                    arr = []
+                    for i in m.group(2).split(','):
+                        arr.append(eval(i, line_num, past_calls))
+                    arg = arr
                 case "FUNC":
                     arg = m.group(2)
-                    if not just_kind:# and arg:
+                    if not just_kind:  # and arg:
                         func_name = m.group(1)
                         if func_name in past_calls:  # protect against cyclic calls
                             print("cyclic/recursive call to", func_name)
                             kind = "recursive_call"
                         elif func_name in func_declarations:
+                            value = (m[1], m[2].split(','))
                             past_calls.add(func_name)
                             print("found:", expression)
                             start, end = func_declarations[func_name]
@@ -146,9 +146,8 @@ def eval(expression: str, line_num: int, past_calls: set, just_kind: bool = Fals
                             print("========evaluating func call============")
                             arr = []
                             for i in arg:  # protect against recursive calls
-                                jump_line_num = func_declarations[value]
-                                if line_num < jump_line_num[0] or line_num > jump_line_num[1]:
-                                    arr.append(eval(i, jump_line_num[0], past_calls))
+                                if line_num < start or line_num > end:  # TODO: move up
+                                    arr.append(eval(i, start+2, past_calls))
                                 else:
                                     print("recursive call to", func_name)
                                     kind = "recursive_call"
@@ -231,7 +230,7 @@ for line_num, line in enumerate(code):
     elif re.search(r'}', line):
         curly_num -= 1
         if curly_num == 0:
-            func_declarations[curr_func][1] = line_num
+            func_declarations[curr_func][1] = line_num#+1
 print("func declarations:", func_declarations)
 # ========================================
 

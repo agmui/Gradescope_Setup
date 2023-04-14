@@ -1,20 +1,10 @@
-int add() {
-    x=2;
-//    if_add_with_if(1,1);
-//    add(1,1);
-}
-int if_add_with_if(int x,int y)
-{
-    add(1,1);
-//    if (x>1){
-//        x=1;
-//    }
+int add(int x){
+    int y = x;
 }
 int main(int x, int y){
+    add(1,1);
 //    for(int i =0; i<10;i++){
 //    }
-    add();
-//    if_add_with_if(1,1);
 
 //casts and ptrs
 //    int *x= 1;
