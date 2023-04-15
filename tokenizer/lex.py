@@ -104,6 +104,7 @@ def eval(expression: str, line_num: int, past_calls: set, just_kind: bool = Fals
         ('FUNC_DEC', fr'{name} ({name})\((.*)\)'),  # function declaration
         ('DEC', fr'(^{name}) ({name})'),  # declare variable
         ('FUNC', fr'({name})\((.*)\)'),  # function call
+        ('FUNC', fr'(\({name}\))(\(?.*\)?)'),  # casts
         ('VAR', fr'({name})'),  # Variable (that needs to be derived)
         ('CLOSURE', r'([\{])'),
         ('CURL', '(\})'),
@@ -216,55 +217,68 @@ def eval(expression: str, line_num: int, past_calls: set, just_kind: bool = Fals
             t = Exp(kind, value, arg, line_num, column)
             if not suppress:
                 print(t)
+            if m.end() - m.start() != len(expression):  # splitting the expression if only a part of it is understood
+                arg = [t]
+                if m.start() != 0:  # if there is something before
+                    arg = [expression[:m.start()], t]
+                if m.end() != len(expression):  # if there is something before
+                    arg.append(expression[m.end():])
+                return Exp("exp", expression, arg, line_num, column)
             return t
 
 
-# os.system("gcc test.c")
-f = open('test.c')
-file = f.read()
-f.close()
-file_arr = file.split('\n')
-min_file_arr = minify.minify_source(file_arr)
-min_file_arr[:] = [i for i in min_file_arr if i != '']  # remove all empty lines
+code = None
+def preproc(file_name):
+    global code
+    # os.system("gcc test.c")
+    f = open(file_name)
+    file = f.read()
+    f.close()
+    file_arr = file.split('\n')
+    min_file_arr = minify.minify_source(file_arr)
+    min_file_arr[:] = [i for i in min_file_arr if i != '']  # remove all empty lines
 
-min_file = "".join(min_file_arr)
-code = re.split('([;{}])', min_file)
-code = [i for i in code if not (i == ';' or i == '')]  # remove semicolons
-# ==================== first scan ====================
-curr_func = ""
-curly_num = 0
-for line_num, line in enumerate(code):
-    exp = re.search(fr'{name} ({name})\((.*)\)', line)
-    if exp and curly_num == 0:
-        func_declarations[exp[1]] = [line_num + 1, None]
-        curr_func = exp[1]
-    elif re.search(r'{', line):
-        curly_num += 1
-    elif re.search(r'}', line):
-        curly_num -= 1
-        if curly_num == 0:
-            func_declarations[curr_func][1] = line_num  # +1
-print("func declarations:", func_declarations)
-# ========================================
+    min_file = "".join(min_file_arr)
+    code = re.split('([;{}])', min_file)
+    code = [i for i in code if not (i == ';' or i == '')]  # remove semicolons
+    # ==================== first scan ====================
+    curr_func = ""
+    curly_num = 0
+    for line_num, line in enumerate(code):
+        exp = re.search(fr'{name} ({name})\((.*)\)', line)
+        if exp and curly_num == 0:
+            func_declarations[exp[1]] = [line_num + 1, None]
+            curr_func = exp[1]
+        elif re.search(r'{', line):
+            curly_num += 1
+        elif re.search(r'}', line):
+            curly_num -= 1
+            if curly_num == 0:
+                func_declarations[curr_func][1] = line_num  # +1
+    print("func declarations:", func_declarations)
+    # ========================================
 
-f = open("filter.c", "w")
-f.write("\n".join(code))
-f.close()
+    f = open("filter.c", "w")
+    f.write("\n".join(code))
+    f.close()
 
-offset = func_declarations['main'][0] - 1
-truncated_code = code[offset:]
-print("code", truncated_code)
-ans = []
-# for i, line in enumerate(truncated_code):
-#     line_num = i + offset+1
-#     print("------", line_num, "------")
-#     ans.append(eval(line, line_num, set()))
-print("------", offset + 1, "------")
-ans.append(eval(code[offset], offset + 1, set()))
-print("------", offset + 2, "------")
-ans.append(eval(code[offset + 1], offset + 2, set()))
+    offset = func_declarations['main'][0] - 1
+    truncated_code = code[offset:]
+    print("code", truncated_code)
+    ans = []
+    # for i, line in enumerate(truncated_code):
+    #     line_num = i + offset+1
+    #     print("------", line_num, "------")
+    #     ans.append(eval(line, line_num, set()))
+    print("------", offset + 1, "------")
+    ans.append(eval(code[offset], offset + 1, set()))
+    print("------", offset + 2, "------")
+    ans.append(eval(code[offset + 1], offset + 2, set()))
 
-print("\n=== ANS ===")
-for i in ans:
-    if i:
-        print(i)
+    print("\n=== ANS ===")
+    for i in ans:
+        if i:
+            print(i)
+
+if __name__ == '__main__':
+    preproc("test.c")

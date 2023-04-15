@@ -2,8 +2,8 @@ int add(){
     int x;
 }
 int main(int x, int y){
-    add();
-    x==1?1:2;
+//    add();
+//    x==1?1:2;
 
 //    while(1){
 //    }
