@@ -23,7 +23,7 @@ class Exp:
             if self.value == '}':
                 Exp.g_tab -= 1
             return ''
-        if self.type == 'CLOSURE' and self.value != 'if':
+        if self.type == 'CLOSURE':  # and self.value != 'if':
             s = f'{self.type}({self.value} :\n'
             for i in self.arg:
                 if i is not None:
@@ -49,6 +49,7 @@ keywords = {
 func_declarations: dict[str, list[int, int]] = {}
 
 
+# TODO: replace with LUT
 def back_prop(var_name, line_num, past_calls):
     print("=====back prop=====")
     print('looking for:', var_name, 'line_num:', line_num)
@@ -60,18 +61,20 @@ def back_prop(var_name, line_num, past_calls):
     curl_count = 0
     for l in reversed(truncated_code):  # searching from line_num to top of page
         # print("testing:", [l])
-        ex: Exp = eval(l, line_num, curl_count > 0, past_calls)
-        if ex is None:
-            continue
-        if ex.type == 'CURL' or (ex.type == 'FUNC_DEC' and curl_count > 0):
+        if l == '{' or l == '}':
+            print("found curl")
             # for closures backprop should only exit closures and never enter one
-            if ex.value == '}':  # skipping a closure
+            if l == '}':  # skipping a closure
                 curl_count += 1
             elif curl_count != 0:  # and (ex.value == '{' or ex.type == 'FUNC_DEC'):  # exiting a closure
                 curl_count -= 1
             continue
         if curl_count > 0:  # currently inside a closure so it needs to ignore all the code
             print("skip")
+            continue
+
+        ex: Exp = eval(l, line_num, past_calls, just_kind=False)
+        if ex is None:
             continue
         if ex.type == 'NUMBER':
             break
@@ -91,8 +94,8 @@ def back_prop(var_name, line_num, past_calls):
 def eval(expression: str, line_num: int, past_calls: set, just_kind: bool = False, suppress=False) -> Exp:
     token_specification = (  # TODO: maybe move out of func
         # ('NEWLINE', r'\n'),  # Line endings
-        ('SKIP', r'([ \t{}]+)'),  # Skip over spaces and tabs
-        ('CLOSURE', fr'^(if|for|while)\((.*)\)'),  # if and loops
+        ('SKIP', r'([ \t{}]+)'),  # FIXME: picks up curls? # Skip over spaces and tabs
+        # ('CLOSURE', fr'^(if|for|while)\((.*)\)'),  # if and loops
         ('OP', r'([\w-])([><]=?|==)([\w-])'),  # comparators
         ('ASSIGN', fr'({name})=(.*)'),  # Assignment operator # TODO: types gets lost ex: int y = x;
         ('OP', r'([\w+-])([+\-*/])([\w+-])'),  # Arithmetic operators
@@ -102,15 +105,17 @@ def eval(expression: str, line_num: int, past_calls: set, just_kind: bool = Fals
         ('DEC', fr'(^{name}) ({name})'),  # declare variable
         ('FUNC', fr'({name})\((.*)\)'),  # function call
         ('VAR', fr'({name})'),  # Variable (that needs to be derived)
-        ('CURL', r'([\{\}])'),
+        ('CLOSURE', r'([\{])'),
+        ('CURL', '(\})'),
         ('NUM', r'^(\d+(\.\d*)?)'),  # Integer or decimal number
-        ('MISMATCH', r'.'),  # Any other character
+        ('EXP', r'.')  # any unevaluated expressions
+        # ('MISMATCH', r'.'),  # Any other character
     )
     line_start = 0
     if expression == '':
         return None
     if not suppress and (expression != '' or expression != '\n'):
-        print("input:", [expression])
+        print("input:", [expression], "line num:", line_num)
     for tokens in token_specification:
         kind = tokens[0]
         regex = tokens[1]
@@ -140,30 +145,38 @@ def eval(expression: str, line_num: int, past_calls: set, just_kind: bool = Fals
                             past_calls.add(func_name)
                             print("found:", expression)
                             start, end = func_declarations[func_name]
+                            # ==
                             print('code', code[start:end + 1])
-                            kind = 'CLOSURE'
+                            # kind = 'CLOSURE'
                             arg = code[start + 1:end]  # TODO: contains \n and empty lines
+                            # ==
                             print("========evaluating func call============")
                             arr = []
-                            for i in arg:  # protect against recursive calls
-                                if line_num < start or line_num > end:  # TODO: move up
-                                    arr.append(eval(i, start+2, past_calls))
-                                else:
-                                    print("recursive call to", func_name)
-                                    kind = "recursive_call"
+
+                            # ==
+                            # for i in arg:  # protect against recursive calls
+                            if line_num < start or line_num > end:  # TODO: move up
+                                arr.append(eval(code[start], start + 1, past_calls))
+                            else:
+                                print("recursive call to", func_name)
+                                kind = "recursive_call"
+                            # ==
+
                             arg = arr
                             print("========= end of eval =================")
                         else:
                             past_calls.add(func_name)
                             arg = eval(arg, line_num, past_calls)
                 case 'CLOSURE':
-                    arg = m.group(2)
-                    if not just_kind and arg:
-                        # handles arg conditions for loops and ifs
-                        args = re.findall(fr'(\w[><=]?=?\w?)', m.group(2))
+                    # arg = m.group(2)
+                    if not just_kind:
                         arr = []
-                        for i in args:  # evaluate each argument individually
-                            arr.append(eval(i, line_num, past_calls))
+                        i = line_num + 1
+                        print("start closure")
+                        while code[i - 1] != '}':
+                            arr.append(eval(code[i - 1], i, past_calls))
+                            i += 1
+                        print("end closure")
                         arg = arr
                 case 'DEC':
                     value = m.group(1)
@@ -230,7 +243,7 @@ for line_num, line in enumerate(code):
     elif re.search(r'}', line):
         curly_num -= 1
         if curly_num == 0:
-            func_declarations[curr_func][1] = line_num#+1
+            func_declarations[curr_func][1] = line_num  # +1
 print("func declarations:", func_declarations)
 # ========================================
 
@@ -242,12 +255,16 @@ offset = func_declarations['main'][0] - 1
 truncated_code = code[offset:]
 print("code", truncated_code)
 ans = []
-for i, line in enumerate(reversed(truncated_code)):
-    line_num = len(truncated_code) - i + offset
-    print("------", line_num, "------")
-    ans.append(eval(line, line_num, set()))
+# for i, line in enumerate(truncated_code):
+#     line_num = i + offset+1
+#     print("------", line_num, "------")
+#     ans.append(eval(line, line_num, set()))
+print("------", offset + 1, "------")
+ans.append(eval(code[offset], offset + 1, set()))
+print("------", offset + 2, "------")
+ans.append(eval(code[offset + 1], offset + 2, set()))
 
-print("=====")
+print("\n=== ANS ===")
 for i in ans:
     if i:
         print(i)
