@@ -95,6 +95,7 @@ class Evaluator:
 
     def eval(self, expression: str, line_num: int, past_calls: set, just_kind: bool = False, suppress=False) -> Exp:
         token_specification = (  # TODO: maybe move out of func
+            ('WILD', r'(\.\.\.)'),  # wild card
             # ('NEWLINE', r'\n'),  # Line endings
             ('SKIP', r'([ \t{}]+)'),  # FIXME: picks up curls? # Skip over spaces and tabs
             # ('CLOSURE', fr'^(if|for|while)\((.*)\)'),  # if and loops
@@ -115,6 +116,7 @@ class Evaluator:
             # ('MISMATCH', r'.'),  # Any other character
         )
         line_start = 0
+        jump_to = 0
         if expression == '':
             return None
         if not suppress and (expression != '' or expression != '\n'):
@@ -183,6 +185,7 @@ class Evaluator:
                                 elif self.code[i] == '}':
                                     curl_count -= 1
                                 i += 1
+                            jump_to = i
                             arg = arr
                     case 'DEC':
                         value = m.group(1)
@@ -229,8 +232,8 @@ class Evaluator:
                         arg = [expression[:m.start()], t]
                     if m.end() != len(expression):  # if there is something before
                         arg.append(expression[m.end():])
-                    return Exp("exp", expression, arg, line_num, column)
-                return t
+                    return Exp("exp", expression, arg, line_num, column), jump_to
+                return t, jump_to
 
     def preproc(self, file_name):
         # os.system("gcc test.c")

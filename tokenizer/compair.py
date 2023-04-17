@@ -1,14 +1,39 @@
 from lex import Evaluator
 
-e = Evaluator()
-e.preproc("solution.c")
-# e.eval(e.code[0], 1, {})
-ans = e.eval(e.code[1], 2, set())
+solution = Evaluator()
+solution.preproc("solution.c")
+ans, jump_to = solution.eval(solution.code[1], 2, set())
 arr = []
-for i, a in enumerate(ans.arg):
-    arr.append(e.eval(a, i + 3, set()))
+
+i = 0
+while i < len(ans.arg):
+    exp, jump_to = solution.eval(ans.arg[i], i + 3, set(), suppress=True)
+    arr.append(exp)
     print("==")
-    print(arr[i])
+    # print(arr[i])
+    i += 1
+    if jump_to != 0:
+        i = jump_to
 ans.arg = arr
+
 print(ans)
-# e.preproc("student.c")
+
+# ============
+student = Evaluator()
+student.preproc("student.c")
+
+ans, jump_to = student.eval(student.code[1], 2, set())
+arr = []
+
+i = 0
+while i < len(ans.arg):
+    exp, jump_to = student.eval(ans.arg[i], i + 3, set(), suppress=True)
+    arr.append(exp)
+    print("==")
+    # print(arr[i])
+    i += 1
+    if jump_to != 0:
+        i = jump_to
+ans.arg = arr
+
+print(ans)
