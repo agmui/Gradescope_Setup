@@ -1,11 +1,16 @@
-int add(){
-    int x;
+int add(int x){
+    int y = x;
 }
 int main(int x, int y){
-//    add();
+    int z = 1;
+    add(z);
 //    x==1?1:2;
 
+    while(1){
+        int x;
+    }
 //    while(1){
+//        int y;
 //    }
 //    if(1){
 //    }
