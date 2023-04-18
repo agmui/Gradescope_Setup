@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-assignment="vmem2"
+assignment="cond_vars2"
 ls autograder/source
 
 apt-get install -y subversion 
