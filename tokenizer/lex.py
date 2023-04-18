@@ -19,8 +19,8 @@ class Exp:
     def format(self, tab_num=0):
         s = ""
         if self.type == 'FUNC':
-            s += f'{self.type}({self.value} :\n'+'\t'*tab_num
-            if self.arg.type == 'CLOSURE': # divide between normal func calls and while,if...
+            s += f'{self.type}({self.value} :\n' + '\t' * tab_num
+            if self.arg.type == 'CLOSURE':  # divide between normal func calls and while,if...
                 return self.format_closure(s, tab_num, self.arg)
             else:
                 return f'{self.type}({self.value}{(" | " + str(self.arg)) if self.arg else ""})'
@@ -77,20 +77,31 @@ def back_prop(var_name, line_num, past_calls):
             print("skip")
             continue
 
-        ex: Exp = eval(l, line_num, past_calls, just_kind=False)
-        if ex is None:
-            continue
-        if ex.type == 'NUMBER':
-            break
-        if ex.type == 'ASSIGN' and ex.value == var_name:
-            # if ex.type == 'ASSIGN':
-            #     ex = back_prop(min_file_arr.index(l), ex.arg)
-            break
-        if ex.type == 'FUNC_DEC':
-            for i in ex.arg:
-                if i.arg == var_name:
-                    print("=====end=====")
-                    return i
+        ex: Exp = eval(l, line_num, past_calls, just_kind=True)
+        arr = []
+        if ex.type != "exp":
+            arr = [ex]
+        else:
+            ex: Exp = eval(l, line_num, past_calls, just_kind=False)
+            arr = ex.arg
+        for j in arr:
+            if j is None:
+                continue
+            if j.type == 'NUMBER':
+                # break
+                print("=====end=====")
+                return j
+            if j.type == 'ASSIGN' and j.value == var_name:
+                # if j.type == 'ASSIGN':
+                #     j = back_prop(min_file_arr.indj(l), j.arg)
+                # break
+                print("=====end=====")
+                return j
+            if j.type == 'FUNC_DEC':
+                for i in j.arg:
+                    if i.arg == var_name:
+                        print("=====end=====")
+                        return i
     print("=====end=====")
     return ex
 
@@ -99,21 +110,23 @@ def eval(expression: str, line_num: int, past_calls: set, just_kind: bool = Fals
     token_specification = (  # TODO: maybe move out of func
         # ('NEWLINE', r'\n'),  # Line endings
         ('SKIP', r'([ \t{}]+)'),  # FIXME: picks up curls? # Skip over spaces and tabs
+        ('STRING', r'(\".*\")'),
         # ('CLOSURE', fr'^(if|for|while|do|else)\((.*)\)'),  # if and loops
-        ('OP', r'([\w-])([><]=?|==)([\w-])'),  # comparators
-        ('ASSIGN', fr'({name})=(.*)'),  # Assignment operator # TODO: types gets lost ex: int y = x;
-        ('OP', r'([\w+-])([+\-*/])([\w+-])'),  # Arithmetic operators
+        ('OP', r'([\w+-]*)?([+-]{2})([\w+-]*)?'),
+        ('OP', fr'([\w-]*)([><]=?)([\w-]*)'),  # comparators
+        ('ASSIGN', fr'{name}?\*? ?({name})=(.*)'),  # Assignment operator # TODO: types gets lost, EX: int y = x;
+        ('FUNC', fr'(\({name}\*?\))(\(?.*\)?)'),  # casts
+        ('OP', fr'([\w-]*)([+\-*/])([\w-]*)'),  # Arithmetic operators
         # ('BOOL', r'^(true|false)'),  # bool
         ('FUNC', r'(return) ?(.*)'),  # return
         ('FUNC_DEC', fr'{name} ({name})\((.*)\)'),  # function declaration
         ('DEC', fr'(^{name}) ({name})'),  # declare variable
         ('FUNC', fr'({name})\((.*)\)'),  # function call
-        ('FUNC', fr'(\({name}\))(\(?.*\)?)'),  # casts
         ('VAR', fr'({name})'),  # Variable (that needs to be derived)
         ('CLOSURE', r'([\{])'),
         ('CURL', '(\})'),
         ('NUM', r'^(\d+(\.\d*)?)'),  # Integer or decimal number
-        ('EXP', r'.')  # any unevaluated expressions
+        ('EXP', r'(.*)')  # any unevaluated expressions
         # ('MISMATCH', r'.'),  # Any other character
     )
     line_start = 0
@@ -146,8 +159,10 @@ def eval(expression: str, line_num: int, past_calls: set, just_kind: bool = Fals
                             print("cyclic/recursive call to", func_name)
                             kind = "recursive_call"
                         elif func_name in func_declarations:
-                            value = (eval(m[1], line_num, past_calls),
-                                     m[2].split(','))  # TODO: call eval on all the args when calling a func
+                            arr = []
+                            for i in m[2].split(','):
+                                arr.append(eval(i, line_num, past_calls))
+                            value = (m[1], arr)  # TODO: call eval on all the args when calling a func
                             past_calls.add(func_name)
                             print("found:", expression)
                             start, end = func_declarations[func_name]
@@ -157,35 +172,38 @@ def eval(expression: str, line_num: int, past_calls: set, just_kind: bool = Fals
                             arg = code[start + 1:end]  # TODO: contains \n and empty lines
                             # ==
                             print("========evaluating func call============")
-                            arr = []
 
-                            # ==
-                            # for i in arg:  # protect against recursive calls
                             if line_num < start or line_num > end:  # TODO: move up
                                 arg = eval(code[start], start + 1, past_calls)
                             else:
                                 print("recursive call to", func_name)
                                 kind = "recursive_call"
-                            # ==
-
-                            # arg = arr
                             print("========= end of eval =================")
                         else:
-                            past_calls.add(func_name)  # TODO: dont add while, if, for, in past_calls
+                            if func_name != 'while' and func_name != 'if' and func_name != 'for':  # dont add while, if, for, in past_calls
+                                past_calls.add(func_name)
                             arg = eval(arg, line_num, past_calls)
                 case 'CLOSURE':
                     # arg = m.group(2)
+                    curl_count = 1
                     if not just_kind:
                         arr = []
                         i = line_num + 1
                         print("start closure")
-                        while code[i - 1] != '}':
+                        while code[i - 1] != '}' or curl_count > 0:
                             e = eval(code[i - 1], i, past_calls)
-                            arr.append(e)
-                            if e.type == "CLOSURE":
+                            if e.value != '}':  # To prevent curl token from being added
+                                arr.append(e)
+
+                            if e.type == "CLOSURE":  # jump if its is an inline closure(while, if...)
                                 i += len(e.arg) + 1
                             else:
                                 i += 1
+
+                            if code[i - 1] == '{':
+                                curl_count += 1
+                            elif code[i - 1] == '}':
+                                curl_count -= 1
                         print("end closure")
                         arg = arr
                 case 'DEC':
@@ -208,10 +226,11 @@ def eval(expression: str, line_num: int, past_calls: set, just_kind: bool = Fals
                 case 'OP':
                     value = m[2]
                     arg1, arg2 = m[1], m[3]
-                    if not (m[1] == '+' or m[1] == '-'):
-                        arg1 = eval(m[1], line_num, past_calls)
-                    if not (m[3] == '+' or m[3] == '-'):
-                        arg2 = eval(m[3], line_num, past_calls)
+                    if not just_kind:
+                        if not (m[1] == '+' or m[1] == '-'):
+                            arg1 = eval(m[1], line_num, past_calls)
+                        if not (m[3] == '+' or m[3] == '-'):
+                            arg2 = eval(m[3], line_num, past_calls)
                     arg = [arg1, arg2]
                 # case 'NEWLINE':
                 #     line_num -= 1
@@ -229,9 +248,9 @@ def eval(expression: str, line_num: int, past_calls: set, just_kind: bool = Fals
             if m.end() - m.start() != len(expression):  # splitting the expression if only a part of it is understood
                 arg = [t]
                 if m.start() != 0:  # if there is something before
-                    arg = [expression[:m.start()], t]
+                    arg = [eval(expression[:m.start()], line_num, past_calls), t]
                 if m.end() != len(expression):  # if there is something before
-                    arg.append(expression[m.end():])
+                    arg.append(eval(expression[m.end():], line_num, past_calls))
                 return Exp("exp", expression, arg, line_num, column)
             return t
 
@@ -256,7 +275,7 @@ def preproc(file_name):
     curr_func = ""
     curly_num = 0
     for line_num, line in enumerate(code):
-        exp = re.search(fr'{name} ({name})\((.*)\)', line)
+        exp = re.search(fr'{name}\*? ({name})\((.*)\)', line)
         if exp and curly_num == 0:
             func_declarations[exp[1]] = [line_num + 1, None]
             curr_func = exp[1]
