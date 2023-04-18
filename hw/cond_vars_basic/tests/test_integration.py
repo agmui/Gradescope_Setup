@@ -326,11 +326,11 @@ prodcons_cons_graph_convert = {
         "sleep(1)",
     ],
 }
-# truncated_file_arr, offset = init_ordered("../src/prodcons_condvar.c", "consumer(void *arg)")
-# format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-# prodcons_cons_errors, format_arr = graph_search('head', 0, truncated_file_arr, prodcons_cons_decision_graph,
-#                                                 prodcons_cons_graph_convert, format_arr)
-# format_output(truncated_file_arr, format_arr, offset)
+truncated_file_arr, offset = init_ordered("../src/prodcons_condvar.c", "consumer(void *arg)")
+format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+prodcons_cons_errors, format_arr = graph_search('head', 0, truncated_file_arr, prodcons_cons_decision_graph,
+                                                prodcons_cons_graph_convert, format_arr)
+format_output(truncated_file_arr, format_arr, offset)
 
 
 # print("errors:", errors)
@@ -351,12 +351,6 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     def test_prodcons_thread_func(self):
         """autograder prodcons integration tests"""
-
-        truncated_file_arr, offset = init_ordered("../src/prodcons_condvar.c", "consumer(void *arg)")
-        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-        prodcons_cons_errors, format_arr = graph_search('head', 0, truncated_file_arr, prodcons_cons_decision_graph,
-                                                        prodcons_cons_graph_convert, format_arr)
-        format_output(truncated_file_arr, format_arr, offset)
         self.assertTrue(len(prodcons_prod_errors) == 0 and len(prodcons_cons_errors) == 0)
 
 
