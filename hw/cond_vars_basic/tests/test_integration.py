@@ -2,6 +2,7 @@ import subprocess
 import re
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, visibility
+from minify import minify_source
 
 
 # TODO: remove white space in file before scan
@@ -73,11 +74,11 @@ def graph_search(cur_node: str, inner_func_offset: int, file_arr: list[str], dec
     NOTE: once it has reached the end of the graph it does not go back and check the other nodes
 
     :param cur_node: the current node that is being scanned
-    :param func_offset: offset from the top of the page to the function
     :param inner_func_offset: offset from the top of the function to the line focused on
     :param file_arr: The parsed file array that is being scanned
     :param decision_graph: graph that is searched on
     :param graph_to_pattern: translation between nodes in the graph to the patterned array
+    :param format_arr: array for formating output
     """
     num_of_s = len(decision_graph[cur_node])  # number of successors of the current node
     if num_of_s == 0:  # terminating case
@@ -116,11 +117,13 @@ def ordered_pattern(pattern_arr: list, inner_func_offset, file_arr: list, format
     Total offset is so the formatted output has the correct line numbers relative to the original file.
 
     :param pattern_arr: the pattern list that is to be searched
-    :param func_offset: total offset from the top of the file
+    :param inner_func_offset: offset within the function
     :param file_arr: the portion of the file that will be searched
     :return: dict of errors, last pattern line number it stopped at, formatted output for terminal
+    :param format_arr: array for format coloring
     """
     # ========================= substring search ========================
+    file_arr = minify_source(file_arr)
     code_arr = file_arr.copy()
     past = inner_func_offset - 1
     line_num = inner_func_offset
@@ -136,7 +139,7 @@ def ordered_pattern(pattern_arr: list, inner_func_offset, file_arr: list, format
         for comment_index in sub_str:
             for c in ['(', ')', '+', '=', '[', ']']:  # formatting input for re
                 comment_index = comment_index.replace(c, '\\' + c)
-            arr = [line for line in code_arr if re.findall(comment_index, line)]
+            arr = [line for line in code_arr if re.findall(comment_index, line)]  # maybe remove re
             if len(arr) != 0:
                 missing = False
                 line_num = code_arr.index(arr[0])  # NOTE: only uses first fine
@@ -179,14 +182,14 @@ def format_output(file_arr, format_arr, total_offset):
     for i, line in enumerate(file_arr):
         match format_arr[i]:
             case 'o':
-                print(f'{bcolors.OKGREEN}{total_offset + i + 1:4d} | {line} \tok{bcolors.ENDC}\n', end='')
+                print(f'{bcolors.OKGREEN}\tok  {total_offset + i + 1:4d} | {line}{bcolors.ENDC}\n', end='')
             case 'w':
-                print(f'{bcolors.WARNING}{total_offset + i + 1:4d} | {line} \t\t out of order{bcolors.ENDC}\n', end='')
+                print(f'{bcolors.WARNING}out of order{total_offset + i + 1:4d} | {line} {bcolors.ENDC}\n', end='')
             case 'n':
-                print(f'{total_offset + i + 1:4d} | {line}\n', end='')
+                print(f'\t    {total_offset + i + 1:4d} | {line}\n', end='')
             case _:  # missing/error case
-                print(f'{total_offset + i + 1:4d} | {line}\n', end='')
-                print(f'{bcolors.FAIL} missing {format_arr[i]}{bcolors.ENDC}\n', end='')
+                print(f'\t    {total_offset + i + 1:4d} | {line}\n', end='')
+                print(f'{bcolors.FAIL}\t missing {format_arr[i]}{bcolors.ENDC}\n', end='')
 
 
 # ========== inorder ==========
