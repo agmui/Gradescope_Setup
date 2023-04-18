@@ -43,10 +43,10 @@ async def run():
     # return output
 
 
+print(text2art("cond vars basic", "rand"))
 os.chdir('./src')
 os.system("make clean")
 os.system("make")
-print(text2art("cond vars basic", "rand"))
 
 print("===starting tests===")
 output1, output2, output3 = asyncio.run(run())
