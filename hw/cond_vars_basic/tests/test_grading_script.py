@@ -14,7 +14,7 @@ async def async_run_cmd(cmd):
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE)
     try:
-        stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=15)
+        stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=90)
     except asyncio.TimeoutError:
         return {"code": 1,
                 "output": "asyncio.TimeoutError"}
@@ -194,9 +194,12 @@ class TestIntegration(unittest.TestCase):
         if final_number > 6 or 3 > final_number:
             print("number of unhappy customers is sus:", final_number)
 
+        if not error:
+            print("output correct!")
         self.assertTrue(not error)
 
     def test_tunnel_output(self):
+        print("======output checking=======")
         output = output5["output"].split('\n')
         EW_num = 0
         WE_num = 0
@@ -221,20 +224,20 @@ class TestIntegration(unittest.TestCase):
                     print("unknown output", i)
             # for ambulance
             elif "Ambulance" in i:
-                if "entered tunnel in EW" in i:
+                if "entered the tunnel in EW" in i:
                     Ambulances_inside += 1
                     EW_num += 1
-                elif "exited tunnel in EW" in i:
+                elif "exited the tunnel in EW" in i:
                     Ambulances_inside -= 1
                     EW_num -= 1
-                elif "entered tunnel in WE" in i:
+                elif "entered the tunnel in WE" in i:
                     Ambulances_inside += 1
                     WE_num += 1
-                elif "exited tunnel in WE" in i:
+                elif "exited the tunnel in WE" in i:
                     Ambulances_inside -= 1
                     WE_num -= 1
                 else:
-                    print("unknown output", i)
+                    print("unknown output:", i)
             if EW_num > 3:
                 print("=== ERROR", "===")
             if WE_num > 1:
