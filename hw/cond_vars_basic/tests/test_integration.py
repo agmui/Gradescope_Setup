@@ -203,7 +203,7 @@ inorder_decision_graph = {
 inorder_graph_convert = {
     'root': [
         "pthread_mutex_lock(.*)",
-        "while(.*)",
+        "while ?(.*)",
         "pthread_cond_wait(.*)",
         ["++;", "+="],
     ],
@@ -238,7 +238,7 @@ max_decision_graph = {
 max_graph_convert = {
     'root': [
         "pthread_mutex_lock(.*)",
-        "while(.*)",
+        "while ?(.*)",
         "pthread_cond_wait(.*)"
     ],
     'plus_rout': [
@@ -282,7 +282,7 @@ prodcons_prod_decision_graph = {
 prodcons_prod_graph_convert = {
     'root': [
         "pthread_mutex_lock(.*)",
-        "while(.*)",
+        "while ?(.*)",
         "pthread_cond_wait(.*)",
         "buffer[last_valid_index + 1].*",
         "++;",
@@ -313,7 +313,7 @@ prodcons_cons_decision_graph = {
 prodcons_cons_graph_convert = {
     'root': [
         "pthread_mutex_lock(.*)",
-        "while(.*)",
+        "while ?(.*)",
         "pthread_cond_wait(.*)",
         ".*buffer[last_valid_index];",
         "--;",
