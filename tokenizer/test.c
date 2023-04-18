@@ -1,22 +1,29 @@
-int add(){
-    int x;
+int* add(int x){
+    int y = x;
 }
 int main(int x, int y){
-//    add();
+//    int z = 1;
+    add(z);
 //    x==1?1:2;
 
 //    while(1){
+//        int x;
+//    }
+//    while(1){
+//        int y;
 //    }
 //    if(1){
+//        int x;
 //    }
 //    if(1) int x;
 //    for(int i =0; i<10;i++){
+//        int x;
 //    }
 
 //casts and ptrs
-//    int *x= 1;
-//    float y;
-//    y = (float) x;
+    int x= 1;
+    float y;
+    y = (int *) x;
 
 //    int x = 1;
 //    x+=1;
