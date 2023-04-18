@@ -83,7 +83,7 @@ class TestIntegration(unittest.TestCase):
         print("======output checking=======")
         if output1["code"] != 0:
             print("exited with", output1["code"])
-            return False
+            self.assertTrue(False)
         output1 = output1["output"].split('\n')
         count: int = 0
         for out in output1:
@@ -94,8 +94,10 @@ class TestIntegration(unittest.TestCase):
                     break
         if count != 4:
             print("error output1 not correct:", count)
+            self.assertTrue(False)
         else:
             print("\noutput correct!")
+            self.assertTrue(True)
 
     def test_max_output(self):
         print("======output checking=======")
@@ -115,10 +117,13 @@ class TestIntegration(unittest.TestCase):
                 print("error count:", count)
         if count != 0:
             print("error output not correct:", count)
+            self.assertTrue(False)
         if not change:
             print("count not read output change:", change)
+            self.assertTrue(False)
         else:  # FIXME:
             print("\noutput correct!")
+            self.assertTrue(True)
 
     def test_prodcons_output(self):
         print("======output checking=======")
@@ -133,8 +138,10 @@ class TestIntegration(unittest.TestCase):
                 count -= 1
         if count != 0:
             print("error output not correct:", count)
+            self.assertTrue(False)
         else:
             print("\noutput correct!")
+            self.assertTrue(True)
 
 
 if __name__ == '__main__':
