@@ -98,7 +98,6 @@ class TestIntegration(unittest.TestCase):
             print("\noutput correct!")
 
     def test_max_output(self):
-        # output = os.system("./max")
         print("======output checking=======")
         output = output2["output"].split('\n')
         count = 0
@@ -121,7 +120,7 @@ class TestIntegration(unittest.TestCase):
         else:  # FIXME:
             print("\noutput correct!")
 
-    def output_prodcons_output(self):
+    def test_prodcons_output(self):
         print("======output checking=======")
         output = output3["output"].split('\n')
         count = 0
