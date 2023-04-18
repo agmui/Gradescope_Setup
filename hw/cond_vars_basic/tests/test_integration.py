@@ -1,7 +1,7 @@
 import subprocess
 import re
 import unittest
-from gradescope_utils.autograder_utils.decorators import weight, tags, number
+from gradescope_utils.autograder_utils.decorators import weight, tags, number, visibility
 
 
 # TODO: remove white space in file before scan
@@ -339,16 +339,19 @@ class TestIntegration(unittest.TestCase):
         pass
 
     @weight(0)
+    @visibility('hidden')
     def test_inorder(self):
         """autograder inorder integration tests"""
         self.assertTrue(len(inorder_errors) == 0)
 
     @weight(0)
+    @visibility('hidden')
     def test_max_mutex(self):
         """autograder max integration tests"""
         self.assertTrue(len(max_errors) == 0)
 
     @weight(0)
+    @visibility('hidden')
     def test_prodcons_thread_func(self):
         """autograder prodcons integration tests"""
         self.assertTrue(len(prodcons_prod_errors) == 0 and len(prodcons_cons_errors) == 0)
