@@ -52,10 +52,10 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_make_grade(self):
         """autograder output tests"""
-        print(output1)
-        print(output2)
-        print(output3)
-        print(output4)
+        print(output1['output'])
+        print(output2['output'])
+        print(output3['output'])
+        print(output4['output'])
         # process = subprocess.Popen(['../src/make grade'], stdout=subprocess.PIPE, encoding='UTF-8')
         # result, error = process.communicate()
         # print(result)
