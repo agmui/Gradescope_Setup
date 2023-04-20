@@ -28,11 +28,10 @@ async def async_run_cmd(cmd):
 
 async def run():
     return await asyncio.gather(
-        async_run_cmd('./inorder'),
-        async_run_cmd('./max'),
-        async_run_cmd('./prodcons_condvar'),
-        async_run_cmd('./rooms'),
-        async_run_cmd('./tunnel')
+        async_run_cmd('./band'),
+        async_run_cmd('./littleredhen'),
+        async_run_cmd('./priority'),
+        async_run_cmd('./threeJobs'),
     )
 
 
@@ -43,7 +42,7 @@ os.chdir("src")
 os.system("make")
 
 print("===starting tests===")
-output1, output2, output3, output4, output5 = asyncio.run(run())
+output1, output2, output3, output4 = asyncio.run(run())
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
@@ -57,7 +56,6 @@ class TestIntegration(unittest.TestCase):
         print(output2)
         print(output3)
         print(output4)
-        print(output5)
         # process = subprocess.Popen(['../src/make grade'], stdout=subprocess.PIPE, encoding='UTF-8')
         # result, error = process.communicate()
         # print(result)
