@@ -289,7 +289,7 @@ band_graph_convert = {
     'finish': [
         "sleep(1)",
         "pthread_mutex_lock(.*)",
-        "if(.*== 0)",
+        "if(.*== 0).*",
         ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
         "pthread_mutex_unlock(.*)",
     ]
@@ -336,11 +336,11 @@ littleredhen_otherAnimal_decision_graph = {
 }
 littleredhen_otherAnimal_graph_convert = {
     'root': [
-        "while (.*)",
+        "while ?(.*).*",
         "pthread_mutex_lock(.*)",
-        "while.*(.*)",
+        "while ?(.*).*",
         "pthread_cond_wait(.*)",
-        "if (numLoaves.*)"
+        "if (numLoaves.*).*"
     ],
     'unlock_first': [
         "pthread_cond_wait(.*)",
@@ -357,7 +357,7 @@ littleredhen_otherAnimal_graph_convert = {
     'random': [
         ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
         "pthread_mutex_unlock(.*)",
-        "if (random().*)",
+        "if (random().*).*",
         "sleep(1)"
     ]
 }
