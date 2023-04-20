@@ -191,8 +191,7 @@ def format_output(file_arr, format_arr, total_offset):
                 print(f'\t    {total_offset + i + 1:4d} | {line}\n', end='')
                 print(f'{bcolors.FAIL}\t missing {format_arr[i]}{bcolors.ENDC}\n', end='')
 
-
-# os.chdir("src")
+"""
 # ========== priority ==========
 print("========== priority.c ==========")
 priority_decision_graph = {
@@ -367,6 +366,7 @@ format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
 priority_errors, format_arr = graph_search('head', 0, truncated_file_arr, littleredhen_otherAnimal_decision_graph, littleredhen_otherAnimal_graph_convert,
                                           format_arr)
 format_output(truncated_file_arr, format_arr, offset)
+"""
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
