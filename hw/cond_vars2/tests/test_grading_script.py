@@ -28,10 +28,10 @@ async def async_run_cmd(cmd):
 
 async def run():
     return await asyncio.gather(
-        async_run_cmd('./band'),
-        async_run_cmd('./littleredhen'),
-        async_run_cmd('./priority'),
-        async_run_cmd('./threeJobs'),
+        async_run_cmd('./band.bin'),
+        async_run_cmd('./littleredhen.bin'),
+        async_run_cmd('./priority.bin'),
+        async_run_cmd('./threeJobs.bin'),
     )
 
 

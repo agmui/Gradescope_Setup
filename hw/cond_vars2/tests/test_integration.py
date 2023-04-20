@@ -202,13 +202,13 @@ priority_decision_graph = {
 priority_graph_convert = {
     'root': [
         "pthread_mutex_lock(.*)",
-        "while(.*)",
+        "while ?(.*)",
         "pthread_cond_wait(.*)",
         "pthread_mutex_unlock(.*)",
         "sleep(1)",
         "pthread_mutex_lock(.*)",
-        "for(.*)",
-        "if(.*)",
+        "for ?(.*)",
+        "if ?(.*)",
     ],
     'unlock_first': [
         "pthread_mutex_unlock(.*)",
