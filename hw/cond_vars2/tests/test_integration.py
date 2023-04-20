@@ -2,6 +2,7 @@ import subprocess
 import re, os
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number
+from minify import minify_source
 
 
 # TODO: remove white space in file before scan
@@ -122,6 +123,7 @@ def ordered_pattern(pattern_arr: list, inner_func_offset, file_arr: list, format
     :return: dict of errors, last pattern line number it stopped at, formatted output for terminal
     """
     # ========================= substring search ========================
+    file_arr = minify_source(file_arr)
     code_arr = file_arr.copy()
     past = inner_func_offset - 1
     line_num = inner_func_offset
@@ -180,14 +182,14 @@ def format_output(file_arr, format_arr, total_offset):
     for i, line in enumerate(file_arr):
         match format_arr[i]:
             case 'o':
-                print(f'{bcolors.OKGREEN}{total_offset + i + 1:4d} | {line} \tok{bcolors.ENDC}\n', end='')
+                print(f'{bcolors.OKGREEN}\tok  {total_offset + i + 1:4d} | {line}{bcolors.ENDC}\n', end='')
             case 'w':
-                print(f'{bcolors.WARNING}{total_offset + i + 1:4d} | {line} \t\t out of order{bcolors.ENDC}\n', end='')
+                print(f'{bcolors.WARNING}out of order{total_offset + i + 1:4d} | {line} {bcolors.ENDC}\n', end='')
             case 'n':
-                print(f'{total_offset + i + 1:4d} | {line}\n', end='')
+                print(f'\t    {total_offset + i + 1:4d} | {line}\n', end='')
             case _:  # missing/error case
-                print(f'{total_offset + i + 1:4d} | {line}\n', end='')
-                print(f'{bcolors.FAIL} missing {format_arr[i]}{bcolors.ENDC}\n', end='')
+                print(f'\t    {total_offset + i + 1:4d} | {line}\n', end='')
+                print(f'{bcolors.FAIL}\t missing {format_arr[i]}{bcolors.ENDC}\n', end='')
 
 
 # os.chdir("src")
