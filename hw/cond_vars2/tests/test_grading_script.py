@@ -35,7 +35,6 @@ async def run():
     )
 
 
-print(text2art("cond vars 2", "rand"))
 
 
 os.chdir("src")
@@ -52,6 +51,7 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_make_grade(self):
         """autograder output tests"""
+        print(text2art("cond vars 2", "rand"))
         print(output1['output'])
         print(output2['output'])
         print(output3['output'])
