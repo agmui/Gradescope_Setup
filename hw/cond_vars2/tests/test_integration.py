@@ -190,7 +190,7 @@ def format_output(file_arr, format_arr, total_offset):
                 print(f'{bcolors.FAIL} missing {format_arr[i]}{bcolors.ENDC}\n', end='')
 
 
-os.chdir("src")
+# os.chdir("src")
 # ========== priority ==========
 print("========== priority.c ==========")
 priority_decision_graph = {
@@ -227,8 +227,8 @@ priority_errors, format_arr = graph_search('head', 0, truncated_file_arr, priori
 format_output(truncated_file_arr, format_arr, offset)
 # print("errors:", priority_errors)
 
-# ========== threejobs ==========
-print("========== threejobs.c ==========")
+# ========== threeJobs ==========
+print("========== threeJobs.c ==========")
 threejobs_decision_graph = {
     'head': ['root'],
     'root': ['unlock_first', 'signal_first'],
