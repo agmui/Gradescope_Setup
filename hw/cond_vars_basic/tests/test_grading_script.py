@@ -14,7 +14,7 @@ async def async_run_cmd(cmd):
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE)
     try:
-        stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=90)
+        stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=10)
     except asyncio.TimeoutError:
         return {"code": 1,
                 "output": "asyncio.TimeoutError"}
