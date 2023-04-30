@@ -100,7 +100,9 @@ class TestIntegration(unittest.TestCase):
     @number("6")
     def test_valgrind(self):
         """autograder valgrind tests"""
-        cmd = "valgrind ./tests.bin 5".split(' ')
-        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, encoding='UTF-8')
-        result, error = process.communicate()
-        self.assertTrue(True, "there is a memory leak")
+        if "OK" in output5:
+            cmd = "valgrind ./tests.bin 5".split(' ')
+            process = subprocess.Popen(cmd, stdout=subprocess.PIPE, encoding='UTF-8')
+            result, error = process.communicate()
+            self.assertTrue(True, "there is a memory leak")
+        self.assertTrue(False, "test.bin 5 test did not pass")
