@@ -148,16 +148,5 @@ gradescope does not print ps -a for what ever reason idk so for simple shell gud
 * set up automatic styling and deadspace removal for integration tests
 * implement partial credit
 * setup github deploy_key
-* **write basic tests:**
-    * <del>c_review
-    * <del>heap manager
-    * simple shell manager
-    * <del>process lab
-    * <del>vmem1
-    * <del>vmem2
-    * thread & muxtex Basics
-    * <del>cond vars basic
-    * <del>cond vars 2
-    * <del>userspace_threads1
-    * <del>userspace_threads2
-    * <del>hybrid_threads
+* change hw dir name to tests
+* change assignment dir (in hw) to have labXX_ prefix
