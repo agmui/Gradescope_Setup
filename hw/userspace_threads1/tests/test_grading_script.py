@@ -3,9 +3,7 @@ import subprocess
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit
 from art import *
-import asyncio # TODO: add to reqirements.txt
-
-
+import asyncio  # TODO: add to reqirements.txt
 
 
 async def async_run_cmd(cmd):
@@ -22,11 +20,9 @@ async def async_run_cmd(cmd):
 
     print("finished:", cmd)
     if stdout:
-        return {"code": proc.returncode,
-                "output": stdout.decode()}
+        return stdout.decode()
     if stderr:
-        return {"code": proc.returncode,
-                "output": stderr.decode()}
+        return stderr.decode()
 
 
 async def run():
@@ -38,6 +34,7 @@ async def run():
         async_run_cmd('./tests.bin 5')
     )
 
+
 os.system("apt update -y > /dev/null && apt upgrade -y > /dev/null")
 os.system("apt install -y valgrind > /dev/null")
 os.chdir("src")
@@ -45,6 +42,7 @@ os.system("make tests.bin")
 
 print("===starting tests===")
 output1, output2, output3, output4, output5 = asyncio.run(run())
+
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
@@ -106,3 +104,7 @@ class TestIntegration(unittest.TestCase):
             result, error = process.communicate()
             self.assertTrue(True, "there is a memory leak")
         self.assertTrue(False, "test.bin 5 test did not pass")
+
+
+if __name__ == '__main__':
+    unittest.main()
