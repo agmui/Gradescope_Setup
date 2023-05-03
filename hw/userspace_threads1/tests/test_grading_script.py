@@ -56,7 +56,7 @@ class TestIntegration(unittest.TestCase):
         # process = subprocess.Popen(['./tests.bin', '1'], stdout=subprocess.PIPE, encoding='UTF-8')
         # result, error = process.communicate()
         print(output1)
-        self.assertTrue("OK" in output1["code"])
+        self.assertTrue("OK" in output1)
 
     @weight(0)
     @number("2")
@@ -65,7 +65,7 @@ class TestIntegration(unittest.TestCase):
         # process = subprocess.Popen(['./tests.bin', '2'], stdout=subprocess.PIPE, encoding='UTF-8')
         # result, error = process.communicate()
         print(output2)
-        self.assertTrue("OK" in output2["code"])
+        self.assertTrue("OK" in output2)
 
     @weight(0)
     @number("3")
@@ -74,7 +74,7 @@ class TestIntegration(unittest.TestCase):
         # process = subprocess.Popen(['./tests.bin', '3'], stdout=subprocess.PIPE, encoding='UTF-8')
         # result, error = process.communicate()
         print(output3)
-        self.assertTrue("OK" in output3["code"])
+        self.assertTrue("OK" in output3)
 
     @weight(0)
     @number("4")
@@ -83,7 +83,7 @@ class TestIntegration(unittest.TestCase):
         # process = subprocess.Popen(['./tests.bin', '4'], stdout=subprocess.PIPE, encoding='UTF-8')
         # result, error = process.communicate()
         print(output4)
-        self.assertTrue("OK" in output4["code"])
+        self.assertTrue("OK" in output4)
 
     @weight(0)
     @number("5")
@@ -92,7 +92,7 @@ class TestIntegration(unittest.TestCase):
         # process = subprocess.Popen(['./tests.bin', '5'], stdout=subprocess.PIPE, encoding='UTF-8')
         # result, error = process.communicate()
         print(output5)
-        self.assertTrue("OK" in output5["code"])
+        self.assertTrue("OK" in output5)
 
     @weight(0)
     @number("6")
