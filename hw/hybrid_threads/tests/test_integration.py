@@ -261,10 +261,10 @@ max_graph_convert = {
     ],
 }
 
-truncated_file_arr, offset = init_ordered("../src/max.c", "void *thread(void *arg)")
-format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-max_errors, format_arr = graph_search('head', 0, truncated_file_arr, max_decision_graph, max_graph_convert, format_arr)
-format_output(truncated_file_arr, format_arr, offset)
+# truncated_file_arr, offset = init_ordered("../src/max.c", "void *thread(void *arg)")
+# format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+# max_errors, format_arr = graph_search('head', 0, truncated_file_arr, max_decision_graph, max_graph_convert, format_arr)
+# format_output(truncated_file_arr, format_arr, offset)
 # print("errors:", errors)
 
 # ========== prodcons ==========
@@ -293,11 +293,11 @@ prodcons_prod_graph_convert = {
     ],
 }
 
-truncated_file_arr, offset = init_ordered("../src/prodcons_condvar.c", "producer(void *arg)")
-format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-prodcons_prod_errors, format_arr = graph_search('head', 0, truncated_file_arr, prodcons_prod_decision_graph,
-                                                prodcons_prod_graph_convert, format_arr)
-format_output(truncated_file_arr, format_arr, offset)
+# truncated_file_arr, offset = init_ordered("../src/prodcons_condvar.c", "producer(void *arg)")
+# format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+# prodcons_prod_errors, format_arr = graph_search('head', 0, truncated_file_arr, prodcons_prod_decision_graph,
+#                                                 prodcons_prod_graph_convert, format_arr)
+# format_output(truncated_file_arr, format_arr, offset)
 # print("errors:", errors)
 
 prodcons_cons_decision_graph = {
@@ -325,11 +325,11 @@ prodcons_cons_graph_convert = {
         "sleep(1)",
     ],
 }
-truncated_file_arr, offset = init_ordered("../src/prodcons_condvar.c", "consumer(void *arg)")
-format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-prodcons_cons_errors, format_arr = graph_search('head', 0, truncated_file_arr, prodcons_cons_decision_graph,
-                                                prodcons_cons_graph_convert, format_arr)
-format_output(truncated_file_arr, format_arr, offset)
+# truncated_file_arr, offset = init_ordered("../src/prodcons_condvar.c", "consumer(void *arg)")
+# format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+# prodcons_cons_errors, format_arr = graph_search('head', 0, truncated_file_arr, prodcons_cons_decision_graph,
+#                                                 prodcons_cons_graph_convert, format_arr)
+# format_output(truncated_file_arr, format_arr, offset)
 
 
 # print("errors:", errors)
