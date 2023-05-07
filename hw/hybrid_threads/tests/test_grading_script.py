@@ -25,7 +25,7 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     @number("2")
     def test_standalone1(self):
-        """autograder basic_para tests"""
+        """autograder standalone1 tests"""
         process = subprocess.Popen(['./standalone1'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
