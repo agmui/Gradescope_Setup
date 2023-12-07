@@ -5,7 +5,6 @@ from gradescope_utils.autograder_utils.json_test_runner import JSONTestRunner
 if __name__ == '__main__':
     # getting xv6 and moving it into src
     os.system('svn export https://github.com/rhit-csse332/csse332-labs/trunk/xv6-riscv/')
-    os.system('pwd')
     os.system('mv ./xv6-riscv/* /autograder/source/src/')
 
     suite = unittest.defaultTestLoader.discover('tests')
