@@ -371,12 +371,19 @@ class TestIntegration(unittest.TestCase):
         # ========== al_append ==========
         print("========== al_append ==========")
         decision_graph = {
-            'head': ['root'],
-            'root': []
+            'head': ['root', 'alt'],
+            'root': [],
+            'alt': []
         }
         graph_convert = {
             'root': [
                 ["if(.*->size.*->capacity)\nal_resize(.*)", "if(.*->size.*->capacity).*al_resize(.*)"],
+                ".*->list.*->size.*=val;",
+                [".*->size++", ".*->size.*+.*1"]
+            ],
+            'alt': [
+                "if(.*->size.*->capacity)",
+                ".*al_resize(.*)",
                 ".*->list.*->size.*=val;",
                 [".*->size++", ".*->size.*+.*1"]
             ],
