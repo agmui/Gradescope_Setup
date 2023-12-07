@@ -208,7 +208,7 @@ def format_output(file_arr, format_arr, total_offset):
                 print(f'{bcolors.FAIL}\t missing {format_arr[i]}{bcolors.ENDC}\n', end='')
 
 
-os.chdir("user")
+os.chdir("user") #TODO: find out y dis here
 
 
 class TestIntegration(unittest.TestCase):
@@ -275,14 +275,16 @@ class TestIntegration(unittest.TestCase):
         # ========== al_get_at ==========
         print("========== al_get_at ==========")
         al_get_at_decision_graph = {
-            'head': ['root', 'alt', 'oneline'],
+            'head': ['root', 'alt', 'oneline', 'twoline'],
             'root': [],
             'alt': [],
-            'oneline': []
+            'oneline': [],
+            'twoline': []
         }
         al_get_at_graph_convert = {
+
             'root': [
-                ["if.*(pos.*<.*->size.*)", "if(.*->size.*>pos)", "if.*(pos.*<.*->capacity.*)", "if(.*->capacity>pos)"],
+                ["if.*(pos.*>.*->size.*)", "if(.*->size.*<pos)", "if.*(pos.*>.*->capacity.*)", "if(.*->capacity<pos)"],
                 ["return 0xffffffff", "return -1"],
                 "return.*->list.*[pos].*"
             ],
@@ -294,6 +296,13 @@ class TestIntegration(unittest.TestCase):
             'oneline': [
                 ["return.*pos.*0.&&.pos.<.*->size).*?.*->list[pos].*:.*0xffffffff",
                  "return.*pos.*0.&&.pos.<.*->size).*?.*0xffffffff :.*->list[pos]"]
+            ],
+            'twoline': [
+                ["if.*(pos.*>.*->size.*).*return 0xffffffff",
+                 "if(.*->size.*<pos).*return 0xffffffff",
+                 "if.*(pos.*>.*->capacity.*).*return 0xffffffff",
+                 "if(.*->capacity<pos).*return 0xffffffff"],
+                ["return.*->list.*[pos];", ".*->list.*+.*"],
             ]
         }
 
@@ -313,28 +322,34 @@ class TestIntegration(unittest.TestCase):
         # ========== al_resize ==========
         print("========== al_resize ==========")
         decision_graph = {
-            'head': ['malloc_first', 'cap_first', 'memcopy'],
-            'malloc_first': [],
+            'head': ['malloc_first', 'cap_first'],
+            'malloc_first': ['memcopy', 'for_copy'],
             'cap_first': [],
+            'for_copy': [],
             'memcopy': []
         }
         graph_convert = {
             'malloc_first': [
                 [".*malloc(.*->capacity\*2.*)", ".*malloc(2.*->capacity.*)"],
-                "for.*(.*)",
-                [".*->list[i].*", ".*->list.*+.*i"],
-                ".*->capacity\*2;",
-                "free(.*)"
+                # "for.*(.*)",
+                # [".*->list[i].*", ".*->list.*+.*i"],
+                # ".*->capacity\*2;",
+                # "free(.*)"
             ],
             'cap_first': [
-                ".*->capacity\*2;",
-                [".*malloc(.*->capacity\*2.*)", ".*malloc(2.*->capacity.*)"],
+                ".*->capacity\*.*2;",
+                [".*malloc(.*->capacity.*)", ".*malloc(\*.*->capacity.*)"],
+                "memcpy(.*)",
+                "free(.*)"
+            ],
+            'for_copy':[
                 "for(.*)",
                 [".*->list[i].*", ".*->list.*+.*i"],
+                ".*->capacity\*2;",
                 "free(.*)"
             ],
             'memcopy': [
-                [".*malloc(.*->capacity\*2.*)", ".*malloc(2.*->capacity.*)"],
+                # [".*malloc(.*->capacity\*2.*)", ".*malloc(2.*->capacity.*)"],
                 "memcpy(.*)",
                 ".*->capacity\*2;",
                 "free(.*)"
@@ -361,8 +376,7 @@ class TestIntegration(unittest.TestCase):
         }
         graph_convert = {
             'root': [
-                "if(.*->size.*->capacity)",
-                "al_resize(.*)",
+                ["if(.*->size.*->capacity)\nal_resize(.*)", "if(.*->size.*->capacity).*al_resize(.*)"],
                 ".*->list.*->size.*=val;",
                 [".*->size++", ".*->size.*+.*1"]
             ],
@@ -434,7 +448,7 @@ class TestIntegration(unittest.TestCase):
         # ========== ensure correct order ==========
         print("========== ensure_correct_order ==========")
         decision_graph = {
-            'head': ['root'],
+            'head': ['root', 'flip'],
             'root': [],
             'flip': []
         }
@@ -449,9 +463,9 @@ class TestIntegration(unittest.TestCase):
             'flip': [
                 ["if.*(\*should_be_smaller.*>.*\*should_be_larger)",
                  "if.*(\*should_be_larger.*<.*\*should_be_smaller)"],
-                "int .*=\*should_be_larger;"
+                "int .*=\*should_be_larger;",
                 "\*should_be_larger=\*should_be_smaller;",
-                "\*should_be_larger=.*;"
+                "\*should_be_smaller=.*;"
             ]
         }
 
