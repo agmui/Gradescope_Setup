@@ -10,7 +10,8 @@ os.chdir("src")
 # os.system("apt update -y > /dev/null && apt upgrade -y > /dev/null") # may not need upgrade
 # os.system("apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu > /dev/null")
 #os.system("tar xf submit-lab-0.tar")
-os.system("mv /autograder/source/src/*.c ./xv6-riscv/") #FIXME:
+os.system("mv /autograder/source/src/*.c ./xv6-riscv/user/") #FIXME:
+os.chdir("xv6-riscv")
 os.system("make > /dev/null")
 
 r = Runner(save("xv6.out"))
