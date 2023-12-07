@@ -3,6 +3,9 @@
 assignment="c_review"
 ls autograder/source
 
+apt update -y > /dev/null && apt upgrade -y
+apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu # for xv6 labs
+
 apt-get install -y subversion
 
 # svn uses trunk, explanation: https://datascience.101workbook.org/07-DataParsing/01-FILE-ACCESS/03-4-tutorial-download-github-folders-svn.html#github-folder

@@ -3,14 +3,17 @@
 
 svn up /autograder/source > /dev/null
 
-cp -r /autograder/submission/* /autograder/source/src # guarantee there is a src dir
+# guarantee there is a src dir
+mkdir -p /autograder/source/src
+#FIXME: dont use submission/user
+cp -r /autograder/submission/user/* /autograder/source/src
 
 # shellcheck disable=SC2164
 cd /autograder/source/
 
 python3 run_tests.py
 
-AUTOGRADER_ROOT=autograder/
+AUTOGRADER_ROOT=autograder
 
 STUDENT_NAME=`cat $AUTOGRADER_ROOT/submission_metadata.json | grep name | cut -d':' -f 2 | tr -d '"' | tr -d ',' | awk '{$1=$1;print}'`
 STUDENT_ID=`cat $AUTOGRADER_ROOT/submission_metadata.json| grep email | cut -d':' -f2|tr -d '"' | tr -d ',' | cut -d'@' -f1 | awk '{$1=$1;print}'`
