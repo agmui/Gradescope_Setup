@@ -5,6 +5,7 @@ svn up /autograder/source > /dev/null
 
 cp -r /autograder/submission/* /autograder/source/src # guarantee there is a src dir
 
+# shellcheck disable=SC2164
 cd /autograder/source/
 
 python3 run_tests.py

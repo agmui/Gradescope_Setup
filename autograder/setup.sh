@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-assignment="userspace_threads2"
+assignment="c_review"
 ls autograder/source
 
 apt-get install -y subversion
