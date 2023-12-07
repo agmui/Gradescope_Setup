@@ -14,7 +14,7 @@ class TestFiles(unittest.TestCase):
         #     #'submit-lab-0.tar','submit-lab-0.patch'
         #     ])
         SUBMISSION_BASE = '/autograder/submission'
-        files_to_check = ['submission-*.zip']
+        files_to_check = ['arraylist.c', 'find.c', 'sleep.c', 'warmup.c']  # TODO: check for extra files
         missing_files = []
         for file in files_to_check:
             if len(glob.glob(os.path.join(SUBMISSION_BASE, file))) == 0:

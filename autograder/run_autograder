@@ -3,7 +3,7 @@
 
 svn up /autograder/source > /dev/null
 
-cp /autograder/submission/* /autograder/source/src
+cp -r /autograder/submission/* /autograder/source/src # guarantee there is a src dir
 
 cd /autograder/source/
 
