@@ -5,13 +5,7 @@ from art import *
 from gradelib import *
 from gradelib import TESTS
 
-# os.chdir("src")
-# os.system("apt update -y > /dev/null && apt upgrade -y > /dev/null") # may not need upgrade
-# os.system("apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu > /dev/null")
-#os.system("tar xf submit-lab-0.tar")
-# os.system("mv /autograder/source/src/user/*.c ./xv6-riscv/user/") #FIXME:
-os.chdir("src/xv6-riscv")
-# os.system("make > /dev/null")
+os.chdir("/autograder/source/src/xv6-riscv")
 
 r = Runner(save("xv6.out"))
 
