@@ -39,6 +39,9 @@ Configurations for setup and writing tests in CSSE332 Gradescope.
 
 <a name="deps"/>  
 
+## Run order
+setup.sh -> run_autograder -> setup_tests.sh -> run_tests.py -> test_files.py, test_grading_script.py, test_integration.py
+
 ## Dependencyes
 python 3.7 or greater
 
