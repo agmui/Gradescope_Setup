@@ -1,8 +1,10 @@
 #!/bin/bash
 
 # shellcheck disable=SC2164
-cd /autograder/source/src
+SRC_DIR=/autograder/source/src
+cd $SRC_DIR
 svn export https://github.com/rhit-csse332/csse332-labs/branches/clab/xv6-riscv/ > /dev/null
 #mv ./xv6-riscv/ /autograder/source/src/
-mv /autograder/source/src/user/*.c /autograder/source/src/xv6-riscv/user/
+mv $SRC_DIR/user/*.c $SRC_DIR/xv6-riscv/user/
+cd $SRC_DIR/xv6-riscv/user/
 make > /dev/null

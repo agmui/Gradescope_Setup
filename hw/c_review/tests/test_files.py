@@ -18,9 +18,7 @@ class TestFiles(unittest.TestCase):
         missing_files = 0
         for file in files_to_check:
             if len(glob.glob(os.path.join(SUBMISSION_USER_BASE, file))) == 0:
-                # missing_files.append(file)
-        # for path in missing_files:
-                print(f'Missing {file}')#.format(path))
-                missing_files +=1
+                print(f'Missing {file}')  # .format(path))
+                missing_files += 1
         self.assertEqual(missing_files, 0, 'Missing some required files!')
         print('All required files submitted!')

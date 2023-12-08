@@ -4,6 +4,7 @@ import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, visibility
 from minify import minify_source
 
+os.chdir("user")  # TODO: find out y dis here
 
 # TODO: (minify) remove white space in file before scan
 # TODO: make scan go down then up from offset
@@ -208,7 +209,6 @@ def format_output(file_arr, format_arr, total_offset):
                 print(f'{bcolors.FAIL}\t missing {format_arr[i]}{bcolors.ENDC}\n', end='')
 
 
-os.chdir("user")  # TODO: find out y dis here
 
 
 class TestIntegration(unittest.TestCase):
