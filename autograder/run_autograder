@@ -10,7 +10,7 @@ cp -r /autograder/submission/* /autograder/source/src
 # shellcheck disable=SC2164
 cd /autograder/source/
 
-./setup_tests.sh
+bash tests_setup.sh
 python3 run_tests.py
 
 AUTOGRADER_ROOT=/autograder
