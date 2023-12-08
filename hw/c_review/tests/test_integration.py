@@ -208,7 +208,7 @@ def format_output(file_arr, format_arr, total_offset):
                 print(f'{bcolors.FAIL}\t missing {format_arr[i]}{bcolors.ENDC}\n', end='')
 
 
-os.chdir("user") #TODO: find out y dis here
+os.chdir("user")  # TODO: find out y dis here
 
 
 class TestIntegration(unittest.TestCase):
@@ -342,7 +342,7 @@ class TestIntegration(unittest.TestCase):
                 "memcpy(.*)",
                 "free(.*)"
             ],
-            'for_copy':[
+            'for_copy': [
                 "for(.*)",
                 [".*->list[i].*", ".*->list.*+.*i"],
                 ".*->capacity\*2;",
@@ -416,7 +416,7 @@ class TestIntegration(unittest.TestCase):
                 "exit(0)"
             ],
             'alt_if': [
-                ["if.*(argc.*)\nprintf(.*)","if.*(argc.*) printf(.*)"],
+                ["if.*(argc.*)\nprintf(.*)", "if.*(argc.*) printf(.*)"],
                 "sleep(.*)",
                 "exit(0)"
             ]

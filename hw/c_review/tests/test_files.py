@@ -15,11 +15,12 @@ class TestFiles(unittest.TestCase):
         #     ])
         SUBMISSION_USER_BASE = '/autograder/submission/user'
         files_to_check = ['arraylist.c', 'find.c', 'sleep.c', 'warmup.c']  # TODO: check for extra files
-        missing_files = []
+        missing_files = 0
         for file in files_to_check:
             if len(glob.glob(os.path.join(SUBMISSION_USER_BASE, file))) == 0:
-                missing_files.append(file)
-        for path in missing_files:
-            print('Missing {0}'.format(path))
-        self.assertEqual(len(missing_files), 0, 'Missing some required files!')
+                # missing_files.append(file)
+        # for path in missing_files:
+                print(f'Missing {file}')#.format(path))
+                missing_files +=1
+        self.assertEqual(missing_files, 0, 'Missing some required files!')
         print('All required files submitted!')
