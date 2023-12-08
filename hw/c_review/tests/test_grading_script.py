@@ -10,7 +10,7 @@ from gradelib import TESTS
 # os.system("apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu > /dev/null")
 #os.system("tar xf submit-lab-0.tar")
 # os.system("mv /autograder/source/src/user/*.c ./xv6-riscv/user/") #FIXME:
-os.chdir("xv6-riscv")
+os.chdir("src/xv6-riscv")
 # os.system("make > /dev/null")
 
 r = Runner(save("xv6.out"))
