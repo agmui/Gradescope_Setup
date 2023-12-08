@@ -404,8 +404,9 @@ class TestIntegration(unittest.TestCase):
         # ========== sleep ==========
         print("========== sleep.c ==========")
         decision_graph = {
-            'head': ['root'],
-            'root': []
+            'head': ['root', 'alt_if'],
+            'root': [],
+            'alt_if': []
         }
         graph_convert = {
             'root': [
@@ -414,6 +415,11 @@ class TestIntegration(unittest.TestCase):
                 "sleep(.*)",
                 "exit(0)"
             ],
+            'alt_if': [
+                ["if.*(argc.*)\nprintf(.*)","if.*(argc.*) printf(.*)"],
+                "sleep(.*)",
+                "exit(0)"
+            ]
         }
 
         truncated_file_arr, offset = init_ordered("sleep.c", "int main(int argc, char **argv)")

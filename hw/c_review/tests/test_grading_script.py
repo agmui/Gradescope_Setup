@@ -100,7 +100,7 @@ class TestIntegration(unittest.TestCase):
 
     def test_add_with_pointers(self):
         """unittest: add with pointers"""
-        print(text2art("heap manager", "rand"))
+        print(text2art("c review", "rand"))
         self.assertTrue(tests[0].ok, "If you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0")
     def test_ensure_correct_order(self):
         """unittest: ensure_correct_order"""
