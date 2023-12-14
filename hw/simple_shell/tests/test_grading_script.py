@@ -107,7 +107,6 @@ class TestIntegration(unittest.TestCase):
     def test_background_notification(self):
         """background notification"""
 
-        found_notification = False
         print("checking if BG./donothing can be run")
         found_notification = False
         rez = re.search('.*Background command finished.*', shell_output)
