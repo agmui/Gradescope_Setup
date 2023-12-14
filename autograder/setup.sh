@@ -7,6 +7,7 @@ ls autograder/source
 
 apt update -y > /dev/null && apt upgrade -y
 apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu # for xv6 labs
+apt install -y cowsay expect # for simpleshell labs
 
 apt-get install -y subversion
 

@@ -7,5 +7,5 @@ cd $SRC_DIR
 #mv $SRC_DIR/user/*.c $SRC_DIR/xv6-riscv/user/
 #cd $SRC_DIR/xv6-riscv/
 make > /dev/null
-apt install -y cowsay expect > /dev/null
+#apt install -y cowsay expect > /dev/null
 expect ./test.exp > output.txt
