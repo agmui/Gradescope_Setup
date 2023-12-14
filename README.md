@@ -40,7 +40,7 @@ Configurations for setup and writing tests in CSSE332 Gradescope.
 <a name="deps"/>  
 
 ## Run order
-setup.sh -> run_autograder -> tests_setup.sh -> run_tests.py -> test_files.py, test_grading_script.py, test_integration.py
+run_autograder -> setup.sh -> tests_setup.sh -> run_tests.py -> test_files.py, test_grading_script.py, test_integration.py
 
 ## Dependencyes
 python 3.7 or greater
@@ -153,3 +153,4 @@ gradescope does not print ps -a for what ever reason idk so for simple shell gud
 * setup github deploy_key
 * change hw dir name to tests
 * change assignment dir (in hw) to have labXX_ prefix
+* run valgrind

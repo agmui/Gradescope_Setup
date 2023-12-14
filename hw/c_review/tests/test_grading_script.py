@@ -5,6 +5,8 @@ from art import *
 from gradelib import *
 from gradelib import TESTS
 
+#TODO: run valgrind
+
 os.chdir("/autograder/source/src/xv6-riscv")
 
 r = Runner(save("xv6.out"))

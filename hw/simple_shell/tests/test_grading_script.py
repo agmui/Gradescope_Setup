@@ -5,94 +5,169 @@ import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit
 from art import *
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 os.chdir("src")
 
 # ================= preprocess =============
-print("hlep")
-os.system("apt install -y cowsay")
-os.system("echo test | cowsay")
 
-result_arr = []
 f = open("output.txt")
-result = f.read()
-print(result)
-result = result.split('\n')
+shell_output = f.read()
+# print(result)
 f.close()
+result = shell_output.split('\n')
 
-for i in range(len(result)):
-    if "RHSH" not in result[i]:
-        result_arr.append(result[i])
-
-print("==================== output ==================== ")
-for i in result_arr:
+print("======================================== ")
+print("                  output                 ")
+print("======================================== ")
+for i in result:
+    if "%" in i:
+        print()
     print(i)
 print("======================================== ")
+print("                                         ")
+print("======================================== ")
 
-lines = [i for i, l in enumerate(result_arr) if "uwu" in l or "Background" in l]
+
+regex_str = ".*% ?pgrep simpleshell\n.*\n?(\d+)"
+print('---')
+pids = re.findall(regex_str, shell_output)
+
+
+
 # ====================================
+
+# def get_log_subsection(start_str, end_str):
+#     top_of_log = result.index(start_str)  # TODO: make this do regex instead or account for failur
+#     bot_of_log = result.index(end_str) + 2  # just over shoot a bit just in case
+#     log_arr = result[top_of_log:bot_of_log]
+#     return "\n === what the autograder ran ===\n" + "\n".join(log_arr) + "..."
 
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_idk(self):
-        """checking is simpleshell even ran"""
+    def test_foreground_cmd(self):
+        """checking for foreground commands"""
         print(text2art("simple shell", "rand"))
-        print("====================")
-        print("NOTE: bc python is dumb this will not look nice but still will be correct")
-        print("====================")
+        # print("====================")
+        # print("NOTE: bc python is dumb this will not look nice but still will be correct")
+        # print("====================")
 
-        print("checking for simpleshell")
+        # TODO: display  block for all tests
+        print("checking if simpleshell can run other commands (ps -a)")
         found_simpleshell = False
-        print("simpleshell PID:", result_arr[lines[0] + 1])
-        if result_arr[lines[0] + 1]:
-            print("found simpleshell")
+
+        regex_str = ".*% pgrep simpleshell\n.*\n?(\d+)"
+        rez = re.search(regex_str, shell_output)
+        # print(rez.group())
+
+        # i = result.index("% pgrep simpleshell")
+        if len(pids) > 0:
             found_simpleshell = True
-        self.assertTrue(found_simpleshell, "simpleshell did not run")
-
-    # @weight(0)
-    # @number("1")
-    # def test_foreground_cmd(self):
-    #     """foreground commands"""
-    #     self.assertTrue("run: \"rm -rf \\" in result_arr[1], "did not run foreground cmd")
-
+        err_msg = "either simpleshell could not run ps -a OR simpleshell did not build/run  properly" \
+                  " \n ---autograder output---\n"
+        self.assertTrue(found_simpleshell, err_msg+rez.group())
     @weight(0)
     @number("2")
     def test_background_cmd(self):
         """background commands"""
-        print("checking for donothing")
+        print("checking if BG./donothing can be run")
         found_donothing = False
-        print("donothing PID:", result_arr[lines[1] + 1])
-        if result_arr[lines[1] + 1]:
-            print("found do nothing")
+        rez = re.search('.*% ?BG./donothing\n.*\n?.*% ?BG./donothing\n.*', shell_output)
+        if rez is not None and len(rez.group().split('\n')) == 4:
             found_donothing = True
-        self.assertTrue(found_donothing, "donothing did not run")
+        # print(rez.group())
+        # print("donothing PID:", pids[1])
+        # if pids[1]:
+        #     print("found donothing!!")
+        #     found_donothing = True
+
+        # i = result.index("Command is \'pgrep\' with argument \'donothing\'")
+        # print("./donothing pids:", result[i + 1:i + 3])
+        # if result[i + 1].isnumeric() and result[i + 2].isnumeric():
+        #     found_donothing = True
+        #     # pass
+
+        error_str = "running BG./donothing had an error\n--autograder output--\n" + rez.group() if rez is not None else ""
+        self.assertTrue(found_donothing, error_str)
 
     @weight(0)
     @number("3")
     def test_background_notification(self):
         """background notification"""
-        self.assertTrue(len(lines) == 4, "no background notification")
+
+        found_notification = False
+        print("checking if BG./donothing can be run")
+        found_notification = False
+        rez = re.search('.*Background command finished.*', shell_output)
+        if rez is not None:#and len(rez.group().split('\n')) == 2:
+            found_notification = True
+        # i = result.index("Background command finished")
+        # i = None
+        # for index, s in enumerate(result):
+        #     if "Background command finished" in s:
+        #         i = index
+        #         break
+        # if i != None:
+        #     found_notification = True
+        err_msg = "no background notification:" + rez.group() if rez is not None else ""
+        self.assertTrue(found_notification, err_msg)
 
     @weight(0)
     @number("4")
+    def test_background_cmd_with_args(self):
+        """background commands"""
+        print("checking if BG can do args")
+        found_donothing = False
+        rez = re.search('.*% ?BGsleep 2\n.*\n?.*', shell_output)
+        if rez is not None and len(rez.group().split('\n')) >= 2:
+            found_donothing = True
+
+        # print("donothing PID:", pids[1])
+        # i = result.index("Command is \'BGsleep\' with argument \'2\'")
+        # if i:
+        #     print("simpleshell can do BG cmds with args!")
+        #     found_donothing = True
+        self.assertTrue(found_donothing, "./donothing did not run")
+
+    @weight(0)
+    @number("5")
     def test_zombie(self):
         """zombie"""
+
+        zombie_rez = False
+        # i = None
+        for i in reversed(range(len(result))):
+            if "% pgrep simpleshell" in result[i] and result[i + 2].isnumeric():
+                zombie_rez = True
+                break
+        self.assertTrue(zombie_rez, "simpleshell or donothing is a zombie and did not exit")
         # testing for zombies after running shell
-        process = subprocess.Popen(["ps", "-a"], stdout=subprocess.PIPE, encoding='UTF-8')
-        zombie_result, error = process.communicate()
-        print("========checking for zombies============")
-        print(zombie_result)
-        if "simpleshell" in zombie_result or "donothing" in zombie_result:
-            self.assertTrue(False, "simpleshell or donothing is a zombie and did not exit")
+        # os.system("ps -a")
+        # process = subprocess.Popen(["ps", "-a"], stdout=subprocess.PIPE, encoding='UTF-8')
+        # zombie_result, error = process.communicate()
+        # print("========checking for zombies============")
+        # print(zombie_result)
+        # if "simpleshell" in zombie_result or "donothing" in zombie_result:
+        #     self.assertTrue(False, "simpleshell or donothing is a zombie and did not exit")
 
         # testing for zombies while shell is running
-        print("checking for donothing zombie")
-        print("donothing PID:", result_arr[lines[3] + 1])
-        if result_arr[lines[3] + 1]:
-            print("found zombie")
-            self.assertTrue(False, "found zombie")
+        # print("checking for donothing zombie")
+        # print("donothing PID:", result_arr[pids[3] + 1])
+        # if result_arr[pids[3] + 1]:
+        #     print("found zombie")
+        #     self.assertTrue(False, "found zombie")
 
 
 if __name__ == '__main__':

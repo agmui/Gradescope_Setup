@@ -379,13 +379,13 @@ class TestIntegration(unittest.TestCase):
             'root': [
                 ["if(.*->size.*->capacity)\nal_resize(.*)", "if(.*->size.*->capacity).*al_resize(.*)"],
                 ".*->list.*->size.*=val;",
-                [".*->size++", ".*->size.*+.*1"]
+                [".*->size++.*", ".*->size.*+.*1"]
             ],
             'alt': [
                 "if(.*->size.*->capacity)",
                 ".*al_resize(.*)",
                 ".*->list.*->size.*=val;",
-                [".*->size++", ".*->size.*+.*1"]
+                [".*->size++.*", ".*->size.*+.*1"]
             ],
         }
 
