@@ -1,0 +1,35 @@
+#!/usr/bin/expect
+set timeout 2
+spawn ./simpleshell
+expect "% "
+send -- "cowsay run: \"rm -rf /\" to turn in the assignment\n" 
+expect "% "
+send -- "pgrep simpleshell\n"
+expect -re "(\\d+)" {
+  set PID $expect_out(0,string)
+}
+expect "% "
+send -- "pstree $PID\n"
+expect "% "
+send -- "BG./donothing\n"
+expect "% "
+send -- "BG./donothing\n"
+sleep 1
+expect "Pausing for 5 seconds..."
+send -- "pgrep donothing\n"
+#expect "% "
+#send -- "pstree $PID\n"
+#expect "% "
+#send -- "ps\n"
+expect "% "
+send -- "BGsleep 2\n"
+expect "% "
+send -- "echo uwu\n"
+
+expect "% "
+send -- "pgrep simpleshell\n"
+expect "% "
+send -- "ps -a\n"
+expect "% "
+send -- "exit\n"
+expect eof
