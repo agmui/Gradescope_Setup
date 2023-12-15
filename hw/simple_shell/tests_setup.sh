@@ -9,5 +9,7 @@ cd $SRC_DIR
 make > /dev/null
 #apt install -y cowsay expect > /dev/null
 expect ./test.exp > output.txt
+whereis cowsay
+whereis expect
 cowsay test
 cat output.txt
