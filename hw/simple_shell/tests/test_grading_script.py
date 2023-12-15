@@ -28,9 +28,6 @@ shell_output = f.read()
 f.close()
 result = shell_output.split('\n')
 
-# print("======================================== ")
-# print("                  output                 ")
-# print("======================================== ")
 for i in result[1:]:
     if "%" in i:
         print()
@@ -39,9 +36,6 @@ for i in result[1:]:
         print(bcolors.OKGREEN+bcolors.BOLD + str_arr[0] + '%' + bcolors.ENDC+bcolors.OKCYAN + str_arr[1] + bcolors.ENDC)
     else:
         print(bcolors.OKCYAN + i + bcolors.ENDC)
-# print("======================================== ")
-# print("                                         ")
-# print("======================================== ")
 
 
 regex_str = ".*% ?pgrep simpleshell\n.*\n?(\d+)"
@@ -50,13 +44,6 @@ pids = re.findall(regex_str, shell_output)
 
 
 # ====================================
-
-# def get_log_subsection(start_str, end_str):
-#     top_of_log = result.index(start_str)  # TODO: make this do regex instead or account for failur
-#     bot_of_log = result.index(end_str) + 2  # just over shoot a bit just in case
-#     log_arr = result[top_of_log:bot_of_log]
-#     return "\n === what the autograder ran ===\n" + "\n".join(log_arr) + "..."
-
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
@@ -90,7 +77,7 @@ class TestIntegration(unittest.TestCase):
         """background commands"""
         print("checking if BG./donothing can be run")
         found_donothing = False
-        rez = re.search('.*% ?BG./donothing\n.*\n?.*% ?BG./donothing\n.*', shell_output)
+        rez = re.search('.*% ?BG\./donothing\n.*\n?.*% ?BG\./donothing\n.*', shell_output)
         if rez is not None and len(rez.group().split('\n')) == 4:
             found_donothing = True
         # print(rez.group())
@@ -132,10 +119,11 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     @number("4")
     def test_background_cmd_with_args(self):
-        """background commands"""
+        """background commands with arguments"""
         print("checking if BG can do args")
         found_donothing = False
-        rez = re.search('.*% ?BGsleep 2\n.*\n?.*', shell_output)
+        # rez = re.search('.*BGsleep 2\n.*\n?.*\n', shell_output)
+        rez = re.search('.*\'BGsleep\' with argument \'2\'.*\n.*\'echo\' with argument \'uwu\'.*', shell_output)
         if rez is not None and len(rez.group().split('\n')) >= 2:
             found_donothing = True
 
@@ -144,7 +132,7 @@ class TestIntegration(unittest.TestCase):
         # if i:
         #     print("simpleshell can do BG cmds with args!")
         #     found_donothing = True
-        self.assertTrue(found_donothing, "./donothing did not run")
+        self.assertTrue(found_donothing, "BGsleep 2 did not run:\n"+rez.group() if rez is not None else "(could not find output)")
 
     @weight(0)
     @number("5")
@@ -152,12 +140,13 @@ class TestIntegration(unittest.TestCase):
         """zombie"""
 
         zombie_rez = False
+        print("checking for zombies")
         # i = None
         for i in reversed(range(len(result))):
             if "% pgrep simpleshell" in result[i] and result[i + 2].isnumeric():
                 zombie_rez = True
                 break
-        self.assertTrue(zombie_rez, "simpleshell or donothing is a zombie and did not exit")
+        self.assertTrue(zombie_rez, "simpleshell or ./donothing is a zombie and did not exit")
         # testing for zombies after running shell
         # os.system("ps -a")
         # process = subprocess.Popen(["ps", "-a"], stdout=subprocess.PIPE, encoding='UTF-8')
