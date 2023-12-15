@@ -8,7 +8,8 @@ cd $SRC_DIR
 #cd $SRC_DIR/xv6-riscv/
 make > /dev/null
 #apt install -y cowsay expect > /dev/null
-cp /usr/share/cowsay /usr/bin
+PATH="$PATH:/usr/games"
+export PATH
 expect ./test.exp > output.txt
 #whereis cowsay
 #whereis expect
