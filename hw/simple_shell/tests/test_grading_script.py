@@ -26,16 +26,18 @@ shell_output = f.read()
 f.close()
 result = shell_output.split('\n')
 
-print("======================================== ")
-print("                  output                 ")
-print("======================================== ")
-for i in result:
+# print("======================================== ")
+# print("                  output                 ")
+# print("======================================== ")
+print(bcolors.OKGREEN)
+for i in result[1:]:
     if "%" in i:
         print()
     print(i)
-print("======================================== ")
-print("                                         ")
-print("======================================== ")
+print(bcolors.ENDC)
+# print("======================================== ")
+# print("                                         ")
+# print("======================================== ")
 
 
 regex_str = ".*% ?pgrep simpleshell\n.*\n?(\d+)"
@@ -99,7 +101,7 @@ class TestIntegration(unittest.TestCase):
         #     found_donothing = True
         #     # pass
 
-        error_str = "running BG./donothing had an error\n--autograder output--\n" + rez.group() if rez is not None else ""
+        error_str = "running BG./donothing had an error\n--autograder output--\n" + rez.group() if rez is not None else "could not find"
         self.assertTrue(found_donothing, error_str)
 
     @weight(0)
@@ -120,7 +122,7 @@ class TestIntegration(unittest.TestCase):
         #         break
         # if i != None:
         #     found_notification = True
-        err_msg = "no background notification:" + rez.group() if rez is not None else ""
+        err_msg = "no background notification:" + rez.group() if rez is not None else "could not find"
         self.assertTrue(found_notification, err_msg)
 
     @weight(0)
