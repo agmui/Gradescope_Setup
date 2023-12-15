@@ -5,6 +5,7 @@ import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit
 from art import *
 
+
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -15,6 +16,7 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+
 
 os.chdir("src")
 
@@ -29,12 +31,14 @@ result = shell_output.split('\n')
 # print("======================================== ")
 # print("                  output                 ")
 # print("======================================== ")
-print(bcolors.OKGREEN)
 for i in result[1:]:
     if "%" in i:
         print()
-    print(i)
-print(bcolors.ENDC)
+    str_arr = i.split('%')
+    if len(str_arr) > 1:
+        print(bcolors.OKGREEN+bcolors.BOLD + str_arr[0] + '%' + bcolors.ENDC+bcolors.OKCYAN + str_arr[1] + bcolors.ENDC)
+    else:
+        print(bcolors.OKCYAN + i + bcolors.ENDC)
 # print("======================================== ")
 # print("                                         ")
 # print("======================================== ")
@@ -43,7 +47,6 @@ print(bcolors.ENDC)
 regex_str = ".*% ?pgrep simpleshell\n.*\n?(\d+)"
 print('---')
 pids = re.findall(regex_str, shell_output)
-
 
 
 # ====================================
@@ -79,7 +82,8 @@ class TestIntegration(unittest.TestCase):
             found_simpleshell = True
         err_msg = "either simpleshell could not run ps -a OR simpleshell did not build/run  properly" \
                   " \n ---autograder output---\n"
-        self.assertTrue(found_simpleshell, err_msg+rez.group())
+        self.assertTrue(found_simpleshell, err_msg + rez.group())
+
     @weight(0)
     @number("2")
     def test_background_cmd(self):
@@ -112,7 +116,7 @@ class TestIntegration(unittest.TestCase):
         print("checking if BG./donothing can be run")
         found_notification = False
         rez = re.search('.*Background command finished.*', shell_output)
-        if rez is not None:#and len(rez.group().split('\n')) == 2:
+        if rez is not None:  # and len(rez.group().split('\n')) == 2:
             found_notification = True
         # i = result.index("Background command finished")
         # i = None
