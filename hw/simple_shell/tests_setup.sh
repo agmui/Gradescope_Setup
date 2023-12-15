@@ -8,5 +8,6 @@ cd $SRC_DIR
 #cd $SRC_DIR/xv6-riscv/
 make > /dev/null
 #apt install -y cowsay expect > /dev/null
+cowsay test
 expect ./test.exp > output.txt
 cat output.txt
