@@ -85,6 +85,8 @@ def test_stress_overlapping():
     r.match(no=[".*Assertion FAILED.*"])
 
 
+run_tests()
+
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
@@ -94,73 +96,67 @@ class TestIntegration(unittest.TestCase):
 
     @weight(0)
     @number("1")
-    def test_run_autograder(self):
-        """runs grading script"""
-        print(text2art("heap manager", "rand"))
-        run_tests()
-
-    @weight(0)
-    @number("2")
     def test_basic_case(self):
         """autograder basic case tests"""
+        print(text2art("heap manager", "rand"))
         self.assertTrue(TESTS[0].ok)
 
     @weight(0)
-    @number("3")
+    @number("2")
     def test_basic_alloc(self):
         """autograder basic alloc tests"""
         self.assertTrue(TESTS[1].ok)
 
     @weight(0)
-    @number("4")
+    @number("3")
     def test_basic_free(self):
         """autograder basic free tests"""
         self.assertTrue(TESTS[2].ok)
 
     @weight(0)
-    @number("5")
+    @number("4")
     def test_coalesce_basic1(self):
         """autograder coalesce basic1 tests"""
         self.assertTrue(TESTS[3].ok)
 
     @weight(0)
-    @number("6")
+    @number("5")
     def test_coalesce_basic2(self):
         """autograder coalesce basic2 tests"""
         self.assertTrue(TESTS[4].ok)
 
     @weight(0)
-    @number("7")
+    @number("6")
     def test_coalesce3(self):
         """autograder coalesce basic3 tests"""
         self.assertTrue(TESTS[5].ok)
 
     @weight(0)
-    @number("8")
+    @number("7")
     def test_foce_alignment(self):
         """autograder foce alignment tests"""
         self.assertTrue(TESTS[6].ok)
 
     @weight(0)
-    @number("9")
+    @number("8")
     def test_too_small_blocks(self):
         """autograder too small blocks tests"""
         self.assertTrue(TESTS[7].ok)
 
     @weight(0)
-    @number("10")
+    @number("9")
     def test_gracefully_run_out_of_memory(self):
         """autograder gracefully run out of mem tests"""
         self.assertTrue(TESTS[8].ok)
 
     @weight(0)
-    @number("11")
+    @number("10")
     def test_stress_big_heap_chunks(self):
         """autograder biiiggg yoshi tests"""
         self.assertTrue(TESTS[9].ok)
 
     @weight(0)
-    @number("12")
+    @number("11")
     def test_stress_overlapping(self):
         """autograder stress overlapping tests"""
         self.assertTrue(TESTS[10].ok)
