@@ -9,10 +9,6 @@ class TestFiles(unittest.TestCase):
     @weight(0)
     def test_submitted_files(self):
         """Check submitted files"""
-        # missing_files = check_submitted_files([
-        #     'submission-*.zip'
-        #     #'submit-lab-0.tar','submit-lab-0.patch'
-        #     ])
         SUBMISSION_USER_BASE = '/autograder/submission/user'
         files_to_check = ['arraylist.c', 'find.c', 'sleep.c', 'warmup.c']  # TODO: check for extra files
         missing_files = 0
