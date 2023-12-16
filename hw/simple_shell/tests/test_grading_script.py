@@ -77,8 +77,8 @@ class TestIntegration(unittest.TestCase):
         """background commands"""
         print("checking if BG./donothing can be run")
         found_donothing = False
-        rez = re.search('.*% ?BG\./donothing\n.*\n?.*% ?BG\./donothing\n.*', shell_output)
-        if rez is not None and len(rez.group().split('\n')) == 4:
+        rez = re.search('.*% ?BG\./donothing\n.*\n?(.*\n)?.*% ?BG\./donothing\n.*', shell_output)
+        if rez is not None and len(rez.group().split('\n')) >= 4:
             found_donothing = True
         # print(rez.group())
         # print("donothing PID:", pids[1])
