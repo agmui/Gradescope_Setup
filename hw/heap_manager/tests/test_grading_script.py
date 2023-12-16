@@ -92,11 +92,11 @@ class TestIntegration(unittest.TestCase):
         print("https://docs.google.com/forms/d/e/1FAIpQLSfhQQLJKwMup5vkAd9BBnEZTGOpYZHjvfSJg8V4YlQKp9TufA/viewform")
         print("thank you")
 
-        print(text2art("heap manager", "rand"))
-        run_tests()
 
     def test_basic_case(self):
         """autograder basic case tests"""
+        print(text2art("heap manager", "rand"))
+        run_tests()
         self.assertTrue(TESTS[0].ok)
 
     def test_basic_alloc(self):
