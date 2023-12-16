@@ -7,11 +7,6 @@ from gradelib import *
 from gradelib import TESTS
 
 os.chdir("/autograder/source/src/xv6-riscv")
-# os.chdir("src")
-# os.system("apt update -y > /dev/null && apt upgrade -y > /dev/null")
-# os.system("apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu > /dev/null")
-# os.system("tar xf submit-lab-1.tar")
-# os.system("make > /dev/null")
 
 r = Runner(save("xv6.out"))
 
@@ -90,13 +85,15 @@ def test_stress_overlapping():
     r.match(no=[".*Assertion FAILED.*"])
 
 
-run_tests()
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         print("================= please go to: =================")
         print("https://docs.google.com/forms/d/e/1FAIpQLSfhQQLJKwMup5vkAd9BBnEZTGOpYZHjvfSJg8V4YlQKp9TufA/viewform")
         print("thank you")
+
+        run_tests()
+
     def test_basic_case(self):
         """autograder basic case tests"""
         print(text2art("heap manager", "rand"))
