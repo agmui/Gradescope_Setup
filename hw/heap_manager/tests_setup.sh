@@ -4,6 +4,17 @@
 SRC_DIR=/autograder/source/src
 cd $SRC_DIR
 svn export https://github.com/rhit-csse332/csse332-labs/branches/heapmm/xv6-riscv/ > /dev/null
-mv $SRC_DIR/user/*.c $SRC_DIR/xv6-riscv/user/ # TODO: if not found try $SRC_DIR/*/usr/*c
+if test -f $SRC_DIR/user/*.c; then
+  echo ur one of the gud ones c:
+  mv $SRC_DIR/user/*.c $SRC_DIR/xv6-riscv/user/
+elif test -f $SRC_DIR/*/*.c; then
+  echo Y U ZIP WRONG RAWWWWWWW >:c
+  mv $SRC_DIR/*/user/*.c $SRC_DIR/xv6-riscv/user/
+elif test -f $SRC_DIR/*.c; then
+  echo Y U ZIP WRONG RAWWWWWWW >:c
+  mv $SRC_DIR/*.c $SRC_DIR/xv6-riscv/user/
+fi
+
 cd $SRC_DIR/xv6-riscv/
 make > /dev/null
+#strace -e fork,clone --decode-pids=comm -f -o output.log expect ./test.exp
