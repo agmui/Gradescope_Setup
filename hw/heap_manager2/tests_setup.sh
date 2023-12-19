@@ -16,4 +16,6 @@ elif test -f $SRC_DIR/*.c; then
 fi
 
 cd $SRC_DIR/xv6-riscv/
+ls
+pwd
 make > /dev/null
