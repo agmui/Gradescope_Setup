@@ -16,7 +16,12 @@ expect "% "
 send -- "BG./donothing\n"
 sleep 1
 expect "Pausing for 5 seconds..."
+send -- "ps -a\n"
+expect "% "
 send -- "pgrep donothing\n"
+
+expect "Do nothing program finished!\n"
+expect "Do nothing program finished!\n"
 #expect "% "
 #send -- "pstree $PID\n"
 #expect "% "

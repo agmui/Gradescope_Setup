@@ -49,6 +49,8 @@ class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
 
+    @weight(0)
+    @number("1")
     def test_foreground_cmd(self):
         """checking for foreground commands"""
         print(text2art("simple shell", "rand"))

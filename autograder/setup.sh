@@ -2,7 +2,7 @@
 
 #TODO: check if you can read json
 grep -Po '"title":.*?",' $AUTOGRADER_ROOT/submission_metadata.json | cut -d':' -f 2 | tr -d '"' | tr -d ',' | awk '{$1=$1;print}' >> assignmentName.txt
-assignment="simple_shell"
+assignment="heap_manager"
 ls autograder/source
 
 apt update -y > /dev/null && apt upgrade -y
