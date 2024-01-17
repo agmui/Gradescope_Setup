@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Set up autograder files
 
-svn up /autograder/source > /dev/null
+#svn up /autograder/source > /dev/null #TODO: remove?
 
 # guarantee there is a src dir
 mkdir -p /autograder/source/src
