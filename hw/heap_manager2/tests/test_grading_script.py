@@ -6,6 +6,7 @@ from art import *
 from gradelib import *
 from gradelib import TESTS
 
+print('test_grading_script.py')
 os.chdir("src")
 # os.system("apt update -y > /dev/null && apt upgrade -y > /dev/null")
 # os.system(

@@ -23,6 +23,4 @@ ls
 cp -r $SRC_DIR/* $SRC_DIR/csse332-labs/xv6-riscv/
 
 cd $SRC_DIR/csse332-labs/xv6-riscv/
-ls
-pwd
 make > /dev/null
