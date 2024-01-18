@@ -26,4 +26,5 @@ git clone https://github.com/agmui/gradescope_semgrep
 
 apt-get install -y python3 python3-pip python3-dev jq
 
+chmod +x /autograder/source/clone_dir
 mv /autograder/source/clone_dir /usr/bin
