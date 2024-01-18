@@ -20,7 +20,7 @@ ls
 #  echo Y U ZIP WRONG RAWWWWWWW >:c
 #  mv $SRC_DIR/*.c $SRC_DIR/csse332-labs/xv6-riscv/user/
 #fi
-cp $SRC_DIR/* $SRC_DIR/csse332-labs/xv6-riscv/user
+cp -r $SRC_DIR/* $SRC_DIR/csse332-labs/xv6-riscv/user
 
 cd $SRC_DIR/csse332-labs/xv6-riscv/
 ls
