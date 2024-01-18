@@ -5,7 +5,7 @@ SRC_DIR=/autograder/source/src
 cd $SRC_DIR
 
 # first arg is branch second is directory
-function clone_dir() {#TODO: make this into a program
+function clone_dir() {
   BRANCH=$1
   DIR=$2
   URL=$3
@@ -16,6 +16,7 @@ function clone_dir() {#TODO: make this into a program
   #setups sparse checkout https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/
   git sparse-checkout set --cone
   git sparse-checkout set $DIR #clones only xv6-riscv/ DIR
+  cd ..
 }
 clone_dir buddy xv6-riscv https://github.com/rhit-csse332/csse332-labs.git
 #SVN is no longer supported (https://github.blog/2023-01-20-sunsetting-subversion-support/)
