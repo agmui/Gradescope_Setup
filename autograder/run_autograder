@@ -1,7 +1,21 @@
 #!/usr/bin/env bash
 # Set up autograder files
 
-#svn up /autograder/source > /dev/null #TODO: remove?
+#svn up /autograder/source > /dev/null #svn is no longer supported
+
+AUTOGRADER_ROOT=/autograder
+ASSIGNMENT_NAME=$(cat $AUTOGRADER_ROOT/submission_metadata.json | jq -r '.assignment.title')
+declare -A assignment_dict
+assignment_dict["C Review and xv6 Introduction"]=c_review
+assignment_dict["(Challenge) Heap Manager II"]=heap_manager2
+ASSIGNMENT=${assignment_dict[$ASSIGNMENT_NAME]}
+
+cd /gradescope_semgrep
+git pull
+cd ..
+mv /gradescope_semgrep/hw/$ASSIGNMENT/* /autograder/source
+
+pip3 install -r /autograder/source/requirements.txt # TODO: Try to move to setup.sh?
 
 # guarantee there is a src dir
 mkdir -p /autograder/source/src
@@ -13,8 +27,8 @@ cd /autograder/source/
 bash tests_setup.sh
 python3 run_tests.py
 
-AUTOGRADER_ROOT=/autograder
 
+#TODO: use jq
 STUDENT_NAME=`grep -Po '"name":.*?",' $AUTOGRADER_ROOT/submission_metadata.json | cut -d':' -f 2 | tr -d '"' | tr -d ',' | awk '{$1=$1;print}'`
 STUDENT_ID=`grep -Po '"email":.*?",' $AUTOGRADER_ROOT/submission_metadata.json | cut -d':' -f2|tr -d '"' | tr -d ',' | cut -d'@' -f1 | awk '{$1=$1;print}'`
 
