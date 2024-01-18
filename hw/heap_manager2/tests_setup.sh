@@ -8,6 +8,8 @@ clone_dir buddy xv6-riscv https://github.com/rhit-csse332/csse332-labs.git
 #SVN is no longer supported (https://github.blog/2023-01-20-sunsetting-subversion-support/)
 #svn export https://github.com/rhit-csse332/csse332-labs/branches/buddy/xv6-riscv/ > /dev/null
 
+pwd
+ls
 if test -f $SRC_DIR/user/*.c; then # TODO: add this to all hws
   echo ur one of the gud ones c:
   mv $SRC_DIR/user/*.c $SRC_DIR/csse332-labs/xv6-riscv/user/
