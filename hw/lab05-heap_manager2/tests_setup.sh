@@ -4,7 +4,7 @@
 SRC_DIR=/autograder/source/src
 cd $SRC_DIR
 
-clone_dir buddy xv6-riscv https://github.com/rhit-csse332/csse332-labs.git
+clone_dir buddy xv6-riscv https://github.com/rhit-csse332/csse332-labs.git > /dev/null
 #SVN is no longer supported (https://github.blog/2023-01-20-sunsetting-subversion-support/)
 #svn export https://github.com/rhit-csse332/csse332-labs/branches/buddy/xv6-riscv/ > /dev/null
 

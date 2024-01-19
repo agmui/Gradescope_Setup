@@ -6,12 +6,20 @@
 AUTOGRADER_ROOT=/autograder
 ASSIGNMENT_NAME=$(cat $AUTOGRADER_ROOT/submission_metadata.json | jq -r '.assignment.title')
 declare -A assignment_dict
-assignment_dict["C Review and xv6 Introduction"]=c_review
-assignment_dict["(Challenge) Heap Manager II"]=heap_manager2
+assignment_dict["C Review and xv6 Introduction"]=lab01-c_review
+assignment_dict["Simple Shell"]=lab02-simple_shell
+assignment_dict["Process Lab"]=lab03-process_lab
+assignment_dict["Heap Manager"]=lab04-heap_manager
+assignment_dict["(Challenge) Heap Manager II"]=lab05-heap_manager2
+assignment_dict["[Challenge] Copy-on-write"]=lab06-copy_on_write
+assignment_dict["Threads & Mutex Basics"]=lab07-threads_mutex_basic
+assignment_dict["Condition Variables Basics"]=lab08-cond_vars_basic
+assignment_dict["(Challenge) Condition Variables 2"]=lab09-cond_vars2
+
 ASSIGNMENT=${assignment_dict[$ASSIGNMENT_NAME]}
 
 cd /gradescope_semgrep
-git pull
+git pull > /dev/null
 cd ..
 mv /gradescope_semgrep/hw/$ASSIGNMENT/* /autograder/source
 
