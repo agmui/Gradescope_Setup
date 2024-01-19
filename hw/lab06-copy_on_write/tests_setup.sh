@@ -14,3 +14,4 @@ ls
 pwd
 make clean > /dev/null
 make > /dev/null
+echo ran make
