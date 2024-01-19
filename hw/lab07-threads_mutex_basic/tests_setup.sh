@@ -2,6 +2,11 @@
 
 # shellcheck disable=SC2164
 SRC_DIR=/autograder/source/src
-mv $SRC_DIR/user/*.c $SRC_DIR/
+#mv $SRC_DIR/*.c $SRC_DIR/
 cd $SRC_DIR
-make > /dev/null
+#make > /dev/null
+
+gcc -Wall -g -pthread -c -pthread factoring.c -o thread_factoring.bin
+gcc -Wall -g -pthread -c -pthread threadSort.c -o thread_sort.bin
+gcc -Wall -g -pthread -c -pthread add_a_lot.c -o basic_mutex.bin
+gcc -Wall -g -pthread -c -pthread red_blue_purple.c -o red_blue_purple.bin

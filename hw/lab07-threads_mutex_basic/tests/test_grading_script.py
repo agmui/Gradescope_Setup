@@ -5,10 +5,10 @@ from gradescope_utils.autograder_utils.decorators import weight, tags, number, p
 from art import *
 
 os.chdir("src")
-os.system("gcc -pthread -ggdb factoring.c -o thread_factoring.bin")
-os.system("gcc -pthread -ggdb threadSort.c -o thread_sort.bin")
-os.system("gcc -pthread -ggdb add_a_lot.c -o basic_mutex.bin")
-os.system("gcc -pthread -ggdb red_blue_purple.c -o red_blue_purple.bin")
+# os.system("gcc -pthread -ggdb factoring.c -o thread_factoring.bin")
+# os.system("gcc -pthread -ggdb threadSort.c -o thread_sort.bin")
+# os.system("gcc -pthread -ggdb add_a_lot.c -o basic_mutex.bin")
+# os.system("gcc -pthread -ggdb red_blue_purple.c -o red_blue_purple.bin")
 
 
 class TestIntegration(unittest.TestCase):
