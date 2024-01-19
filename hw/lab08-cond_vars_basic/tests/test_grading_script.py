@@ -46,7 +46,6 @@ async def run():
     # return output
 
 
-print(text2art("cond vars basic", "rand"))
 os.chdir('./src')
 os.system("make clean")
 os.system("make")
@@ -76,6 +75,7 @@ class TestIntegration(unittest.TestCase):
         pass
 
     def test_inorder_output(self):
+        print(text2art("cond vars basic", "rand"))
         global output1
         ordered_output = [
             "1 is finished with the critical section",
