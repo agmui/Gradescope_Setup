@@ -15,7 +15,7 @@ git pull
 cd ..
 mv /gradescope_semgrep/hw/$ASSIGNMENT/* /autograder/source
 
-pip3 install -r /autograder/source/requirements.txt # TODO: Try to move to setup.sh?
+pip3 install -r /autograder/source/requirements.txt > /dev/null # each requirements.txt are hw dependent
 
 # guarantee there is a src dir
 mkdir -p /autograder/source/src
