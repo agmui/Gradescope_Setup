@@ -64,11 +64,12 @@ def test_stress_overlapping():
     r.match("^test_stress_overlapping\\(\\d+\\): OK\.",
             no=[".*Assertion FAILED.*"])
 
-
-# try:
-#     run_tests()
-# finally:
-#     unittest.main()
+try:
+    run_tests()
+finally:
+    print('failed tests')
+    pass
+    # unittest.main()
 
 
 class TestIntegration(unittest.TestCase):
