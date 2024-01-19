@@ -47,8 +47,8 @@ async def run():
 
 
 os.chdir('./src')
-os.system("make clean")
-os.system("make")
+# os.system("make clean")
+# os.system("make")
 
 print("===starting tests===")
 output1, output2, output3, output4, output5 = asyncio.run(run())
