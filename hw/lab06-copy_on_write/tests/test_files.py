@@ -10,7 +10,7 @@ class TestFiles(unittest.TestCase):
     def test_submitted_files(self):
         """Check submitted files"""
         print(text2art("heap manager", "rand"))
-        missing_files = check_submitted_files(['submit-lab-5.tar','submit-lab-5.patch'])
+        missing_files = check_submitted_files(['kernel/kalloc.c', 'kernel/trap.c', 'kernel/vm.c','user/simplefork.c'])
         for path in missing_files:
             print('Missing {0}'.format(path))
         self.assertEqual(len(missing_files), 0, 'Missing some required files!')
