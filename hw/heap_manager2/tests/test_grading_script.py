@@ -65,6 +65,10 @@ def test_stress_overlapping():
             no=[".*Assertion FAILED.*"])
 
 
+try:
+    run_tests()
+finally:
+    pass
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
@@ -110,8 +114,4 @@ class TestIntegration(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    try:
-        run_tests()
-    finally:
-        unittest.main()
-    # unittest.main()
+    unittest.main()
