@@ -242,18 +242,18 @@ max_graph_convert = {
         "pthread_cond_wait(.*)"
     ],
     'plus_rout': [
-        "++;",
+        ["++;", "+="],
         "pthread_mutex_unlock(.*)",
         "sleep(1)",
         "pthread_mutex_lock(.*)",
-        "--;",
+        ["--;", '-='],
     ],
     'min_rout': [
-        "--;",
+        ["--;", '-='],
         "pthread_mutex_unlock(.*)",
         "sleep(1)",
         "pthread_mutex_lock(.*)",
-        "++;",
+        ["++;", '+='],
     ],
     'unlock_first': [
         "pthread_mutex_unlock(.*)",
@@ -285,7 +285,7 @@ prodcons_prod_graph_convert = {
         "while ?(.*)",
         "pthread_cond_wait(.*)",
         "buffer[last_valid_index + 1].*",
-        "++;",
+        ["++;", '+='],
     ],
     'unlock_first': [
         "pthread_mutex_unlock(.*)",
@@ -316,7 +316,7 @@ prodcons_cons_graph_convert = {
         "while ?(.*)",
         "pthread_cond_wait(.*)",
         ".*buffer[last_valid_index];",
-        "--;",
+        ["--;", "-="],
     ],
     'unlock_first': [
         "pthread_mutex_unlock(.*)",
