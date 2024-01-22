@@ -49,12 +49,30 @@ class TestIntegration(unittest.TestCase):
 
     @weight(0)
     @number("1")
-    def test_make_grade(self):
+    def test_band(self):
         """autograder output tests"""
         print(text2art("cond vars 2", "rand"))
         print(output1['output'])
+        self.assertTrue(True)
+
+    @weight(0)
+    @number("2")
+    def test_little_red_hen(self):
+        """autograder output tests"""
         print(output2['output'])
+        self.assertTrue(True)
+
+    @weight(0)
+    @number("3")
+    def test_priority(self):
+        """autograder output tests"""
         print(output3['output'])
+        self.assertTrue(True)
+
+    @weight(0)
+    @number("4")
+    def test_three_jobs(self):
+        """autograder output tests"""
         print(output4['output'])
         # process = subprocess.Popen(['../src/make grade'], stdout=subprocess.PIPE, encoding='UTF-8')
         # result, error = process.communicate()
