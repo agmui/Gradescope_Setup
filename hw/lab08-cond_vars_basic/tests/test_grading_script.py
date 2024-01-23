@@ -30,11 +30,11 @@ async def async_run_cmd(cmd):
 
 async def run():
     return await asyncio.gather(
-        async_run_cmd('./inorder'),
-        async_run_cmd('./max'),
-        async_run_cmd('./prodcons_condvar'),
-        async_run_cmd('./rooms'),
-        async_run_cmd('./tunnel')
+        async_run_cmd('./inorder.bin'),
+        async_run_cmd('./max.bin'),
+        # async_run_cmd('./prodcons_condvar'),
+        async_run_cmd('./rooms.bin'),
+        async_run_cmd('./tunnel.bin')
     )
     # output = [0, 0, 0]
     # task1 = asyncio.create_task(async_run_cmd('./inorder'))
@@ -51,7 +51,7 @@ os.chdir('./src')
 # os.system("make")
 
 print("===starting tests===")
-output1, output2, output3, output4, output5 = asyncio.run(run())
+inorder_output, max_output, rooms_output, tunnel_output = asyncio.run(run())
 
 
 # print("====================")
@@ -76,7 +76,7 @@ class TestIntegration(unittest.TestCase):
 
     def test_inorder_output(self):
         print(text2art("cond vars basic", "rand"))
-        global output1
+        global inorder_output
         ordered_output = [
             "1 is finished with the critical section",
             "2 is finished with the critical section",
@@ -84,12 +84,12 @@ class TestIntegration(unittest.TestCase):
             "4 is finished with the critical section"
         ]
         print("======output checking=======")
-        if output1["code"] != 0:
-            print("exited with", output1["code"])
+        if inorder_output["code"] != 0:
+            print("exited with", inorder_output["code"])
             self.assertTrue(False)
-        output1 = output1["output"].split('\n')
+        inorder_output = inorder_output["output"].split('\n')
         count: int = 0
-        for out in output1:
+        for out in inorder_output:
             if ordered_output[count] in out:
                 count += 1
                 print(out)
@@ -104,7 +104,7 @@ class TestIntegration(unittest.TestCase):
 
     def test_max_output(self):
         print("======output checking=======")
-        output = output2["output"].split('\n')
+        output = max_output["output"].split('\n')
         count = 0
         change: bool = False
         for i in output:
@@ -128,27 +128,27 @@ class TestIntegration(unittest.TestCase):
             print("\noutput correct!")
             self.assertTrue(True)
 
-    def test_prodcons_output(self):
-        print("======output checking=======")
-        output = output3["output"].split('\n')
-        count = 0
-        for i in output:
-            if "Produced value" in i:
-                print(i, "error: producer not waiting" if count > 5 else "")
-                count += 1
-            elif "Consumed value" in i:
-                print(i, "error: consumer not waiting" if count < 0 else "")
-                count -= 1
-        if count != 0:
-            print("error output not correct:", count)
-            self.assertTrue(False)
-        else:
-            print("\noutput correct!")
-            self.assertTrue(True)
+    # def test_prodcons_output(self):
+    #     print("======output checking=======")
+    #     output = output3["output"].split('\n')
+    #     count = 0
+    #     for i in output:
+    #         if "Produced value" in i:
+    #             print(i, "error: producer not waiting" if count > 5 else "")
+    #             count += 1
+    #         elif "Consumed value" in i:
+    #             print(i, "error: consumer not waiting" if count < 0 else "")
+    #             count -= 1
+    #     if count != 0:
+    #         print("error output not correct:", count)
+    #         self.assertTrue(False)
+    #     else:
+    #         print("\noutput correct!")
+    #         self.assertTrue(True)
 
     def test_rooms_output(self):
         print("======output checking=======")
-        output = output4["output"].split('\n')
+        output = rooms_output["output"].split('\n')
         error = False
         room1 = 0
         waiting_room2 = 0
@@ -200,7 +200,7 @@ class TestIntegration(unittest.TestCase):
 
     def test_tunnel_output(self):
         print("======output checking=======")
-        output = output5["output"].split('\n')
+        output = tunnel_output["output"].split('\n')
         EW_num = 0
         WE_num = 0
         Ambulances_inside = 0

@@ -41,7 +41,7 @@ os.chdir("src")
 os.system("make")
 
 print("===starting tests===")
-output1, output2, output3, output4 = asyncio.run(run())
+inorder_output, output2, output3, output4 = asyncio.run(run())
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
@@ -52,7 +52,7 @@ class TestIntegration(unittest.TestCase):
     def test_band(self):
         """autograder output tests"""
         print(text2art("cond vars 2", "rand"))
-        print(output1['output'])
+        print(inorder_output['output'])
         self.assertTrue(True)
 
     @weight(0)

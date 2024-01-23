@@ -1,19 +1,15 @@
-all: max inorder prodcons_condvar rooms tunnel
+.PHONY: all clean
 
-.PHONY: clean all
+SRCS:=$(wildcard *.c)
+BINS:=$(SRCS:%.c=%.bin)
 
-LDLIBS += -pthread
-CFLAGS += -ggdb
+CFLAGS+=-ggdb
+LDLIBS+=-pthread
 
-max: max.o
+all: $(BINS)
 
-inorder: inorder.o
-
-prodcons_condvar: prodcons_condvar.o
-
-rooms: rooms.o
-
-tunnel: tunnel.o
+%.bin: %.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 clean:
-	rm -rf *.o max inorder prodcons_condvar rooms tunnel
+	rm -f *.o *.bin

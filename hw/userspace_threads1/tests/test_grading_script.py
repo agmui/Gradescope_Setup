@@ -41,7 +41,7 @@ os.chdir("src")
 os.system("make tests.bin")
 
 print("===starting tests===")
-output1, output2, output3, output4, output5 = asyncio.run(run())
+inorder_output, output2, output3, output4, output5 = asyncio.run(run())
 
 
 class TestIntegration(unittest.TestCase):
@@ -55,8 +55,8 @@ class TestIntegration(unittest.TestCase):
         print(text2art("stack smashing", "rand"))
         # process = subprocess.Popen(['./tests.bin', '1'], stdout=subprocess.PIPE, encoding='UTF-8')
         # result, error = process.communicate()
-        print(output1)
-        self.assertTrue("OK" in output1)
+        print(inorder_output)
+        self.assertTrue("OK" in inorder_output)
 
     @weight(0)
     @number("2")

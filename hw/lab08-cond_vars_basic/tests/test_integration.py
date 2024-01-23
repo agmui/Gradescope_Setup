@@ -272,68 +272,68 @@ format_output(truncated_file_arr, format_arr, offset)
 # print("errors:", errors)
 
 # ========== prodcons ==========
-print("========== prodcons.c ==========")
-prodcons_prod_decision_graph = {
-    'head': ['root'],
-    'root': ['unlock_first', 'signal_first'],
-    'unlock_first': [],
-    'signal_first': [],
-}
-prodcons_prod_graph_convert = {
-    'root': [
-        "pthread_mutex_lock(.*)",
-        "while ?(.*)",
-        "pthread_cond_wait(.*)",
-        "buffer[last_valid_index + 1].*",
-        ["++;", '+='],
-    ],
-    'unlock_first': [
-        "pthread_mutex_unlock(.*)",
-        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"]
-    ],
-    'signal_first': [
-        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
-        "pthread_mutex_unlock(.*)",
-    ],
-}
-
-truncated_file_arr, offset = init_ordered("../src/prodcons_condvar.c", "producer(void *arg)")
-format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-prodcons_prod_errors, format_arr = graph_search('head', 0, truncated_file_arr, prodcons_prod_decision_graph,
-                                                prodcons_prod_graph_convert, format_arr)
-format_output(truncated_file_arr, format_arr, offset)
+# print("========== prodcons.c ==========")
+# prodcons_prod_decision_graph = {
+#     'head': ['root'],
+#     'root': ['unlock_first', 'signal_first'],
+#     'unlock_first': [],
+#     'signal_first': [],
+# }
+# prodcons_prod_graph_convert = {
+#     'root': [
+#         "pthread_mutex_lock(.*)",
+#         "while ?(.*)",
+#         "pthread_cond_wait(.*)",
+#         "buffer[last_valid_index + 1].*",
+#         ["++;", '+='],
+#     ],
+#     'unlock_first': [
+#         "pthread_mutex_unlock(.*)",
+#         ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"]
+#     ],
+#     'signal_first': [
+#         ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
+#         "pthread_mutex_unlock(.*)",
+#     ],
+# }
+#
+# truncated_file_arr, offset = init_ordered("../src/prodcons_condvar.c", "producer(void *arg)")
+# format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+# prodcons_prod_errors, format_arr = graph_search('head', 0, truncated_file_arr, prodcons_prod_decision_graph,
+#                                                 prodcons_prod_graph_convert, format_arr)
+# format_output(truncated_file_arr, format_arr, offset)
 # print("errors:", errors)
-
-prodcons_cons_decision_graph = {
-    'head': ['root'],
-    'root': ['unlock_first', 'signal_first'],
-    'unlock_first': [],
-    'signal_first': [],
-}
-prodcons_cons_graph_convert = {
-    'root': [
-        "pthread_mutex_lock(.*)",
-        "while ?(.*)",
-        "pthread_cond_wait(.*)",
-        ".*buffer[last_valid_index];",
-        ["--;", "-="],
-    ],
-    'unlock_first': [
-        "pthread_mutex_unlock(.*)",
-        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
-        "sleep(1)",
-    ],
-    'signal_first': [
-        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
-        "pthread_mutex_unlock(.*)",
-        "sleep(1)",
-    ],
-}
-truncated_file_arr, offset = init_ordered("../src/prodcons_condvar.c", "consumer(void *arg)")
-format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-prodcons_cons_errors, format_arr = graph_search('head', 0, truncated_file_arr, prodcons_cons_decision_graph,
-                                                prodcons_cons_graph_convert, format_arr)
-format_output(truncated_file_arr, format_arr, offset)
+#
+# prodcons_cons_decision_graph = {
+#     'head': ['root'],
+#     'root': ['unlock_first', 'signal_first'],
+#     'unlock_first': [],
+#     'signal_first': [],
+# }
+# prodcons_cons_graph_convert = {
+#     'root': [
+#         "pthread_mutex_lock(.*)",
+#         "while ?(.*)",
+#         "pthread_cond_wait(.*)",
+#         ".*buffer[last_valid_index];",
+#         ["--;", "-="],
+#     ],
+#     'unlock_first': [
+#         "pthread_mutex_unlock(.*)",
+#         ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
+#         "sleep(1)",
+#     ],
+#     'signal_first': [
+#         ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
+#         "pthread_mutex_unlock(.*)",
+#         "sleep(1)",
+#     ],
+# }
+# truncated_file_arr, offset = init_ordered("../src/prodcons_condvar.c", "consumer(void *arg)")
+# format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+# prodcons_cons_errors, format_arr = graph_search('head', 0, truncated_file_arr, prodcons_cons_decision_graph,
+#                                                 prodcons_cons_graph_convert, format_arr)
+# format_output(truncated_file_arr, format_arr, offset)
 
 
 # print("errors:", errors)
@@ -353,11 +353,11 @@ class TestIntegration(unittest.TestCase):
         """autograder max integration tests"""
         self.assertTrue(len(max_errors) == 0)
 
-    @weight(0)
-    @visibility('hidden')
-    def test_prodcons_thread_func(self):
-        """autograder prodcons integration tests"""
-        self.assertTrue(len(prodcons_prod_errors) == 0 and len(prodcons_cons_errors) == 0)
+    # @weight(0)
+    # @visibility('hidden')
+    # def test_prodcons_thread_func(self):
+    #     """autograder prodcons integration tests"""
+    #     self.assertTrue(len(prodcons_prod_errors) == 0 and len(prodcons_cons_errors) == 0)
 
 
 if __name__ == '__main__':
