@@ -92,9 +92,11 @@ class TestIntegration(unittest.TestCase):
         for out in inorder_output:
             if ordered_output[count] in out:
                 count += 1
-                print(out)
+                print('\t'+out)
                 if count == 4:
                     break
+            else:
+                print(out)
         if count != 4:
             print("error output1 not correct:", count)
             self.assertTrue(False)
