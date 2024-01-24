@@ -111,15 +111,17 @@ class TestIntegration(unittest.TestCase):
         change: bool = False
         for i in output:
             if "is in the critical section" in i:
-                print(i)
+                print('\t'+i)
                 count += 1
                 change = True
             elif "has left the critical section" in i:
-                print(i)
+                print('\t'+i)
                 count -= 1
                 change = True
             if count > 3:
                 print("error count:", count)
+            else:
+                print(i)
         if count != 0:
             print("error output not correct:", count)
             self.assertTrue(False)
