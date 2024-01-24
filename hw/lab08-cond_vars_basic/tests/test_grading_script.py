@@ -109,6 +109,7 @@ class TestIntegration(unittest.TestCase):
         output = max_output["output"].split('\n')
         count = 0
         change: bool = False
+        exceeded_count = False
         for i in output:
             if "is in the critical section" in i:
                 print('\t'+i)
@@ -119,7 +120,8 @@ class TestIntegration(unittest.TestCase):
                 count -= 1
                 change = True
             if count > 3:
-                print("error count:", count)
+                print("== error count:", count,'==')
+                exceeded_count = True
             else:
                 print(i)
         if count != 0:
@@ -127,6 +129,9 @@ class TestIntegration(unittest.TestCase):
             self.assertTrue(False)
         if not change:
             print("count not read output change:", change)
+            self.assertTrue(False)
+        if exceeded_count:
+            print("error: exceeded count")
             self.assertTrue(False)
         else:  # FIXME:
             print("\noutput correct!")
