@@ -119,11 +119,11 @@ class TestIntegration(unittest.TestCase):
                 print('\t'+i)
                 count -= 1
                 change = True
+            else:
+                print(i)
             if count > 3:
                 print("== error count:", count,'==')
                 exceeded_count = True
-            else:
-                print(i)
         if count != 0:
             print("error output not correct:", count)
             self.assertTrue(False)
