@@ -164,7 +164,7 @@ class TestIntegration(unittest.TestCase):
         room2 = 0
         unhappy = 0
         final_number = 0
-        for i in output:
+        for i in output[:-1]:
             print(i)
             if "Just arrived" in i:
                 continue
@@ -184,7 +184,7 @@ class TestIntegration(unittest.TestCase):
                 if waiting_room2 > 0:
                     waiting_room2 -= 1
                 room2 += 1
-                if room2 > 5:
+                if room2 > 2:
                     print("=== ERROR: number of people in room2:", room2, "===")
                     error = True
             elif "Left second room" in i:
