@@ -231,14 +231,14 @@ class TestIntegration(unittest.TestCase):
             if "Car" in i:
                 if "entered tunnel in EW" in i:
                     if Ambulances_inside > 0:
-                        print("=== ERROR", "===")
+                        print("=== ERROR can't enter cuz Ambulance inside ===")
                         error = True
                     EW_num += 1
                 elif "exited tunnel in EW" in i:
                     EW_num -= 1
                 elif "entered tunnel in WE" in i:
                     if Ambulances_inside > 0:
-                        print("=== ERROR", "===")
+                        print("=== ERROR can't enter cuz Ambulance inside ===")
                         error = True
                     WE_num += 1
                 elif "exited tunnel in WE" in i:
@@ -262,10 +262,10 @@ class TestIntegration(unittest.TestCase):
                 else:
                     print("unknown output:", i)
             if EW_num > 3:
-                print("=== ERROR", "===")
+                print("=== ERROR too many in EW ===")
                 error = True
             if WE_num > 1:
-                print("=== ERROR", "===")
+                print("=== ERROR too many in WE ===")
                 error = True
 
         if not error:
