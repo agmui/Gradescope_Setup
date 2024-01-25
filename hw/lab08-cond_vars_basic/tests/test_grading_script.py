@@ -92,7 +92,7 @@ class TestIntegration(unittest.TestCase):
         for out in inorder_output:
             if ordered_output[count] in out:
                 count += 1
-                print('\t'+out)
+                print('\t' + out)
                 if count == 4:
                     break
             else:
@@ -112,17 +112,17 @@ class TestIntegration(unittest.TestCase):
         exceeded_count = False
         for i in output:
             if "is in the critical section" in i:
-                print('\t'+i)
+                print('\t' + i)
                 count += 1
                 change = True
             elif "has left the critical section" in i:
-                print('\t'+i)
+                print('\t' + i)
                 count -= 1
                 change = True
             else:
                 print(i)
             if count > 3:
-                print("== error count:", count,'==')
+                print("== error count:", count, '==')
                 exceeded_count = True
         if count != 0:
             print("error output not correct:", count)
@@ -158,9 +158,9 @@ class TestIntegration(unittest.TestCase):
     def test_rooms_output(self):
         print("======output checking=======")
         output = rooms_output["output"].split('\n')
-        if len(output)<=0:
+        if len(output) <= 0:
             print("no output!!?!")
-            self.assertTrue(not error)
+            self.assertTrue(False)
             return
 
         error = False
@@ -217,22 +217,29 @@ class TestIntegration(unittest.TestCase):
     def test_tunnel_output(self):
         print("======output checking=======")
         output = tunnel_output["output"].split('\n')
+        if len(output) <= 0:
+            print("no output!!?!")
+            self.assertTrue(False)
+            return
+        error = False
         EW_num = 0
         WE_num = 0
         Ambulances_inside = 0
-        for i in output:
+        for i in output[:-1]:
             print(i)
             # for cars
             if "Car" in i:
                 if "entered tunnel in EW" in i:
                     if Ambulances_inside > 0:
                         print("=== ERROR", "===")
+                        error = True
                     EW_num += 1
                 elif "exited tunnel in EW" in i:
                     EW_num -= 1
                 elif "entered tunnel in WE" in i:
                     if Ambulances_inside > 0:
                         print("=== ERROR", "===")
+                        error = True
                     WE_num += 1
                 elif "exited tunnel in WE" in i:
                     WE_num -= 1
@@ -256,9 +263,16 @@ class TestIntegration(unittest.TestCase):
                     print("unknown output:", i)
             if EW_num > 3:
                 print("=== ERROR", "===")
+                error = True
             if WE_num > 1:
                 print("=== ERROR", "===")
+                error = True
 
+        if not error:
+            print("\noutput correct!")
+        else:
+            print("please make sure not to touch the print statements it breaks the autograder if you change it :'c")
+        self.assertTrue(not error)
 
 if __name__ == '__main__':
     unittest.main()
