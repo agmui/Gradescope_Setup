@@ -249,16 +249,16 @@ class TestIntegration(unittest.TestCase):
             elif "Ambulance" in i:
                 if "entered the tunnel in EW" in i:
                     Ambulances_inside += 1
-                    EW_num += 1
+                    # EW_num += 1
                 elif "exited the tunnel in EW" in i:
                     Ambulances_inside -= 1
-                    EW_num -= 1
+                    # EW_num -= 1
                 elif "entered the tunnel in WE" in i:
                     Ambulances_inside += 1
-                    WE_num += 1
+                    # WE_num += 1
                 elif "exited the tunnel in WE" in i:
                     Ambulances_inside -= 1
-                    WE_num -= 1
+                    # WE_num -= 1
                 else:
                     print("unknown output:", i)
             if EW_num > 3:
@@ -267,6 +267,9 @@ class TestIntegration(unittest.TestCase):
             if WE_num > 1:
                 print("=== ERROR too many in WE ===")
                 error = True
+            if EW_num + WE_num + Ambulances_inside > 4:
+                print(
+                    f'=== ERROR total num of cars inside, EW: {EW_num} WE: {WE_num} Ambulances: {Ambulances_inside} ===')
 
         if not error:
             print("\noutput correct!")
