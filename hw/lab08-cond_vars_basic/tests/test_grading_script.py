@@ -158,6 +158,11 @@ class TestIntegration(unittest.TestCase):
     def test_rooms_output(self):
         print("======output checking=======")
         output = rooms_output["output"].split('\n')
+        if len(output)<=0:
+            print("no output!!?!")
+            self.assertTrue(not error)
+            return
+
         error = False
         room1 = 0
         waiting_room2 = 0
@@ -204,7 +209,9 @@ class TestIntegration(unittest.TestCase):
             print("number of unhappy customers is sus:", final_number)
 
         if not error:
-            print("output correct!")
+            print("\noutput correct!")
+        else:
+            print("please make sure not to touch the print statements it breaks the autograder if you change it :'c")
         self.assertTrue(not error)
 
     def test_tunnel_output(self):
