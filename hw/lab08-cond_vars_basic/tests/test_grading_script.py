@@ -87,7 +87,7 @@ class TestIntegration(unittest.TestCase):
         if inorder_output["code"] != 0:
             print("exited with", inorder_output["code"])
             self.assertTrue(False)
-        inorder_output = inorder_output["output"].split('\n')
+        inorder_output = inorder_output["output"].split('\n')  # TODO: maybe need to add [:-1]
         count: int = 0
         for out in inorder_output:
             if ordered_output[count] in out:
@@ -106,7 +106,7 @@ class TestIntegration(unittest.TestCase):
 
     def test_max_output(self):
         print("======output checking=======")
-        output = max_output["output"].split('\n')
+        output = max_output["output"].split('\n')  # TODO: maybe need to add [:-1]
         count = 0
         change: bool = False
         exceeded_count = False
@@ -157,8 +157,7 @@ class TestIntegration(unittest.TestCase):
 
     def test_rooms_output(self):
         print("======output checking=======")
-        output = rooms_output["output"].split('\n')
-        print("output len:",len(output))
+        output = rooms_output["output"].split('\n')[:-1]
         if len(output) <= 0:
             print("no output!!?!")
             self.assertTrue(False)
@@ -170,7 +169,7 @@ class TestIntegration(unittest.TestCase):
         room2 = 0
         unhappy = 0
         final_number = 0
-        for i in output[:-1]:
+        for i in output:
             print(i)
             if "Just arrived" in i:
                 continue
@@ -217,7 +216,7 @@ class TestIntegration(unittest.TestCase):
 
     def test_tunnel_output(self):
         print("======output checking=======")
-        output = tunnel_output["output"].split('\n')
+        output = tunnel_output["output"].split('\n')[:-1]
         if len(output) <= 0:
             print("no output!!?!")
             self.assertTrue(False)
@@ -226,7 +225,7 @@ class TestIntegration(unittest.TestCase):
         EW_num = 0
         WE_num = 0
         Ambulances_inside = 0
-        for i in output[:-1]:
+        for i in output:
             print(i)
             # for cars
             if "Car" in i:
@@ -274,6 +273,7 @@ class TestIntegration(unittest.TestCase):
         else:
             print("please make sure not to touch the print statements it breaks the autograder if you change it :'c")
         self.assertTrue(not error)
+
 
 if __name__ == '__main__':
     unittest.main()
