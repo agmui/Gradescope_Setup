@@ -158,6 +158,7 @@ class TestIntegration(unittest.TestCase):
     def test_rooms_output(self):
         print("======output checking=======")
         output = rooms_output["output"].split('\n')
+        print("output len:",len(output))
         if len(output) <= 0:
             print("no output!!?!")
             self.assertTrue(False)
