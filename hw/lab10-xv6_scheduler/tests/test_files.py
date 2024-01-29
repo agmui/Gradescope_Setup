@@ -4,12 +4,13 @@ from gradescope_utils.autograder_utils.decorators import weight
 from gradescope_utils.autograder_utils.files import check_submitted_files
 import glob
 
+
 class TestFiles(unittest.TestCase):
     @weight(0)
     def test_submitted_files(self):
         """Check submitted files"""
-        SUBMISSION_USER_BASE = '/autograder/submission/user'
-        files_to_check = ['kernel/proc.c', 'kernel/proc.h'] #TODO: check for extra files
+        SUBMISSION_USER_BASE = '/autograder/submission/kernel'
+        files_to_check = ['proc.c', 'proc.h']  # TODO: check for extra files
         missing_files = 0
         for file in files_to_check:
             # TODO: show/print which files read/submitted
