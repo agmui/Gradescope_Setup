@@ -18,10 +18,10 @@ def test_forkforkfork():
         'usertests forkforkfork'
     ]))
 
-@test(100, "simple", parent=test_forkforkfork)
+@test(100, "forkforkfork", parent=test_forkforkfork)
 def test_simple():
     matches = re.findall("^test forkforkfork: OK$", r.qemu.output, re.M)
-    assert_equal(len(matches), 2, "Number of appearances of 'forkforkfork: OK'")
+    assert_equal(len(matches), 1, "Number of appearances of 'forkforkfork: OK'")
 
 run_tests()
 class TestIntegration(unittest.TestCase):
