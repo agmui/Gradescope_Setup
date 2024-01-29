@@ -215,6 +215,7 @@ class TestIntegration(unittest.TestCase):
         self.assertTrue(not error)
 
     def test_tunnel_output(self):
+        # TODO: add a check to see if total number of ambulances in tunnel at any time is too low. It should be like 3
         print("======output checking=======")
         output = tunnel_output["output"].split('\n')[:-1]
         if len(output) <= 0:
@@ -269,7 +270,7 @@ class TestIntegration(unittest.TestCase):
                 error = True
             if EW_num + WE_num + Ambulances_inside > 4:
                 print(
-                    f'=== ERROR total num of cars inside, EW: {EW_num} WE: {WE_num} Ambulances: {Ambulances_inside} ===')
+                    f'=== ERROR total num cars inside, EW: {EW_num} WE: {WE_num} Ambulances: {Ambulances_inside} ===')
 
         if not error:
             print("\noutput correct!")
