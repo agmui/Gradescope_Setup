@@ -9,7 +9,7 @@ from gradelib import TESTS
 import re
 
 os.chdir("src/csse332-labs/ext2")
-
+os.system('ls;pwd')
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
