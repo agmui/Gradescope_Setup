@@ -16,6 +16,7 @@ assignment_dict["Threads & Mutex Basics"]=lab07-threads_mutex_basic
 assignment_dict["Condition Variables Basics"]=lab08-cond_vars_basic
 assignment_dict["(Challenge) Condition Variables 2"]=lab09-cond_vars2
 assignment_dict["Scheduler Activity"]=lab10-xv6_scheduler
+assignment_dict["(Challenge) ext2"]=lab12-ext2
 
 ASSIGNMENT=${assignment_dict[$ASSIGNMENT_NAME]}
 
