@@ -154,3 +154,5 @@ gradescope does not print ps -a for what ever reason idk so for simple shell gud
 * change hw dir name to tests
 * change assignment dir (in hw) to have labXX_ prefix
 * run valgrind
+* remove unwanted files from submition so gradescope does not display them
+* some weird timeout OK msg from xv6 grader `== Test buddy_allocator, test basic alloc == Timeout! buddy_allocator, test basic alloc: FAIL (30.1s) `
