@@ -190,7 +190,7 @@ def format_output(file_arr, format_arr, total_offset):
 
 
 # ========== inorder ==========
-print("========== inorder.c ==========")
+# print("========== inorder.c ==========")
 inorder_decision_graph = {
     'head': ['root'],
     'root': ['unlock_first', 'signal_first'],
