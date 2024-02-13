@@ -20,12 +20,12 @@ class TestIntegration(unittest.TestCase):
     def test_filereader(self):
         """autograder file reader tests"""
         print(text2art("ext2 lab!!!", "rand"))
-        process = subprocess.Popen(['./filereader', '451_filesystem.ext2', '/small-file.txt'], stdout=subprocess.PIPE,
+        process = subprocess.Popen('./filereader 451_filesystem.ext2 /small-file.txt'.split(), stdout=subprocess.PIPE,
                                    encoding='UTF-8')
         result, error = process.communicate()
         print(result)
-        print('errors:\n',error)
-        self.assertTrue("OK" in result)
+        self.assertEqual("file at inode 15\noutputing file named small-file.txt...\n", result)
+        process.terminate()#TODO: add terminate to all subprocessPopen
     # TODO: add valgrind test
 
 
