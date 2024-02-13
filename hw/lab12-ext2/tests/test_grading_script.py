@@ -20,7 +20,7 @@ class TestIntegration(unittest.TestCase):
     def test_filereader(self):
         """autograder file reader tests"""
         print(text2art("ext2 lab!!!", "rand"))
-        process = subprocess.Popen(['./filereader 451_filesystem.ext2 /small-file.txt'], stdout=subprocess.PIPE,
+        process = subprocess.Popen(['ls;pwd;./filereader 451_filesystem.ext2 /small-file.txt'], stdout=subprocess.PIPE,
                                    encoding='UTF-8')
         result, error = process.communicate()
         print(result)
