@@ -375,6 +375,7 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     @visibility('hidden')
     def test_proc_struct(self):
+        print(os.getcwd())
         """autograder integration tests"""
         # ========== proc struct ==========
         print("========== proc struct ==========")
