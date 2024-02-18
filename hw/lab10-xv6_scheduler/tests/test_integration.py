@@ -5,7 +5,6 @@ import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, visibility
 
 
-
 # TODO: remove white space in file before scan
 # TODO: make scan go down then up from offset
 # TODO: when scanning there is a bug that if there is a shared pattern in two different sections and one section and the
@@ -193,6 +192,8 @@ def format_output(file_arr, format_arr, total_offset):
                 print(f'{bcolors.FAIL} missing {format_arr[i]}{bcolors.ENDC}\n', end='')
 
 
+os.chdir("kernel")  # TODO: plz remove all uses of chdir
+
 add_to_list_decision_graph = {
     'head': ['root'],
     'root': [],
@@ -375,7 +376,6 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     @visibility('hidden')
     def test_proc_struct(self):
-        print(os.getcwd())
         """autograder integration tests"""
         # ========== proc struct ==========
         print("========== proc struct ==========")
