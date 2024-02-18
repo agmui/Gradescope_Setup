@@ -229,7 +229,7 @@ class TestIntegration(unittest.TestCase):
             ],
         }
 
-        truncated_file_arr, offset = init_ordered("./xv6-riscv/kernel/proc.c", "procinit(void)")
+        truncated_file_arr, offset = init_ordered("proc.c", "procinit(void)")
         print(truncated_file_arr)
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
         errors, format_arr = graph_search('head', 0, truncated_file_arr, procinit_decision_graph,
@@ -255,7 +255,7 @@ class TestIntegration(unittest.TestCase):
             ],
         }
 
-        truncated_file_arr, offset = init_ordered("./xv6-riscv/kernel/proc.c", "userinit(void)")
+        truncated_file_arr, offset = init_ordered("proc.c", "userinit(void)")
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
         errors, format_arr = graph_search('head', 0, truncated_file_arr, userinit_decision_graph,
                                           userinit_graph_convert,
@@ -283,7 +283,7 @@ class TestIntegration(unittest.TestCase):
             ],
         }
         print("========== fork ==========")
-        truncated_file_arr, offset = init_ordered("./xv6-riscv/kernel/proc.c", "fork(void)")
+        truncated_file_arr, offset = init_ordered("proc.c", "fork(void)")
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
         errors, format_arr = graph_search('head', 0, truncated_file_arr, add_to_list_decision_graph,
                                           add_to_list_graph_convert,
@@ -299,7 +299,7 @@ class TestIntegration(unittest.TestCase):
         """autograder integration tests"""
         # ========== yield ==========
         print("========== yield ==========")
-        truncated_file_arr, offset = init_ordered("./xv6-riscv/kernel/proc.c", "yield(void)")
+        truncated_file_arr, offset = init_ordered("proc.c", "yield(void)")
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
         errors, format_arr = graph_search('head', 0, truncated_file_arr, add_to_list_decision_graph,
                                           add_to_list_graph_convert,
@@ -315,7 +315,7 @@ class TestIntegration(unittest.TestCase):
         """autograder integration tests"""
         # ========== wakeup ==========
         print("========== wakeup ==========")
-        truncated_file_arr, offset = init_ordered("./xv6-riscv/kernel/proc.c", "wakeup(void *chan)")
+        truncated_file_arr, offset = init_ordered("proc.c", "wakeup(void *chan)")
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
         errors, format_arr = graph_search('head', 0, truncated_file_arr, add_to_list_decision_graph,
                                           add_to_list_graph_convert,
@@ -332,7 +332,7 @@ class TestIntegration(unittest.TestCase):
         # ========== kill ==========
         print("========== kill ==========")
 
-        truncated_file_arr, offset = init_ordered("./xv6-riscv/kernel/proc.c", "kill(int pid)")
+        truncated_file_arr, offset = init_ordered("proc.c", "kill(int pid)")
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
         errors, format_arr = graph_search('head', 0, truncated_file_arr, add_to_list_decision_graph,
                                           add_to_list_graph_convert,
@@ -363,7 +363,7 @@ class TestIntegration(unittest.TestCase):
             ],
         }
 
-        truncated_file_arr, offset = init_ordered("./xv6-riscv/kernel/proc.c", "scheduler(void)")
+        truncated_file_arr, offset = init_ordered("proc.c", "scheduler(void)")
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
         errors, format_arr = graph_search('head', 0, truncated_file_arr, scheduler_decision_graph,
                                           scheduler_graph_convert,
@@ -388,7 +388,7 @@ class TestIntegration(unittest.TestCase):
             ],
         }
 
-        truncated_file_arr, offset = init_ordered("./xv6-riscv/kernel/proc.h", "struct proc {")
+        truncated_file_arr, offset = init_ordered("proc.h", "struct proc {")
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
         errors, format_arr = graph_search('head', 0, truncated_file_arr, proc_struct_decision_graph,
                                           proc_struct_graph_convert,

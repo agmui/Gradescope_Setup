@@ -8,7 +8,7 @@ from gradelib import *
 from gradelib import TESTS
 import re
 
-# os.chdir("src/csse332-labs/xv6-riscv")
+os.chdir("src/csse332-labs/xv6-riscv")
 
 r = Runner(save("xv6.out"))
 
