@@ -207,7 +207,8 @@ add_to_list_graph_convert = {
 
 
 print(os.getcwd())
-os.chdir("src")  # to change to the right folder
+print("==")
+# os.chdir("src")  # to change to the right folder
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
