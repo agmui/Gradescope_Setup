@@ -1,7 +1,8 @@
+import os
 import subprocess
 import re
 import unittest
-from gradescope_utils.autograder_utils.decorators import weight, tags, number
+from gradescope_utils.autograder_utils.decorators import weight, tags, number, visibility
 
 
 # TODO: remove white space in file before scan
@@ -57,6 +58,8 @@ def init_ordered(file_location: str, bounding_func: str) -> [list, int]:
         if comment_index != -1:
             file_arr[i] = line[:comment_index]
 
+    if off_set == -1:
+        print("ERROR could not find function:", repr(bounding_func))
     # truncate code_arr to only the function scope
     return file_arr[off_set:end_index + 1], off_set
 
@@ -189,37 +192,17 @@ def format_output(file_arr, format_arr, total_offset):
                 print(f'{bcolors.FAIL} missing {format_arr[i]}{bcolors.ENDC}\n', end='')
 
 
-# ========== inorder ==========
-# print("========== inorder.c ==========")
-inorder_decision_graph = {
+add_to_list_decision_graph = {
     'head': ['root'],
-    'root': ['unlock_first', 'signal_first'],
-    'unlock_first': [],
-    'signal_first': [],
+    'root': [],
 }
-inorder_graph_convert = {
+add_to_list_graph_convert = {
     'root': [
-        "pthread_mutex_lock(.*)",
-        "while(.*)",
-        "pthread_cond_wait(.*)",
-        ["++;", "+="],
-    ],
-    'unlock_first': [
-        "pthread_mutex_unlock(.*)",
-        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"]
-    ],
-    'signal_first': [
-        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
-        "pthread_mutex_unlock(.*)",
+        "acquire(.*)",
+        "list_add_tail(.*)",
+        "release(.*)"
     ],
 }
-
-# truncated_file_arr, offset = init_ordered("../src/inorder.c", "void *thread(void *arg)")
-# format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-# inorder_errors, format_arr = graph_search('head', 0, truncated_file_arr, inorder_decision_graph, inorder_graph_convert,
-#                                           format_arr)
-# format_output(truncated_file_arr, format_arr, offset)
-# print("errors:", inorder_errors)
 
 
 class TestIntegration(unittest.TestCase):
@@ -227,9 +210,187 @@ class TestIntegration(unittest.TestCase):
         pass
 
     @weight(0)
-    def test_inorder(self):
+    @visibility('hidden')
+    def test_procinit(self):
         """autograder integration tests"""
-        self.assertTrue(True)
+        # ========== procinit ==========
+        print("========== procinit ==========")
+        procinit_decision_graph = {
+            'head': ['root'],
+            'root': [],
+        }
+        procinit_graph_convert = {
+            'root': [
+                "initlock(.*)",
+                "init_list_head(.*)",
+                "for(.*).*",
+                "init_list_head(.*)"
+            ],
+        }
+
+        truncated_file_arr, offset = init_ordered("../src/xv6-riscv/kernel/proc.c", "procinit(void)")
+        print(truncated_file_arr)
+        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, procinit_decision_graph, procinit_graph_convert,
+                                          format_arr)
+        format_output(truncated_file_arr, format_arr, offset)
+        print("errors:", errors)
+        self.assertTrue(len(errors)==0)
+
+
+    @weight(0)
+    @visibility('hidden')
+    def test_userinit(self):
+        """autograder integration tests"""
+        # ========== userinit ==========
+        print("========== userinit ==========")
+        userinit_decision_graph = {
+            'head': ['root'],
+            'root': [],
+        }
+        userinit_graph_convert = {
+            'root': [
+                "list_add_tail(.*)"
+            ],
+        }
+
+        truncated_file_arr, offset = init_ordered("../src/xv6-riscv/kernel/proc.c", "userinit(void)")
+        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, userinit_decision_graph, userinit_graph_convert,
+                                          format_arr)
+        format_output(truncated_file_arr, format_arr, offset)
+        print("errors:", errors)
+
+        self.assertTrue(len(errors)==0)
+
+    @weight(0)
+    @visibility('hidden')
+    def test_fork(self):
+        """autograder integration tests"""
+        # ========== fork, yield, wakeup, kill ==========
+
+        add_to_list_decision_graph = {
+            'head': ['root'],
+            'root': [],
+        }
+        add_to_list_graph_convert = {
+            'root': [
+                "acquire(&runq_lock)",
+                "list_add_tail(.*)",
+                "release(&runq_lock)",
+            ],
+        }
+        print("========== fork ==========")
+        truncated_file_arr, offset = init_ordered("../src/xv6-riscv/kernel/proc.c", "fork(void)")
+        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, add_to_list_decision_graph, add_to_list_graph_convert,
+                                          format_arr)
+        format_output(truncated_file_arr, format_arr, offset)
+        print("errors:", errors)
+
+        self.assertTrue(len(errors) == 0)
+
+    @weight(0)
+    @visibility('hidden')
+    def test_yield(self):
+        """autograder integration tests"""
+        # ========== yield ==========
+        print("========== yield ==========")
+        truncated_file_arr, offset = init_ordered("../src/xv6-riscv/kernel/proc.c", "yield(void)")
+        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, add_to_list_decision_graph, add_to_list_graph_convert,
+                                          format_arr)
+        format_output(truncated_file_arr, format_arr, offset)
+        print("errors:", errors)
+
+        self.assertTrue(len(errors)==0)
+
+    @weight(0)
+    @visibility('hidden')
+    def test_wakeup(self):
+        """autograder integration tests"""
+        # ========== wakeup ==========
+        print("========== wakeup ==========")
+        truncated_file_arr, offset = init_ordered("../src/xv6-riscv/kernel/proc.c", "wakeup(void *chan)")
+        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, add_to_list_decision_graph, add_to_list_graph_convert,
+                                          format_arr)
+        format_output(truncated_file_arr, format_arr, offset)
+        print("errors:", errors)
+
+        self.assertTrue(len(errors)==0)
+
+    @weight(0)
+    @visibility('hidden')
+    def test_kill(self):
+        """autograder integration tests"""
+        # ========== kill ==========
+        print("========== kill ==========")
+
+        truncated_file_arr, offset = init_ordered("../src/xv6-riscv/kernel/proc.c", "kill(int pid)")
+        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, add_to_list_decision_graph, add_to_list_graph_convert,
+                                          format_arr)
+        format_output(truncated_file_arr, format_arr, offset)
+        print("errors:", errors)
+
+    @weight(0)
+    @visibility('hidden')
+    def test_scheduler(self):
+
+        # ========== scheduler ==========
+        print("========== scheduler ==========")
+        scheduler_decision_graph = {
+            'head': ['root'],
+            'root': [],
+        }
+        scheduler_graph_convert = {
+            'root': [
+                "acquire(.*)",
+                "while(.*)",
+                "(struct proc\*).*",
+                "list_del_init(.*)",
+                "release(.*)",
+                "acquire(.*)",
+                "release(.*)",
+                "acquire(.*)",
+                "__wfi()",
+            ],
+        }
+
+        truncated_file_arr, offset = init_ordered("../src/xv6-riscv/kernel/proc.c", "scheduler(void)")
+        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, scheduler_decision_graph, scheduler_graph_convert,
+                                          format_arr)
+        format_output(truncated_file_arr, format_arr, offset)
+        print("errors:", errors)
+        self.assertTrue(len(errors)==0)
+
+
+    @weight(0)
+    @visibility('hidden')
+    def test_proc_struct(self):
+        """autograder integration tests"""
+        # ========== proc struct ==========
+        print("========== proc struct ==========")
+        proc_struct_decision_graph = {
+            'head': ['root'],
+            'root': [],
+        }
+        proc_struct_graph_convert = {
+            'root': [
+                "struct list_head .*"
+            ],
+        }
+
+        truncated_file_arr, offset = init_ordered("../src/xv6-riscv/kernel/proc.h", "struct proc {")
+        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, proc_struct_decision_graph, proc_struct_graph_convert,
+                                          format_arr)
+        format_output(truncated_file_arr, format_arr, offset)
+        print("errors:", errors)
+        self.assertTrue(len(errors)==0)
+
 
 
 if __name__ == '__main__':
