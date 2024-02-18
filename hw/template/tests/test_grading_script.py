@@ -1,6 +1,6 @@
 import os
 import unittest
-from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit
+from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit, visibility
 from art import *
 # NOTE: this code will not be shown to the students and only to the grader
 print("uwu") 

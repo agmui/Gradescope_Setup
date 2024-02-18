@@ -206,11 +206,8 @@ add_to_list_graph_convert = {
 }
 
 
-# os.chdir("src")  # to change to the right folder
 class TestIntegration(unittest.TestCase):
     def setUp(self):
-        print(os.getcwd())
-        print("==")
         pass
 
     @weight(0)
