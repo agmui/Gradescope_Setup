@@ -358,7 +358,8 @@ class TestIntegration(unittest.TestCase):
             ],
         }
 
-        truncated_file_arr, offset = init_ordered("../src/xv6-riscv/kernel/proc.c", "scheduler(void)")
+        print(os.getcwd())
+        truncated_file_arr, offset = init_ordered("./xv6-riscv/kernel/proc.c", "scheduler(void)")
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
         errors, format_arr = graph_search('head', 0, truncated_file_arr, scheduler_decision_graph, scheduler_graph_convert,
                                           format_arr)
