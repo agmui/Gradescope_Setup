@@ -4,7 +4,6 @@ import re
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, visibility
 
-os.chdir("src")  # to change to the right folder
 
 
 # TODO: remove white space in file before scan
@@ -207,6 +206,8 @@ add_to_list_graph_convert = {
 }
 
 
+print(os.getcwd())
+os.chdir("src")  # to change to the right folder
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass

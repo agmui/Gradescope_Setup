@@ -3,7 +3,6 @@ import re, os
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, visibility
 
-os.chdir("src") # to change to the right folder
 
 # TODO: remove white space in file before scan
 # TODO: make scan go down then up from offset
