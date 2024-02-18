@@ -225,7 +225,7 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     @visibility('hidden')
     def test_procinit(self):
-        """autograder integration tests"""
+        """autograder procinit integration tests"""
         # ========== procinit ==========
         print("========== procinit ==========")
         procinit_decision_graph = {
@@ -242,7 +242,6 @@ class TestIntegration(unittest.TestCase):
         }
 
         truncated_file_arr, offset = init_ordered("proc.c", "procinit(void)")
-        print(truncated_file_arr)
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
         errors, format_arr = graph_search('head', 0, truncated_file_arr, procinit_decision_graph,
                                           procinit_graph_convert,
@@ -254,7 +253,7 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     @visibility('hidden')
     def test_userinit(self):
-        """autograder integration tests"""
+        """autograder userinit integration tests"""
         # ========== userinit ==========
         print("========== userinit ==========")
         userinit_decision_graph = {
@@ -280,7 +279,7 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     @visibility('hidden')
     def test_fork(self):
-        """autograder integration tests"""
+        """autograder fork integration tests"""
         # ========== fork, yield, wakeup, kill ==========
 
         add_to_list_decision_graph = {
@@ -308,7 +307,7 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     @visibility('hidden')
     def test_yield(self):
-        """autograder integration tests"""
+        """autograder yield integration tests"""
         # ========== yield ==========
         print("========== yield ==========")
         truncated_file_arr, offset = init_ordered("proc.c", "yield(void)")
@@ -324,7 +323,7 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     @visibility('hidden')
     def test_wakeup(self):
-        """autograder integration tests"""
+        """autograder wakeup integration tests"""
         # ========== wakeup ==========
         print("========== wakeup ==========")
         truncated_file_arr, offset = init_ordered("proc.c", "wakeup(void *chan)")
@@ -340,7 +339,7 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     @visibility('hidden')
     def test_kill(self):
-        """autograder integration tests"""
+        """autograder kill integration tests"""
         # ========== kill ==========
         print("========== kill ==========")
 
@@ -355,6 +354,7 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     @visibility('hidden')
     def test_scheduler(self):
+        """autograder scheduler integration tests"""
         # ========== scheduler ==========
         print("========== scheduler ==========")
         scheduler_decision_graph = {
@@ -387,7 +387,7 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     @visibility('hidden')
     def test_proc_struct(self):
-        """autograder integration tests"""
+        """autograder proc struct integration tests"""
         # ========== proc struct ==========
         print("========== proc struct ==========")
         proc_struct_decision_graph = {
