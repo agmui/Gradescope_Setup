@@ -4,6 +4,8 @@ import re
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, visibility
 
+os.chdir("src")  # to change to the right folder
+
 
 # TODO: remove white space in file before scan
 # TODO: make scan go down then up from offset
@@ -228,15 +230,15 @@ class TestIntegration(unittest.TestCase):
             ],
         }
 
-        truncated_file_arr, offset = init_ordered("../src/xv6-riscv/kernel/proc.c", "procinit(void)")
+        truncated_file_arr, offset = init_ordered("./xv6-riscv/kernel/proc.c", "procinit(void)")
         print(truncated_file_arr)
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-        errors, format_arr = graph_search('head', 0, truncated_file_arr, procinit_decision_graph, procinit_graph_convert,
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, procinit_decision_graph,
+                                          procinit_graph_convert,
                                           format_arr)
         format_output(truncated_file_arr, format_arr, offset)
         print("errors:", errors)
-        self.assertTrue(len(errors)==0)
-
+        self.assertTrue(len(errors) == 0)
 
     @weight(0)
     @visibility('hidden')
@@ -254,14 +256,15 @@ class TestIntegration(unittest.TestCase):
             ],
         }
 
-        truncated_file_arr, offset = init_ordered("../src/xv6-riscv/kernel/proc.c", "userinit(void)")
+        truncated_file_arr, offset = init_ordered("./xv6-riscv/kernel/proc.c", "userinit(void)")
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-        errors, format_arr = graph_search('head', 0, truncated_file_arr, userinit_decision_graph, userinit_graph_convert,
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, userinit_decision_graph,
+                                          userinit_graph_convert,
                                           format_arr)
         format_output(truncated_file_arr, format_arr, offset)
         print("errors:", errors)
 
-        self.assertTrue(len(errors)==0)
+        self.assertTrue(len(errors) == 0)
 
     @weight(0)
     @visibility('hidden')
@@ -281,9 +284,10 @@ class TestIntegration(unittest.TestCase):
             ],
         }
         print("========== fork ==========")
-        truncated_file_arr, offset = init_ordered("../src/xv6-riscv/kernel/proc.c", "fork(void)")
+        truncated_file_arr, offset = init_ordered("./xv6-riscv/kernel/proc.c", "fork(void)")
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-        errors, format_arr = graph_search('head', 0, truncated_file_arr, add_to_list_decision_graph, add_to_list_graph_convert,
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, add_to_list_decision_graph,
+                                          add_to_list_graph_convert,
                                           format_arr)
         format_output(truncated_file_arr, format_arr, offset)
         print("errors:", errors)
@@ -296,14 +300,15 @@ class TestIntegration(unittest.TestCase):
         """autograder integration tests"""
         # ========== yield ==========
         print("========== yield ==========")
-        truncated_file_arr, offset = init_ordered("../src/xv6-riscv/kernel/proc.c", "yield(void)")
+        truncated_file_arr, offset = init_ordered("./xv6-riscv/kernel/proc.c", "yield(void)")
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-        errors, format_arr = graph_search('head', 0, truncated_file_arr, add_to_list_decision_graph, add_to_list_graph_convert,
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, add_to_list_decision_graph,
+                                          add_to_list_graph_convert,
                                           format_arr)
         format_output(truncated_file_arr, format_arr, offset)
         print("errors:", errors)
 
-        self.assertTrue(len(errors)==0)
+        self.assertTrue(len(errors) == 0)
 
     @weight(0)
     @visibility('hidden')
@@ -311,14 +316,15 @@ class TestIntegration(unittest.TestCase):
         """autograder integration tests"""
         # ========== wakeup ==========
         print("========== wakeup ==========")
-        truncated_file_arr, offset = init_ordered("../src/xv6-riscv/kernel/proc.c", "wakeup(void *chan)")
+        truncated_file_arr, offset = init_ordered("./xv6-riscv/kernel/proc.c", "wakeup(void *chan)")
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-        errors, format_arr = graph_search('head', 0, truncated_file_arr, add_to_list_decision_graph, add_to_list_graph_convert,
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, add_to_list_decision_graph,
+                                          add_to_list_graph_convert,
                                           format_arr)
         format_output(truncated_file_arr, format_arr, offset)
         print("errors:", errors)
 
-        self.assertTrue(len(errors)==0)
+        self.assertTrue(len(errors) == 0)
 
     @weight(0)
     @visibility('hidden')
@@ -327,9 +333,10 @@ class TestIntegration(unittest.TestCase):
         # ========== kill ==========
         print("========== kill ==========")
 
-        truncated_file_arr, offset = init_ordered("../src/xv6-riscv/kernel/proc.c", "kill(int pid)")
+        truncated_file_arr, offset = init_ordered("./xv6-riscv/kernel/proc.c", "kill(int pid)")
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-        errors, format_arr = graph_search('head', 0, truncated_file_arr, add_to_list_decision_graph, add_to_list_graph_convert,
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, add_to_list_decision_graph,
+                                          add_to_list_graph_convert,
                                           format_arr)
         format_output(truncated_file_arr, format_arr, offset)
         print("errors:", errors)
@@ -337,7 +344,6 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     @visibility('hidden')
     def test_scheduler(self):
-
         # ========== scheduler ==========
         print("========== scheduler ==========")
         scheduler_decision_graph = {
@@ -358,15 +364,14 @@ class TestIntegration(unittest.TestCase):
             ],
         }
 
-        print(os.getcwd())
         truncated_file_arr, offset = init_ordered("./xv6-riscv/kernel/proc.c", "scheduler(void)")
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-        errors, format_arr = graph_search('head', 0, truncated_file_arr, scheduler_decision_graph, scheduler_graph_convert,
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, scheduler_decision_graph,
+                                          scheduler_graph_convert,
                                           format_arr)
         format_output(truncated_file_arr, format_arr, offset)
         print("errors:", errors)
-        self.assertTrue(len(errors)==0)
-
+        self.assertTrue(len(errors) == 0)
 
     @weight(0)
     @visibility('hidden')
@@ -384,14 +389,14 @@ class TestIntegration(unittest.TestCase):
             ],
         }
 
-        truncated_file_arr, offset = init_ordered("../src/xv6-riscv/kernel/proc.h", "struct proc {")
+        truncated_file_arr, offset = init_ordered("./xv6-riscv/kernel/proc.h", "struct proc {")
         format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-        errors, format_arr = graph_search('head', 0, truncated_file_arr, proc_struct_decision_graph, proc_struct_graph_convert,
+        errors, format_arr = graph_search('head', 0, truncated_file_arr, proc_struct_decision_graph,
+                                          proc_struct_graph_convert,
                                           format_arr)
         format_output(truncated_file_arr, format_arr, offset)
         print("errors:", errors)
-        self.assertTrue(len(errors)==0)
-
+        self.assertTrue(len(errors) == 0)
 
 
 if __name__ == '__main__':
