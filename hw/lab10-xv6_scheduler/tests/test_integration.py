@@ -365,7 +365,7 @@ class TestIntegration(unittest.TestCase):
             'root': [
                 "acquire(.*)",
                 "while(.*)",
-                ["(struct proc\*).*", "(struct proc *).*"],
+                ["(struct proc\*)", "(struct proc \*)"],
                 "list_del_init(.*)",
                 "release(.*)",
                 "acquire(.*)",
