@@ -11,17 +11,28 @@ from gradescope_utils.autograder_utils.decorators import weight, tags, number, v
 # top section does not contain the pattern the bottem pattern gets taken up so by consequence there is a "out of order"
 # error in the first section and a missing error in the second section
 
-# for colored output
+# disable colored output
 class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+    HEADER = ''
+    OKBLUE = ''
+    OKCYAN = ''
+    OKGREEN = ''
+    WARNING = ''
+    FAIL = ''
+    ENDC = ''
+    BOLD = ''
+    UNDERLINE = ''
+# for colored output
+# class bcolors:
+#     HEADER = '\033[95m'
+#     OKBLUE = '\033[94m'
+#     OKCYAN = '\033[96m'
+#     OKGREEN = '\033[92m'
+#     WARNING = '\033[93m'
+#     FAIL = '\033[91m'
+#     ENDC = '\033[0m'
+#     BOLD = '\033[1m'
+#     UNDERLINE = '\033[4m'
 
 
 def init_ordered(file_location: str, bounding_func: str) -> [list, int]:
@@ -182,14 +193,14 @@ def format_output(file_arr, format_arr, total_offset):
     for i, line in enumerate(file_arr):
         match format_arr[i]:
             case 'o':
-                print(f'{bcolors.OKGREEN}{total_offset + i + 1:4d} | {line}{bcolors.ENDC}\n', end='')
+                print(f'{bcolors.OKGREEN}\tok  {total_offset + i + 1:4d} | {line}{bcolors.ENDC}\n', end='')
             case 'w':
-                print(f'{bcolors.WARNING}{total_offset + i + 1:4d} | {line} \t\t out of order{bcolors.ENDC}\n', end='')
+                print(f'{bcolors.WARNING}out of order{total_offset + i + 1:4d} | {line} {bcolors.ENDC}\n', end='')
             case 'n':
-                print(f'{total_offset + i + 1:4d} | {line}\n', end='')
+                print(f'\t    {total_offset + i + 1:4d} | {line}\n', end='')
             case _:  # missing/error case
-                print(f'{total_offset + i + 1:4d} | {line}\n', end='')
-                print(f'{bcolors.FAIL} missing {format_arr[i]}{bcolors.ENDC}\n', end='')
+                print(f'\t    {total_offset + i + 1:4d} | {line}\n', end='')
+                print(f'{bcolors.FAIL}\t missing {format_arr[i]}{bcolors.ENDC}\n', end='')
 
 
 os.chdir("kernel")  # TODO: plz remove all uses of chdir
