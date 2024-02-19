@@ -147,13 +147,13 @@ def ordered_pattern(pattern_arr: list, inner_func_offset, file_arr: list, format
         # ========================= error detection ========================
         error_str = ""
         if line_num < past:
-            format_arr[line_num] = 'w'
+            new_format_arr[line_num] = 'w'
             error_str = "out of order line: " + str(line_num)
         elif missing:
-            if type(format_arr[line_num]) == str:
-                format_arr[line_num] = sub_str
+            if type(new_format_arr[line_num]) == str:
+                new_format_arr[line_num] = sub_str
             else:
-                format_arr[line_num].append(sub_str[0])
+                new_format_arr[line_num].append(sub_str[0])
             error_str = "missing line: " + str(line_num)
         else:
             new_format_arr[line_num] = 'o'
