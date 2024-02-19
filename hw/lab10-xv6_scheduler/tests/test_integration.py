@@ -22,6 +22,8 @@ class bcolors:
     ENDC = ''
     BOLD = ''
     UNDERLINE = ''
+
+
 # for colored output
 # class bcolors:
 #     HEADER = '\033[95m'
@@ -235,7 +237,7 @@ class TestIntegration(unittest.TestCase):
         procinit_graph_convert = {
             'root': [
                 "initlock(.*)",
-                "init_list_head(.*)",
+                "init_list_head(.*)",  # TODO can be in either order
                 "for(.*).*",
                 "init_list_head(.*)"
             ],
@@ -247,7 +249,6 @@ class TestIntegration(unittest.TestCase):
                                           procinit_graph_convert,
                                           format_arr)
         format_output(truncated_file_arr, format_arr, offset)
-        print("errors:", errors)
         self.assertTrue(len(errors) == 0)
 
     @weight(0)
@@ -272,10 +273,10 @@ class TestIntegration(unittest.TestCase):
                                           userinit_graph_convert,
                                           format_arr)
         format_output(truncated_file_arr, format_arr, offset)
-        print("errors:", errors)
 
         self.assertTrue(len(errors) == 0)
 
+    # TODO: add case for allocproc
     @weight(0)
     @visibility('hidden')
     def test_fork(self):
@@ -289,7 +290,7 @@ class TestIntegration(unittest.TestCase):
         add_to_list_graph_convert = {
             'root': [
                 "acquire(&runq_lock)",
-                "list_add_tail(.*)",
+                "list_add_tail(.*,.*np.*)",  # TODO: check if its np and not p, Bee
                 "release(&runq_lock)",
             ],
         }
@@ -300,7 +301,6 @@ class TestIntegration(unittest.TestCase):
                                           add_to_list_graph_convert,
                                           format_arr)
         format_output(truncated_file_arr, format_arr, offset)
-        print("errors:", errors)
 
         self.assertTrue(len(errors) == 0)
 
@@ -316,7 +316,6 @@ class TestIntegration(unittest.TestCase):
                                           add_to_list_graph_convert,
                                           format_arr)
         format_output(truncated_file_arr, format_arr, offset)
-        print("errors:", errors)
 
         self.assertTrue(len(errors) == 0)
 
@@ -332,7 +331,6 @@ class TestIntegration(unittest.TestCase):
                                           add_to_list_graph_convert,
                                           format_arr)
         format_output(truncated_file_arr, format_arr, offset)
-        print("errors:", errors)
 
         self.assertTrue(len(errors) == 0)
 
@@ -349,12 +347,13 @@ class TestIntegration(unittest.TestCase):
                                           add_to_list_graph_convert,
                                           format_arr)
         format_output(truncated_file_arr, format_arr, offset)
-        print("errors:", errors)
+        self.assertTrue(len(errors) == 0)
 
     @weight(0)
     @visibility('hidden')
     def test_scheduler(self):
         """autograder scheduler integration tests"""
+        # Aidan Kirk 34,Thomas Boes,Joseph Parsons,Austin Vesich,luke
         # ========== scheduler ==========
         print("========== scheduler ==========")
         scheduler_decision_graph = {
@@ -366,7 +365,7 @@ class TestIntegration(unittest.TestCase):
                 "acquire(.*)",
                 "while(.*)",
                 ["(struct proc\*)", "(struct proc \*)"],
-                "list_del_init(.*)",
+                ["list_del_init(.*)", "list_del(.*)"],
                 "release(.*)",
                 "acquire(.*)",
                 "release(.*)",
@@ -381,7 +380,6 @@ class TestIntegration(unittest.TestCase):
                                           scheduler_graph_convert,
                                           format_arr)
         format_output(truncated_file_arr, format_arr, offset)
-        print("errors:", errors)
         self.assertTrue(len(errors) == 0)
 
     @weight(0)
@@ -406,7 +404,6 @@ class TestIntegration(unittest.TestCase):
                                           proc_struct_graph_convert,
                                           format_arr)
         format_output(truncated_file_arr, format_arr, offset)
-        print("errors:", errors)
         self.assertTrue(len(errors) == 0)
 
 
