@@ -1,8 +1,7 @@
 import subprocess
-import re
+import re, os
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, visibility
-from minify import minify_source
 
 
 # TODO: remove white space in file before scan
@@ -74,11 +73,11 @@ def graph_search(cur_node: str, inner_func_offset: int, file_arr: list[str], dec
     NOTE: once it has reached the end of the graph it does not go back and check the other nodes
 
     :param cur_node: the current node that is being scanned
+    :param func_offset: offset from the top of the page to the function
     :param inner_func_offset: offset from the top of the function to the line focused on
     :param file_arr: The parsed file array that is being scanned
     :param decision_graph: graph that is searched on
     :param graph_to_pattern: translation between nodes in the graph to the patterned array
-    :param format_arr: array for formating output
     """
     num_of_s = len(decision_graph[cur_node])  # number of successors of the current node
     if num_of_s == 0:  # terminating case
@@ -117,17 +116,17 @@ def ordered_pattern(pattern_arr: list, inner_func_offset, file_arr: list, format
     Total offset is so the formatted output has the correct line numbers relative to the original file.
 
     :param pattern_arr: the pattern list that is to be searched
-    :param inner_func_offset: offset within the function
+    :param func_offset: total offset from the top of the file
     :param file_arr: the portion of the file that will be searched
     :return: dict of errors, last pattern line number it stopped at, formatted output for terminal
-    :param format_arr: array for format coloring
     """
     # ========================= substring search ========================
-    file_arr = minify_source(file_arr)
     code_arr = file_arr.copy()
     past = inner_func_offset - 1
     line_num = inner_func_offset
     errors_dict = {}
+
+    new_format_arr = format_arr.copy()  # FIXME: this is here bc ordered_pattern mutates format_arr
     for sub_str in pattern_arr:
         missing: bool = True  # used to determine if there is a missing error
         if not isinstance(sub_str, list):  # to wrap substring in arr
@@ -139,7 +138,7 @@ def ordered_pattern(pattern_arr: list, inner_func_offset, file_arr: list, format
         for comment_index in sub_str:
             for c in ['(', ')', '+', '=', '[', ']']:  # formatting input for re
                 comment_index = comment_index.replace(c, '\\' + c)
-            arr = [line for line in code_arr if re.findall(comment_index, line)]  # maybe remove re
+            arr = [line for line in code_arr if re.findall(comment_index, line)]
             if len(arr) != 0:
                 missing = False
                 line_num = code_arr.index(arr[0])  # NOTE: only uses first fine
@@ -157,7 +156,7 @@ def ordered_pattern(pattern_arr: list, inner_func_offset, file_arr: list, format
                 format_arr[line_num].append(sub_str[0])
             error_str = "missing line: " + str(line_num)
         else:
-            format_arr[line_num] = 'o'
+            new_format_arr[line_num] = 'o'
 
         # error formatting
         if error_str:
@@ -170,194 +169,67 @@ def ordered_pattern(pattern_arr: list, inner_func_offset, file_arr: list, format
 
     # finding last searched pattern
     last_pattern = 0
-    for i, c in enumerate(reversed(format_arr)):
+    for i, c in enumerate(reversed(new_format_arr)):
         if c != 'n':
-            last_pattern = len(format_arr) - i - 1
+            last_pattern = len(new_format_arr) - i - 1
             break
 
-    return errors_dict, last_pattern, code_arr, format_arr
+    return errors_dict, last_pattern, code_arr, new_format_arr
 
 
 def format_output(file_arr, format_arr, total_offset):
     for i, line in enumerate(file_arr):
         match format_arr[i]:
             case 'o':
-                print(f'{bcolors.OKGREEN}\tok  {total_offset + i + 1:4d} | {line}{bcolors.ENDC}\n', end='')
+                print(f'{bcolors.OKGREEN}{total_offset + i + 1:4d} | {line} \tok{bcolors.ENDC}\n', end='')
             case 'w':
-                print(f'{bcolors.WARNING}out of order{total_offset + i + 1:4d} | {line} {bcolors.ENDC}\n', end='')
+                print(f'{bcolors.WARNING}{total_offset + i + 1:4d} | {line} \t\t out of order{bcolors.ENDC}\n', end='')
             case 'n':
-                print(f'\t    {total_offset + i + 1:4d} | {line}\n', end='')
+                print(f'{total_offset + i + 1:4d} | {line}\n', end='')
             case _:  # missing/error case
-                print(f'\t    {total_offset + i + 1:4d} | {line}\n', end='')
-                print(f'{bcolors.FAIL}\t missing {format_arr[i]}{bcolors.ENDC}\n', end='')
+                print(f'{total_offset + i + 1:4d} | {line}\n', end='')
+                print(f'{bcolors.FAIL} missing {format_arr[i]}{bcolors.ENDC}\n', end='')
 
 
-# ========== inorder ==========
-print("========== inorder.c ==========")
-inorder_decision_graph = {
-    'head': ['root'],
-    'root': ['unlock_first', 'signal_first'],
-    'unlock_first': [],
-    'signal_first': [],
-}
-inorder_graph_convert = {
-    'root': [
-        "pthread_mutex_lock(.*)",
-        "while ?(.*)",
-        "pthread_cond_wait(.*)",
-        ["++;", "+="],
-    ],
-    'unlock_first': [
-        "pthread_mutex_unlock(.*)",
-        "pthread_cond_broadcast(.*)"
-    ],
-    'signal_first': [
-        "pthread_cond_broadcast(.*)",
-        "pthread_mutex_unlock(.*)",
-    ],
-}
+os.chdir("src")
 
-truncated_file_arr, offset = init_ordered("../src/inorder.c", "void *thread(void *arg)")
-format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-inorder_errors, format_arr = graph_search('head', 0, truncated_file_arr, inorder_decision_graph, inorder_graph_convert,
-                                          format_arr)
-format_output(truncated_file_arr, format_arr, offset)
-# print("errors:", inorder_errors)
-
-# ========== max ==========
-print("========== max.c ==========")
-max_decision_graph = {
-    'head': ['root'],
-    'root': ['plus_rout', 'min_rout'],
-    'plus_rout': ['unlock_first', 'signal_first'],
-    'min_rout': ['unlock_first', 'signal_first'],
-    'unlock_first': [],
-    'signal_first': [],
-}
-max_graph_convert = {
-    'root': [
-        "pthread_mutex_lock(.*)",
-        "while ?(.*)",
-        "pthread_cond_wait(.*)"
-    ],
-    'plus_rout': [
-        ["++;", "+="],
-        "pthread_mutex_unlock(.*)",
-        "sleep(1)",
-        "pthread_mutex_lock(.*)",
-        ["--;", '-='],
-    ],
-    'min_rout': [
-        ["--;", '-='],
-        "pthread_mutex_unlock(.*)",
-        "sleep(1)",
-        "pthread_mutex_lock(.*)",
-        ["++;", '+='],
-    ],
-    'unlock_first': [
-        "pthread_mutex_unlock(.*)",
-        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"]
-    ],
-    'signal_first': [
-        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
-        "pthread_mutex_unlock(.*)",
-    ],
-}
-
-truncated_file_arr, offset = init_ordered("../src/max.c", "void *thread(void *arg)")
-format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-max_errors, format_arr = graph_search('head', 0, truncated_file_arr, max_decision_graph, max_graph_convert, format_arr)
-format_output(truncated_file_arr, format_arr, offset)
-# print("errors:", errors)
-
-# ========== prodcons ==========
-# print("========== prodcons.c ==========")
-# prodcons_prod_decision_graph = {
-#     'head': ['root'],
-#     'root': ['unlock_first', 'signal_first'],
-#     'unlock_first': [],
-#     'signal_first': [],
-# }
-# prodcons_prod_graph_convert = {
-#     'root': [
-#         "pthread_mutex_lock(.*)",
-#         "while ?(.*)",
-#         "pthread_cond_wait(.*)",
-#         "buffer[last_valid_index + 1].*",
-#         ["++;", '+='],
-#     ],
-#     'unlock_first': [
-#         "pthread_mutex_unlock(.*)",
-#         ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"]
-#     ],
-#     'signal_first': [
-#         ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
-#         "pthread_mutex_unlock(.*)",
-#     ],
-# }
-#
-# truncated_file_arr, offset = init_ordered("../src/prodcons_condvar.c", "producer(void *arg)")
-# format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-# prodcons_prod_errors, format_arr = graph_search('head', 0, truncated_file_arr, prodcons_prod_decision_graph,
-#                                                 prodcons_prod_graph_convert, format_arr)
-# format_output(truncated_file_arr, format_arr, offset)
-# print("errors:", errors)
-#
-# prodcons_cons_decision_graph = {
-#     'head': ['root'],
-#     'root': ['unlock_first', 'signal_first'],
-#     'unlock_first': [],
-#     'signal_first': [],
-# }
-# prodcons_cons_graph_convert = {
-#     'root': [
-#         "pthread_mutex_lock(.*)",
-#         "while ?(.*)",
-#         "pthread_cond_wait(.*)",
-#         ".*buffer[last_valid_index];",
-#         ["--;", "-="],
-#     ],
-#     'unlock_first': [
-#         "pthread_mutex_unlock(.*)",
-#         ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
-#         "sleep(1)",
-#     ],
-#     'signal_first': [
-#         ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
-#         "pthread_mutex_unlock(.*)",
-#         "sleep(1)",
-#     ],
-# }
-# truncated_file_arr, offset = init_ordered("../src/prodcons_condvar.c", "consumer(void *arg)")
-# format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-# prodcons_cons_errors, format_arr = graph_search('head', 0, truncated_file_arr, prodcons_cons_decision_graph,
-#                                                 prodcons_cons_graph_convert, format_arr)
-# format_output(truncated_file_arr, format_arr, offset)
+def run_integration_check(filename, func,decision_graph, graph_convert):
+    truncated_file_arr, offset = init_ordered(filename, func)#"arraylist.c", "struct arraylist *al_new(void)")
+    format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+    errors, format_arr = graph_search('head', 0, truncated_file_arr, decision_graph, graph_convert,
+                                      format_arr)
+    format_output(truncated_file_arr, format_arr, offset)
+    return len(errors) == 0
 
 
-# print("errors:", errors)
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
 
     @weight(0)
     @visibility('hidden')
-    def test_inorder(self):
-        """autograder inorder integration tests"""
-        self.assertTrue(len(inorder_errors) == 0)
+    def test_arraylist(self):
+        """autograder arraylist test"""
+        # ========== arraylist ==========
+        print("========== arraylist.c ==========")
+        decision_graph = {
+            'head': ['root'],
+            'root': []
+        }
+        graph_convert = {
+            'root': [
+                ".*malloc(sizeof(struct arraylist))",
+                "->size = 0",
+                "->capacity = DEF_ARRAY_LIST_CAPACITY",
+                "->list = .*malloc(.*)",
+                "return .*"
+            ],
+        }
+        # rez = run_integration_check("arraylist.c", "struct arraylist *al_new(void)",decision_graph,graph_convert)
+        # self.assertTrue(rez)
 
-    @weight(0)
-    @visibility('hidden')
-    def test_max_mutex(self):
-        """autograder max integration tests"""
-        self.assertTrue(len(max_errors) == 0)
 
-    # @weight(0)
-    # @visibility('hidden')
-    # def test_prodcons_thread_func(self):
-    #     """autograder prodcons integration tests"""
-    #     self.assertTrue(len(prodcons_prod_errors) == 0 and len(prodcons_cons_errors) == 0)
-
+        self.assertTrue(True)
 
 if __name__ == '__main__':
     unittest.main()

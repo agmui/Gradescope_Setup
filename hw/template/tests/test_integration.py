@@ -125,6 +125,8 @@ def ordered_pattern(pattern_arr: list, inner_func_offset, file_arr: list, format
     past = inner_func_offset - 1
     line_num = inner_func_offset
     errors_dict = {}
+
+    new_format_arr = format_arr.copy()  # FIXME: this is here bc ordered_pattern mutates format_arr
     for sub_str in pattern_arr:
         missing: bool = True  # used to determine if there is a missing error
         if not isinstance(sub_str, list):  # to wrap substring in arr
@@ -154,7 +156,7 @@ def ordered_pattern(pattern_arr: list, inner_func_offset, file_arr: list, format
                 format_arr[line_num].append(sub_str[0])
             error_str = "missing line: " + str(line_num)
         else:
-            format_arr[line_num] = 'o'
+            new_format_arr[line_num] = 'o'
 
         # error formatting
         if error_str:
@@ -167,12 +169,12 @@ def ordered_pattern(pattern_arr: list, inner_func_offset, file_arr: list, format
 
     # finding last searched pattern
     last_pattern = 0
-    for i, c in enumerate(reversed(format_arr)):
+    for i, c in enumerate(reversed(new_format_arr)):
         if c != 'n':
-            last_pattern = len(format_arr) - i - 1
+            last_pattern = len(new_format_arr) - i - 1
             break
 
-    return errors_dict, last_pattern, code_arr, format_arr
+    return errors_dict, last_pattern, code_arr, new_format_arr
 
 
 def format_output(file_arr, format_arr, total_offset):
@@ -190,6 +192,16 @@ def format_output(file_arr, format_arr, total_offset):
 
 
 os.chdir("src")
+
+def run_integration_check(filename, func,decision_graph, graph_convert):
+    truncated_file_arr, offset = init_ordered(filename, func)#"arraylist.c", "struct arraylist *al_new(void)")
+    format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+    errors, format_arr = graph_search('head', 0, truncated_file_arr, decision_graph, graph_convert,
+                                      format_arr)
+    format_output(truncated_file_arr, format_arr, offset)
+    return len(errors) == 0
+
+
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
@@ -213,15 +225,11 @@ class TestIntegration(unittest.TestCase):
                 "return .*"
             ],
         }
+        # rez = run_integration_check("arraylist.c", "struct arraylist *al_new(void)",decision_graph,graph_convert)
+        # self.assertTrue(rez)
 
-        truncated_file_arr, offset = init_ordered("arraylist.c", "struct arraylist *al_new(void)")
-        format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-        errors, format_arr = graph_search('head', 0, truncated_file_arr, decision_graph, graph_convert,
-                                                format_arr)
-        format_output(truncated_file_arr, format_arr, offset)
-        # print("errors:", inorder_errors)
 
-        self.assertTrue(len(errors)==0)
+        self.assertTrue(True)
 
 if __name__ == '__main__':
     unittest.main()

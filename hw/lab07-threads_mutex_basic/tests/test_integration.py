@@ -1,7 +1,7 @@
 import subprocess
 import re, os
 import unittest
-from gradescope_utils.autograder_utils.decorators import weight, tags, number
+from gradescope_utils.autograder_utils.decorators import weight, tags, number, visibility
 
 
 # TODO: remove white space in file before scan
@@ -125,6 +125,8 @@ def ordered_pattern(pattern_arr: list, inner_func_offset, file_arr: list, format
     past = inner_func_offset - 1
     line_num = inner_func_offset
     errors_dict = {}
+
+    new_format_arr = format_arr.copy()  # FIXME: this is here bc ordered_pattern mutates format_arr
     for sub_str in pattern_arr:
         missing: bool = True  # used to determine if there is a missing error
         if not isinstance(sub_str, list):  # to wrap substring in arr
@@ -154,7 +156,7 @@ def ordered_pattern(pattern_arr: list, inner_func_offset, file_arr: list, format
                 format_arr[line_num].append(sub_str[0])
             error_str = "missing line: " + str(line_num)
         else:
-            format_arr[line_num] = 'o'
+            new_format_arr[line_num] = 'o'
 
         # error formatting
         if error_str:
@@ -167,19 +169,19 @@ def ordered_pattern(pattern_arr: list, inner_func_offset, file_arr: list, format
 
     # finding last searched pattern
     last_pattern = 0
-    for i, c in enumerate(reversed(format_arr)):
+    for i, c in enumerate(reversed(new_format_arr)):
         if c != 'n':
-            last_pattern = len(format_arr) - i - 1
+            last_pattern = len(new_format_arr) - i - 1
             break
 
-    return errors_dict, last_pattern, code_arr, format_arr
+    return errors_dict, last_pattern, code_arr, new_format_arr
 
 
 def format_output(file_arr, format_arr, total_offset):
     for i, line in enumerate(file_arr):
         match format_arr[i]:
             case 'o':
-                print(f'{bcolors.OKGREEN}{total_offset + i + 1:4d} | {line}{bcolors.ENDC}\n', end='')
+                print(f'{bcolors.OKGREEN}{total_offset + i + 1:4d} | {line} \tok{bcolors.ENDC}\n', end='')
             case 'w':
                 print(f'{bcolors.WARNING}{total_offset + i + 1:4d} | {line} \t\t out of order{bcolors.ENDC}\n', end='')
             case 'n':
@@ -188,55 +190,46 @@ def format_output(file_arr, format_arr, total_offset):
                 print(f'{total_offset + i + 1:4d} | {line}\n', end='')
                 print(f'{bcolors.FAIL} missing {format_arr[i]}{bcolors.ENDC}\n', end='')
 
-# os.chdir("src")
-# ========== factoring ==========
-print("========== factoring.c ==========")
-inorder_decision_graph = {
-    'head': ['root'],
-    'root': ['unlock_first', 'signal_first'],
-    'unlock_first': [],
-    'signal_first': [],
-}
-inorder_graph_convert = {
-    'root': [
-        "pthread_mutex_lock(.*)",
-        "while(.*)",
-        "pthread_cond_wait(.*)",
-        ["++;", "+="],
-    ],
-    'unlock_first': [
-        "pthread_mutex_unlock(.*)",
-        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"]
-    ],
-    'signal_first': [
-        ["pthread_cond_signal(.*)", "pthread_cond_broadcast(.*)"],
-        "pthread_mutex_unlock(.*)",
-    ],
-}
 
-# truncated_file_arr, offset = init_ordered("factoring.c", "void *thread(void *arg)")
-# format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
-# inorder_errors, format_arr = graph_search('head', 0, truncated_file_arr, inorder_decision_graph, inorder_graph_convert,
-#                                           format_arr)
-# format_output(truncated_file_arr, format_arr, offset)
-# print("errors:", inorder_errors)
+os.chdir("src")
 
-# ========== thread sorting ==========
-print("========== threadSort.c ==========")
-# ========== add a lot ==========
-print("========== add_a_lot.c ==========")
-# ========== red_blue_purple ==========
-print("========== red_blue_purple.c ==========")
+def run_integration_check(filename, func,decision_graph, graph_convert):
+    truncated_file_arr, offset = init_ordered(filename, func)#"arraylist.c", "struct arraylist *al_new(void)")
+    format_arr: list = ['n'] * len(truncated_file_arr)  # for printing output
+    errors, format_arr = graph_search('head', 0, truncated_file_arr, decision_graph, graph_convert,
+                                      format_arr)
+    format_output(truncated_file_arr, format_arr, offset)
+    return len(errors) == 0
+
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
 
     @weight(0)
-    def test_inorder(self):
-        """autograder integration tests"""
-        self.assertTrue(True)
+    @visibility('hidden')
+    def test_arraylist(self):
+        """autograder arraylist test"""
+        # ========== arraylist ==========
+        print("========== arraylist.c ==========")
+        decision_graph = {
+            'head': ['root'],
+            'root': []
+        }
+        graph_convert = {
+            'root': [
+                ".*malloc(sizeof(struct arraylist))",
+                "->size = 0",
+                "->capacity = DEF_ARRAY_LIST_CAPACITY",
+                "->list = .*malloc(.*)",
+                "return .*"
+            ],
+        }
+        # rez = run_integration_check("arraylist.c", "struct arraylist *al_new(void)",decision_graph,graph_convert)
+        # self.assertTrue(rez)
 
+
+        self.assertTrue(True)
 
 if __name__ == '__main__':
     unittest.main()
