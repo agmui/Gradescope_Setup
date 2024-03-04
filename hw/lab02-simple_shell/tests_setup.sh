@@ -10,7 +10,7 @@ mv $SRC_DIR/user/*.c $SRC_DIR/csse332-labs/xv6-riscv/user/
 cd $SRC_DIR/csse332-labs/xv6-riscv/
 make > /dev/null
 #apt install -y cowsay expect > /dev/null
-PATH="$PATH:/usr/games" # adds cowsay to path
+#PATH="$PATH:/usr/games" # adds cowsay to path
 export PATH
 expect ./test.exp > output.txt
 #strace -e fork,clone --decode-pids=comm -f -o output.log expect ./test.exp

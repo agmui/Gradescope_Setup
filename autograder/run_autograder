@@ -21,11 +21,16 @@ assignment_dict["(Challenge) ext2"]=lab12-ext2
 ASSIGNMENT=${assignment_dict[$ASSIGNMENT_NAME]}
 
 cd /gradescope_semgrep
-git pull > /dev/null
+#git pull > /dev/null #FIXME:
 cd ..
 mv /gradescope_semgrep/hw/$ASSIGNMENT/* /autograder/source
 
-pip3 install -r /autograder/source/requirements.txt > /dev/null # each requirements.txt are hw dependent
+#TODO: maybe add to docker file?
+PATH="$PATH:/usr/games" # adds cowsay to path
+#export PYTHONPATH="$PYTHONPATH:/gradescope_semgrep/grading_utils"
+
+
+#pip3 install -r /autograder/source/requirements.txt > /dev/null # each requirements.txt are hw dependent
 
 # guarantee there is a src dir
 mkdir -p /autograder/source/src
@@ -34,7 +39,9 @@ cp -r /autograder/submission/* /autograder/source/src
 # shellcheck disable=SC2164
 cd /autograder/source/
 
+echo running tests_setup.sh
 bash tests_setup.sh
+echo running run_tests.py
 python3 run_tests.py
 
 

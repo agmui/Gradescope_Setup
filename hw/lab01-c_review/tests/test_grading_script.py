@@ -1,13 +1,15 @@
-import os
+import os,sys
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit
 from art import *
-from gradelib import *
-from gradelib import TESTS
+sys.path.insert(0, '../../gradescope_semgrep') #/grading_utils')#'../../grading_utils')
+from grading_utils.gradelib import *
+from grading_utils.gradelib import TESTS
+
 
 # TODO: run valgrind
 
-os.chdir("/autograder/source/src/xv6-riscv")
+os.chdir("/autograder/source/src/csse332-labs/xv6-riscv")
 
 r = Runner(save("xv6.out"))
 
