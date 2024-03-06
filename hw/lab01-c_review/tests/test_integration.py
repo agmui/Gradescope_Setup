@@ -1,10 +1,13 @@
-import os,sys
+import os, sys
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, visibility
-sys.path.insert(0, '../../gradescope_semgrep') #/grading_utils')#'../../grading_utils')
-from grading_utils.integrationlib import test_run
+
+sys.path.insert(0, '../..')  # adds the hw project dir to the python path
+from hw.grading_utils.integrationlib import test_run
 
 os.chdir("user")  # TODO: find out y dis here
+
+
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
@@ -33,7 +36,8 @@ class TestIntegration(unittest.TestCase):
         #                                   format_arr)
         # format_output(truncated_file_arr, format_arr, offset)
         # print("errors:", inorder_errors)
-        errors = test_run("arraylist.c", "struct arraylist *al_new(void)", arraylist_decision_graph, arraylist_graph_convert)
+        errors = test_run("arraylist.c", "struct arraylist *al_new(void)", arraylist_decision_graph,
+                          arraylist_graph_convert)
         self.assertTrue(len(errors) == 0)
 
     @weight(0)
@@ -53,7 +57,8 @@ class TestIntegration(unittest.TestCase):
             ],
         }
 
-        errors = test_run("arraylist.c", "void al_free(struct arraylist *al)", al_free_decision_graph, al_free_graph_convert)
+        errors = test_run("arraylist.c", "void al_free(struct arraylist *al)", al_free_decision_graph,
+                          al_free_graph_convert)
         self.assertTrue(len(errors) == 0)
 
     @weight(0)
@@ -316,8 +321,6 @@ class TestIntegration(unittest.TestCase):
                 "\*output=0",
             ]
         }
-
-        truncated_file_arr, offset = init_ordered("warmup.c", "void string_with_q(char *s1, char *s2, char **output)")
 
         errors = test_run("warmup.c", "void string_with_q(char *s1, char *s2, char **output)",
                           decision_graph, graph_convert)

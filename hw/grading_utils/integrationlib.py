@@ -1,5 +1,5 @@
 import re
-from minify import minify_source
+from .minify import minify_source
 
 
 # TODO: (minify) remove white space in file before scan

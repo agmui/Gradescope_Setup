@@ -18,7 +18,7 @@ RUN apt-get install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv6
 RUN apt-get install -y cowsay expect # for simpleshell labs
 
 RUN apt-get install -y python3 python3-pip python3-dev jq
-RUN pip install gradescope-utils art asyncio
+RUN pip3 install gradescope-utils art asyncio
 
 # Cleans up the apt cache afterwards in the same step to keep the image small
 # NOTE: this means we can't install any pkg(i.e. run apt install ...) after this
@@ -26,13 +26,14 @@ RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
-
-RUN mkdir /autograder/source
-ADD autograder/run_autograder /autograder/source/run_autograder
-RUN cp /autograder/source/run_autograder /autograder/run_autograder
-
 ADD autograder/clone_dir /usr/bin
 RUN chmod +x /usr/bin/clone_dir
+
+
+RUN mkdir /autograder/hw
+ADD autograder/run_autograder /autograder/run_autograder
+#RUN cp /autograder/source/run_autograder /autograder/run_autograder
+
 
 # Ensure that scripts are Unix-friendly and executable
 RUN dos2unix /autograder/run_autograder
@@ -41,7 +42,6 @@ RUN chmod +x /autograder/run_autograder
 # -- debugging --
 #RUN git clone https://github.com/agmui/gradescope_semgrep
 ADD hw gradescope_semgrep/hw
-ADD grading_utils gradescope_semgrep/grading_utils
 ADD .git gradescope_semgrep/.git
 # --
 

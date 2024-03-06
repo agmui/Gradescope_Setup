@@ -1,15 +1,16 @@
-import os,sys
+import os, sys
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit
 from art import *
-sys.path.insert(0, '../../gradescope_semgrep') #/grading_utils')#'../../grading_utils')
-from grading_utils.gradelib import *
-from grading_utils.gradelib import TESTS
+
+sys.path.insert(0, '../..')  # adds the hw project dir to the python path
+from hw.grading_utils.gradelib import *  # this is allowed bc of the sys.path.insert
+from hw.grading_utils.gradelib import TESTS
 
 
 # TODO: run valgrind
 
-os.chdir("/autograder/source/src/csse332-labs/xv6-riscv")
+os.chdir("/autograder/hw/test_suite/src/csse332-labs/xv6-riscv")
 
 r = Runner(save("xv6.out"))
 
@@ -103,7 +104,7 @@ run_tests()
 tests = TESTS
 
 
-# TODO: make above tests visable to students
+# TODO: make above tests visible to students
 
 
 class TestIntegration(unittest.TestCase):

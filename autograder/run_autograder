@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Set up autograder files
 
-#svn up /autograder/source > /dev/null #svn is no longer supported
+#svn up /autograder/hw > /dev/null #svn is no longer supported
 
 AUTOGRADER_ROOT=/autograder
 ASSIGNMENT_NAME=$(cat $AUTOGRADER_ROOT/submission_metadata.json | jq -r '.assignment.title')
@@ -23,25 +23,27 @@ ASSIGNMENT=${assignment_dict[$ASSIGNMENT_NAME]}
 cd /gradescope_semgrep
 #git pull > /dev/null #FIXME:
 cd ..
-mv /gradescope_semgrep/hw/$ASSIGNMENT/* /autograder/source
+mkdir -p /autograder/hw/test_suite/
+mv /gradescope_semgrep/hw/$ASSIGNMENT/* /autograder/hw/test_suite/
+mv /gradescope_semgrep/hw/grading_utils/ /autograder/hw/
 
 #TODO: maybe add to docker file?
 PATH="$PATH:/usr/games" # adds cowsay to path
 #export PYTHONPATH="$PYTHONPATH:/gradescope_semgrep/grading_utils"
 
 
-#pip3 install -r /autograder/source/requirements.txt > /dev/null # each requirements.txt are hw dependent
+#pip3 install -r /autograder/hw/requirements.txt > /dev/null # each requirements.txt are hw dependent
 
 # guarantee there is a src dir
-mkdir -p /autograder/source/src
-cp -r /autograder/submission/* /autograder/source/src
+#mkdir -p /autograder/hw/src
+cp -r /autograder/submission/* /autograder/hw/test_suite/src/
 
 # shellcheck disable=SC2164
-cd /autograder/source/
+cd /autograder/hw/test_suite/
 
-echo running tests_setup.sh
+echo "--- running tests_setup.sh ---"
 bash tests_setup.sh
-echo running run_tests.py
+echo "--- running run_tests.py ---"
 python3 run_tests.py
 
 

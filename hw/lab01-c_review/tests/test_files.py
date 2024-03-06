@@ -1,9 +1,8 @@
 import unittest
 import sys
-# sys.path.insert(0, '/home/agmui/cs/grading_332/Gradescope_Setup') #/grading_utils')#'../../grading_utils')
-sys.path.insert(0, '../../gradescope_semgrep') #/grading_utils')#'../../grading_utils')
 from gradescope_utils.autograder_utils.decorators import weight
-from grading_utils.files_check import submitted_files
+sys.path.insert(0, '../..')  # adds the hw project dir to the python path
+from hw.grading_utils.files_check import submitted_files
 
 
 class TestFiles(unittest.TestCase):
