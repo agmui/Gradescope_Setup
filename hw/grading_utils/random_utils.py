@@ -1,21 +1,31 @@
 import os.path
 import glob
 
-def submitted_files(files_to_check):
+SUBMISSION_BASE = '/autograder/submission/user'
+
+
+def submitted_files(files_to_check: list, base=SUBMISSION_BASE):
     """Check submitted files"""
-    SUBMISSION_USER_BASE = '/autograder/submission/user'
-    # files_to_check = ['arraylist.c', 'find.c', 'sleep.c', 'warmup.c']  # TODO: check for extra files
-    missing_files = 0
+    missing_files = len(files_to_check)
+
+    # r=fullpath, d=directories, f = files
+    for r, d, f in os.walk(SUBMISSION_BASE):  # os.walk returns list of directory and files
+        file_relative_path = r.replace(SUBMISSION_BASE, '')  # removes the first part of the full path
+        for file in f:
+            file_joined_path = os.path.join(file_relative_path, file)  # adds the remaking part of the path
+            if file_joined_path in files_to_check:  # check if the file is needed
+                print("found:", file)
+                files_to_check.remove(file_joined_path)
+                missing_files -= 1
+            else:
+                print("????:", file)
     for file in files_to_check:
-        #TODO: remove unwanted files so gradescope will show less
-        # TODO: show/print which files read/submitted
-        if len(glob.glob(os.path.join(SUBMISSION_USER_BASE, file))) == 0:
-            print(f'Missing {file}')  # .format(path))
-            missing_files += 1
-        else:
-            print('found:', file)
+        print(f'MISSING: {file}')
+
+    print('---')
+    print(f'missing {missing_files} files')
     return missing_files
-    # self.assertEqual(missing_files, 0, 'Missing some required files!')
+
 
 # Define a wrapper function to capture the output
 def capture_output(func):

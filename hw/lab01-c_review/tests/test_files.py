@@ -9,6 +9,6 @@ class TestFiles(unittest.TestCase):
     @weight(0)
     def test_submitted_files(self):
         """Check submitted files"""
-        missing_files = submitted_files(['arraylist.c', 'find.c', 'sleep.c', 'warmup.c'])
+        missing_files = submitted_files(['user/arraylist.c', 'user/find.c', 'user/sleep.c', 'user/warmup.c'])
         self.assertEqual(missing_files, 0, 'Missing some required files!')
         print('All required files submitted!')

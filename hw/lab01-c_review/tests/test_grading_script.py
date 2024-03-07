@@ -9,8 +9,7 @@ from hw.grading_utils.gradelib import *  # this is allowed bc of the sys.path.in
 from hw.grading_utils.gradelib import TESTS
 from hw.grading_utils.random_utils import capture_output
 
-os.chdir("/autograder/hw/test_suite/src/csse332-labs/xv6-riscv")
-# os.chdir("/home/agmui/cs/grading_332/Gradescope_Setup/hw/lab01-c_review/src/csse332-labs/xv6-riscv")
+os.chdir("src/csse332-labs/xv6-riscv") # this assumes you are running the file one directory level up
 
 r = Runner(save("xv6.out"))
 
@@ -100,7 +99,6 @@ def test_find_recursive():
             './%s/%s' % (dirs[2], needle))
 
 
-# run_tests()
 output = capture_output(run_tests)
 tests = TESTS
 

@@ -5,7 +5,7 @@ from gradescope_utils.autograder_utils.decorators import weight, tags, number, v
 sys.path.insert(0, '../..')  # adds the hw project dir to the python path
 from hw.grading_utils.integrationlib import test_run
 
-os.chdir("user")  # TODO: find out y dis here
+os.chdir("user")
 
 
 class TestIntegration(unittest.TestCase):
