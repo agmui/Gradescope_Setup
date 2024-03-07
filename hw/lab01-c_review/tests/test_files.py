@@ -11,4 +11,4 @@ class TestFiles(unittest.TestCase):
         """Check submitted files"""
         missing_files = submitted_files(['user/arraylist.c', 'user/find.c', 'user/sleep.c', 'user/warmup.c'])
         self.assertEqual(missing_files, 0, 'Missing some required files!')
-        print('All required files submitted!')
+        print('All required files submitted!!')
