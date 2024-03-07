@@ -1,6 +1,6 @@
 import os.path
 
-SUBMISSION_BASE = '/autograder/submission/user'
+SUBMISSION_BASE = '/autograder/submission'
 
 
 def submitted_files(files_to_check: list, base=SUBMISSION_BASE):
