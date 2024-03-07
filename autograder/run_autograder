@@ -23,7 +23,7 @@ ASSIGNMENT=${assignment_dict[$ASSIGNMENT_NAME]}
 cd /Gradescope_Setup
 git pull >/dev/null
 cd ..
-mkdir -p /autograder/hw/test_suite/src
+mkdir -p /autograder/hw/test_suite/src # ensures src is there
 mv /Gradescope_Setup/hw/$ASSIGNMENT/* /autograder/hw/test_suite/
 mv /Gradescope_Setup/hw/grading_utils/ /autograder/hw/
 

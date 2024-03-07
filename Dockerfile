@@ -42,13 +42,19 @@ RUN dos2unix /autograder/run_autograder
 RUN chmod +x /autograder/run_autograder
 
 RUN git clone https://github.com/agmui/Gradescope_Setup
-ADD hw Gradescope_Setup/hw
+# --debug--
+ADD hw /Gradescope_Setup/hw
+# --------
 
 
 # to build:
-# docker build -t autograder_test .
+# docker build -t os-gradescope-autograders .
 
 # to run localy:
-# docker run --rm -it -v /path/to/submission:/autograder/submission -v /path/to/results:/autograder/results username/image_name:tag bash
-# docker run --rm -it -v ./autograder/temp_sub:/autograder/submission -v ./autograder/temp_rez:/autograder/results -v ./autograder/sample_output.json:/autograder/submission_metadata.json autograder_test:latest bash
-# docker run --rm -it -v ./autograder/temp_sub:/autograder/submission -v ./autograder/temp_rez:/autograder/results -v ./autograder/sample_output.json:/autograder/submission_metadata.json autograder_test:latest /autograder/run_autograder && cat /autograder/results/results.json
+#./docker_run
+#   or
+#./docker_bash
+
+# to push
+#docker tag os-gradescope-autograders agmui/os-gradescope-autograders
+#docker push agmui/os-gradescope-autograders:tagname
