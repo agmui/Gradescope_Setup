@@ -16,6 +16,8 @@ RUN apt-get update #&& apt-get upgrade -y
 # The base image defines the CMD and ENTRYPOINT, so don't redefine those
 RUN apt-get install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu # for xv6 labs
 RUN apt-get install -y cowsay expect # for simpleshell labs
+# adds cowsay to path
+ENV PATH="${PATH}:/usr/games"
 
 RUN apt-get install -y python3 python3-pip python3-dev jq
 RUN pip3 install gradescope-utils art asyncio
@@ -39,11 +41,8 @@ ADD autograder/run_autograder /autograder/run_autograder
 RUN dos2unix /autograder/run_autograder
 RUN chmod +x /autograder/run_autograder
 
-# -- debugging --
-RUN git clone https://github.com/agmui/gradescope_semgrep
-ADD hw gradescope_semgrep/hw
-#ADD .git gradescope_semgrep/.git
-# --
+RUN git clone https://github.com/agmui/Gradescope_Setup
+ADD hw Gradescope_Setup/hw
 
 
 # to build:

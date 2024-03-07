@@ -1,4 +1,5 @@
-import os, sys
+import os
+import sys
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit
 from art import *
@@ -7,8 +8,6 @@ sys.path.insert(0, '../..')  # adds the hw project dir to the python path
 from hw.grading_utils.gradelib import *  # this is allowed bc of the sys.path.insert
 from hw.grading_utils.gradelib import TESTS
 from hw.grading_utils.random_utils import capture_output
-
-# TODO: run valgrind
 
 os.chdir("/autograder/hw/test_suite/src/csse332-labs/xv6-riscv")
 # os.chdir("/home/agmui/cs/grading_332/Gradescope_Setup/hw/lab01-c_review/src/csse332-labs/xv6-riscv")
@@ -130,7 +129,7 @@ class TestIntegration(unittest.TestCase):
         self.assertTrue(tests[2].ok)
 
     def test_string_with_q(self):
-        """autograde stirng with q"""
+        """autograde string with q"""
         self.assertTrue(tests[3].ok)
 
     def test_no_arguments(self):
