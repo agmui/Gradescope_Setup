@@ -20,22 +20,13 @@ assignment_dict["(Challenge) ext2"]=lab12-ext2
 
 ASSIGNMENT=${assignment_dict[$ASSIGNMENT_NAME]}
 
-cd /gradescope_semgrep
-#git pull > /dev/null #FIXME:
+cd /Gradescope_Setup
+git pull >/dev/null
 cd ..
 mkdir -p /autograder/hw/test_suite/
-mv /gradescope_semgrep/hw/$ASSIGNMENT/* /autograder/hw/test_suite/
-mv /gradescope_semgrep/hw/grading_utils/ /autograder/hw/
+mv /Gradescope_Setup/hw/$ASSIGNMENT/* /autograder/hw/test_suite/
+mv /Gradescope_Setup/hw/grading_utils/ /autograder/hw/
 
-#TODO: maybe add to docker file?
-PATH="$PATH:/usr/games" # adds cowsay to path
-#export PYTHONPATH="$PYTHONPATH:/gradescope_semgrep/grading_utils"
-
-
-#pip3 install -r /autograder/hw/requirements.txt > /dev/null # each requirements.txt are hw dependent
-
-# guarantee there is a src dir
-#mkdir -p /autograder/hw/src
 cp -r /autograder/submission/* /autograder/hw/test_suite/src/
 
 # shellcheck disable=SC2164
@@ -46,10 +37,10 @@ bash tests_setup.sh
 echo "--- running run_tests.py ---"
 python3 run_tests.py
 
+STUDENT_NAME=$(jq '.users[0].name' $AUTOGRADER_ROOT/submission_metadata.json \
+                  | tr -d '"' | tr -d ',' | awk '{$1=$1;print}') # removing the "
+STUDENT_ID=$(jq '.users[0].email' $AUTOGRADER_ROOT/submission_metadata.json \
+                  |tr -d '"' | tr -d ',' | cut -d'@' -f1 | awk '{$1=$1;print}')
 
-#TODO: use jq
-STUDENT_NAME=`grep -Po '"name":.*?",' $AUTOGRADER_ROOT/submission_metadata.json | cut -d':' -f 2 | tr -d '"' | tr -d ',' | awk '{$1=$1;print}'`
-STUDENT_ID=`grep -Po '"email":.*?",' $AUTOGRADER_ROOT/submission_metadata.json | cut -d':' -f2|tr -d '"' | tr -d ',' | cut -d'@' -f1 | awk '{$1=$1;print}'`
-
-echo "Student name: $STUDENT_NAME" # FIXME:
+echo "Student name: $STUDENT_NAME"
 echo "Student ID: $STUDENT_ID"
