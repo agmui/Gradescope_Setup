@@ -42,9 +42,6 @@ RUN dos2unix /autograder/run_autograder
 RUN chmod +x /autograder/run_autograder
 
 RUN git clone https://github.com/agmui/Gradescope_Setup
-# --debug--
-ADD hw /Gradescope_Setup/hw
-# --------
 
 
 # to build:
