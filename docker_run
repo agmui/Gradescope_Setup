@@ -1,0 +1,9 @@
+#!/bin/bash
+
+docker run --rm -it -v ./autograder/temp_sub:/autograder/submission \
+                    -v ./autograder/temp_rez:/autograder/results \
+                    -v ./autograder/sample_output.json:/autograder/submission_metadata.json \
+                    os-gradescope-autograders:latest \
+                    /autograder/run_autograder && jq . autograder/temp_rez/results.json
+
+#                    -v ./hw:/Gradescope_Setup/hw:ro \

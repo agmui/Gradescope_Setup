@@ -160,3 +160,4 @@ unit tests run in alphabetic order
 * some weird timeout OK msg from xv6 grader `== Test buddy_allocator, test basic alloc == Timeout! buddy_allocator, test basic alloc: FAIL (30.1s) `
 * make running localy easy
 * set up template dir correctly
+* if any bash file errors stop everything
