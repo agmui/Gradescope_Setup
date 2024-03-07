@@ -158,3 +158,5 @@ unit tests run in alphabetic order
 * run valgrind
 * remove unwanted files from submition so gradescope does not display them
 * some weird timeout OK msg from xv6 grader `== Test buddy_allocator, test basic alloc == Timeout! buddy_allocator, test basic alloc: FAIL (30.1s) `
+* make running localy easy
+* set up template dir correctly

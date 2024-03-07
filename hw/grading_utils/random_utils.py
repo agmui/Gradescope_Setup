@@ -1,5 +1,4 @@
 import os.path
-import glob
 
 SUBMISSION_BASE = '/autograder/submission/user'
 
