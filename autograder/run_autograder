@@ -51,5 +51,5 @@ python3 run_tests.py
 STUDENT_NAME=`grep -Po '"name":.*?",' $AUTOGRADER_ROOT/submission_metadata.json | cut -d':' -f 2 | tr -d '"' | tr -d ',' | awk '{$1=$1;print}'`
 STUDENT_ID=`grep -Po '"email":.*?",' $AUTOGRADER_ROOT/submission_metadata.json | cut -d':' -f2|tr -d '"' | tr -d ',' | cut -d'@' -f1 | awk '{$1=$1;print}'`
 
-echo "Student name is $STUDENT_NAME" # FIXME:
-echo "Student ID is $STUDENT_ID"
+echo "Student name: $STUDENT_NAME" # FIXME:
+echo "Student ID: $STUDENT_ID"

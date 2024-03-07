@@ -6,11 +6,12 @@ from art import *
 sys.path.insert(0, '../..')  # adds the hw project dir to the python path
 from hw.grading_utils.gradelib import *  # this is allowed bc of the sys.path.insert
 from hw.grading_utils.gradelib import TESTS
-
+from hw.grading_utils.random_utils import capture_output
 
 # TODO: run valgrind
 
 os.chdir("/autograder/hw/test_suite/src/csse332-labs/xv6-riscv")
+# os.chdir("/home/agmui/cs/grading_332/Gradescope_Setup/hw/lab01-c_review/src/csse332-labs/xv6-riscv")
 
 r = Runner(save("xv6.out"))
 
@@ -100,20 +101,24 @@ def test_find_recursive():
             './%s/%s' % (dirs[2], needle))
 
 
-run_tests()
+# run_tests()
+output = capture_output(run_tests)
 tests = TESTS
-
-
-# TODO: make above tests visible to students
 
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         print("if you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help")
 
+    # writing aaah forces this test to be first
+    def test_aaaaaah_run_grading_script(self):
+        """running grade-lib-0.py"""
+        print(text2art("c review", "rand"))
+        print(output)
+        self.assertTrue(True)
+
     def test_add_with_pointers(self):
         """unittest: add with pointers"""
-        print(text2art("c review", "rand"))
         self.assertTrue(tests[0].ok, "If you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0")
 
     def test_ensure_correct_order(self):

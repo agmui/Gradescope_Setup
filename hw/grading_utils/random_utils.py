@@ -16,3 +16,15 @@ def submitted_files(files_to_check):
             print('found:', file)
     return missing_files
     # self.assertEqual(missing_files, 0, 'Missing some required files!')
+
+# Define a wrapper function to capture the output
+def capture_output(func):
+    import io
+    from contextlib import redirect_stdout
+
+    # Create an in-memory buffer to capture output
+    buffer = io.StringIO()
+    with redirect_stdout(buffer):
+        func()  # Call the original function
+
+    return buffer.getvalue()

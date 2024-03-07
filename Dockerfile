@@ -2,8 +2,8 @@
 # you must ensure that your base image inherits from one of ours.
 # You can also override these at build time with --build-arg flags
 ARG BASE_REPO=gradescope/autograder-base
-ARG TAG=ubuntu-20.04
-#ARG TAG=latest
+#ARG TAG=ubuntu-20.04
+ARG TAG=latest
 
 FROM ${BASE_REPO}:${TAG}
 
@@ -40,9 +40,9 @@ RUN dos2unix /autograder/run_autograder
 RUN chmod +x /autograder/run_autograder
 
 # -- debugging --
-#RUN git clone https://github.com/agmui/gradescope_semgrep
+RUN git clone https://github.com/agmui/gradescope_semgrep
 ADD hw gradescope_semgrep/hw
-ADD .git gradescope_semgrep/.git
+#ADD .git gradescope_semgrep/.git
 # --
 
 

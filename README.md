@@ -140,6 +140,8 @@ upload
 
 ###### random note:
 gradescope does not print ps -a for what ever reason idk so for simple shell gud luck
+
+unit tests run in alphabetic order
 ##### TODO:
 * use subprocess.run() for everything along with input [link](https://stackoverflow.com/questions/39187886/what-is-the-difference-between-subprocess-popen-and-subprocess-run)
 * add try catch block for xv6 runner
