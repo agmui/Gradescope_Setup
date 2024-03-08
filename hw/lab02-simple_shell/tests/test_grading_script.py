@@ -24,7 +24,7 @@ os.chdir("src")
 
 f = open("output.txt")
 shell_output = f.read()
-# print(result)
+# print(shell_output)
 f.close()
 result = shell_output.split('\n')
 

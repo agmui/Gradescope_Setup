@@ -1,10 +1,13 @@
-import subprocess
-import re, os
+import os
+import sys
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, visibility
-from hw.grading_utils.integrationlib import test_run
 
-os.chdir("src")
+# sys.path.insert(0, '../..')  # adds the hw project dir to the python path
+
+# from hw.grading_utils.integrationlib import test_run
+
+# os.chdir("src")
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
