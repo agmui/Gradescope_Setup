@@ -5,5 +5,13 @@ docker run --rm -it -v ./autograder/temp_sub:/autograder/submission \
                     -v ./autograder/sample_output.json:/autograder/submission_metadata.json \
                     -v ./hw:/Gradescope_Setup/hw:ro \
                     os-gradescope-autograders:latest \
-                    /autograder/run_autograder && jq . autograder/temp_rez/results.json
+                    /autograder/run_autograder;
+echo --------results.json------------
+LENGTH=`jq '.tests | length' autograder/temp_rez/results.json`
+for (( i = 0 ; i < $LENGTH; i++ ))
+do
+  jq -r .tests[$i].output autograder/temp_rez/results.json
+  echo =================================================================================================================
+  echo
+done
 
