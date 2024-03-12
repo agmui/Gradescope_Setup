@@ -24,7 +24,8 @@ def submitted_files(files_to_check: list, base=SUBMISSION_BASE):
     print('---')
     print(f'missing {missing_files} files')
 
-    print("if this autograder breaks pleas email: muian@rose-hulman.edu and tell them they are and idiot")
+    print("if this autograder breaks pleas email: muian@rose-hulman.edu and tell them they are and idiot\n"
+          "(for example this case right here)")
     return missing_files
 
 
