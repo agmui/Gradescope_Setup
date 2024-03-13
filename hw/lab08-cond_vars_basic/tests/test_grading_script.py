@@ -75,7 +75,6 @@ class TestIntegration(unittest.TestCase):
         pass
 
     def test_inorder_output(self):
-        print(text2art("cond vars basic", "rand"))
         global inorder_output
         ordered_output = [
             "1 is finished with the critical section",

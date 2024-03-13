@@ -16,7 +16,6 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_simple(self):
         """autograder simple_tests"""
-        print(text2art("process lab", "rand"))
         os.system("make simple_test")
         print(
             "if the autograder does not work email muian@rose-hulman.edu and tell them they are an idiot and tell them to fix it\n")

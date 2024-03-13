@@ -44,7 +44,6 @@ class TestIntegration(unittest.TestCase):
     def test_cowtest(self):
         """cowtest"""
         os.system("cowsay this do be my lab")
-        print(text2art("virtual memory 2", "rand"))
         self.assertTrue(TESTS[0].ok)
 
     def test_simple(self):

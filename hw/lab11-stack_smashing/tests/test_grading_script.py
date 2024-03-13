@@ -17,7 +17,6 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_make_grade(self):
         """autograder us1tests.c tests"""
-        print(text2art("stack smashing", "rand"))
         process = subprocess.Popen(['./part8 $(python2 part8.py)'], stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)

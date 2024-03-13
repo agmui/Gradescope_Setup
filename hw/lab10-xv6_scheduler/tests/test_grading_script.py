@@ -32,7 +32,6 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_make_grade(self):
         """autograder us1tests.c tests"""
-        print(text2art("xv6 scheduler", "rand"))
         # os.system("sudo apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu")
         # os.system("tar xf submit-lab-sched.tar")
         # process = subprocess.Popen(['make grade'], stdout=subprocess.PIPE, encoding='UTF-8')

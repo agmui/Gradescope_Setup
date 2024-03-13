@@ -79,7 +79,6 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     def test_get_buddy(self):
         """autograder get buddy tests"""
-        print(text2art("heap manager2", "rand"))
         self.assertTrue(TESTS[0].ok)
 
     @weight(0)

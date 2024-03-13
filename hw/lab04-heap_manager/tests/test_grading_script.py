@@ -98,7 +98,6 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_basic_case(self):
         """autograder basic case tests"""
-        print(text2art("heap manager", "rand"))
         self.assertTrue(TESTS[0].ok)
 
     @weight(0)

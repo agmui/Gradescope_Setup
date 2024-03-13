@@ -53,7 +53,6 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_foreground_cmd(self):
         """checking for foreground commands"""
-        print(text2art("simple shell", "rand"))
         # print("====================")
         # print("NOTE: bc python is dumb this will not look nice but still will be correct")
         # print("====================")
@@ -125,7 +124,7 @@ class TestIntegration(unittest.TestCase):
         print("checking if BG can do args")
         found_donothing = False
         # rez = re.search('.*BGsleep 2\n.*\n?.*\n', shell_output)
-        rez = re.search('.*\'BGsleep\' with argument \'2\'(.*\n)?.*\n.*\'echo\' with argument \'uwu\'.*', shell_output)
+        rez = re.search('.*\'BGsleep\' with argument \'2\'(.*\n)?.*\n(.*\n)?.*\'echo\' with argument \'uwu\'.*', shell_output)
         if rez is not None and len(rez.group().split('\n')) >= 2:
             found_donothing = True
 

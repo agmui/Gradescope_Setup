@@ -19,7 +19,6 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_filereader(self):
         """autograder file reader tests"""
-        print(text2art("ext2 lab!!!", "rand"))
         process = subprocess.Popen('./filereader 451_filesystem.ext2 /small-file.txt'.split(), stdout=subprocess.PIPE,
                                    encoding='UTF-8')
         result, error = process.communicate()

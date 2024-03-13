@@ -51,7 +51,6 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_band(self):
         """autograder output tests"""
-        print(text2art("cond vars 2", "rand"))
         print(inorder_output['output'])
         self.assertTrue(True)
 
