@@ -101,60 +101,58 @@ def test_find_recursive():
             './%s/%s' % (dirs[2], needle))
 
 
-output = capture_output(run_tests)
-tests = TESTS
-
+output, error = capture_output(run_tests)
 os.chdir(prev_cwd)
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         print("if you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help")
 
-    # writing aaah forces this test to be first
+    # writing aaah forces this test to be first #TODO
     def test_aaaaaah_run_grading_script(self):
         """running grade-lib-0.py"""
         print(output)
-        self.assertTrue(True)
+        self.assertIsNone(error, "you did not pass all the tests :c")
 
     def test_add_with_pointers(self):
         """unittest: add with pointers"""
-        self.assertTrue(tests[0].ok, "If you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0")
+        self.assertTrue(TESTS[0].ok, "If you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0")
 
     def test_ensure_correct_order(self):
         """unittest: ensure_correct_order"""
-        self.assertTrue(tests[1].ok)
+        self.assertTrue(TESTS[1].ok)
 
     def test_special_equals(self):
         """unittest: special equals"""
-        self.assertTrue(tests[2].ok)
+        self.assertTrue(TESTS[2].ok)
 
     def test_string_with_q(self):
         """autograde string with q"""
-        self.assertTrue(tests[3].ok)
+        self.assertTrue(TESTS[3].ok)
 
     def test_no_arguments(self):
         """unittest: no arguments"""
-        self.assertTrue(tests[4].ok)
+        self.assertTrue(TESTS[4].ok)
 
     def test_returns(self):
         """unittest: returns"""
-        self.assertTrue(tests[5].ok)
+        self.assertTrue(TESTS[5].ok)
 
     def test_makes_syscall(self):
         """unittest: makes syscall"""
-        self.assertTrue(tests[6].ok)
+        self.assertTrue(TESTS[6].ok)
 
     def test_all(self):
         """unittest: all"""
-        self.assertTrue(tests[7].ok)
+        self.assertTrue(TESTS[7].ok)
 
     def test_in_current_directory(self):
         """unittest: in current dir"""
-        self.assertTrue(tests[8].ok)
+        self.assertTrue(TESTS[8].ok)
 
     def test_recursive(self):
         """unittest: recursive"""
-        self.assertTrue(tests[9].ok)
+        self.assertTrue(TESTS[9].ok)
 
 
 if __name__ == '__main__':

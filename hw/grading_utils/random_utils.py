@@ -33,18 +33,38 @@ def submitted_files(files_to_check: list[str], base=SUBMISSION_BASE) -> int:
           "(for example this case right here)")
 
     if missing_files == 0:
-        print('All required files submitted!!')
+        print('\nAll required files submitted!!')
     return missing_files
 
 
 # Define a wrapper function to capture the output
 def capture_output(func):
+    """
+    Captures all print/stdout from given function and returns it in a buffer and whether the function crashed
+
+    :param func: function to capture the output of
+    :return: output of function and exception if there was any
+    """
     import io
     from contextlib import redirect_stdout
 
     # Create an in-memory buffer to capture output
     buffer = io.StringIO()
+    err = None
     with redirect_stdout(buffer):
-        func()  # Call the original function
+        """
+        Note: in gradelib.py there already is a try: except: statement for the students code
+        making the try except here redundant. However gradelib.py also exit(1) if not all
+        the test cases pass. So for redirect_stdout to work we need a try: except: and
+        changing gradelib.py will make the gradescope environment different from the students
+        so we are forced to have two try: except: blocks.
+        """
+        try:
+            func()  # Call the original function
+        except BaseException as error:
+            print("--test crashed--")
+            print("error:\n", error)
+            print("----------------")
+            err = error
 
-    return buffer.getvalue()
+    return buffer.getvalue(), err
