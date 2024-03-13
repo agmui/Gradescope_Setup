@@ -16,26 +16,7 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     @visibility('hidden')
     def test_arraylist(self):
-        """autograder arraylist test"""
-        # ========== arraylist ==========
-        print("========== arraylist.c ==========")
-        decision_graph = {
-            'head': ['root'],
-            'root': []
-        }
-        graph_convert = {
-            'root': [
-                ".*malloc(sizeof(struct arraylist))",
-                "->size = 0",
-                "->capacity = DEF_ARRAY_LIST_CAPACITY",
-                "->list = .*malloc(.*)",
-                "return .*"
-            ],
-        }
-        # rez = test_run("arraylist.c", "struct arraylist *al_new(void)",decision_graph,graph_convert)
-        # self.assertTrue(rez)
-
-
+        """autograder integration test"""
         self.assertTrue(True)
 
 if __name__ == '__main__':
