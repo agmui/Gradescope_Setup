@@ -102,6 +102,7 @@ def test_find_recursive():
 
 
 output, error = capture_output(run_tests)
+output_arr = output.split('\n')
 os.chdir(prev_cwd)
 
 class TestIntegration(unittest.TestCase):
@@ -116,42 +117,52 @@ class TestIntegration(unittest.TestCase):
 
     def test_add_with_pointers(self):
         """unittest: add with pointers"""
+        print(output_arr[0])
         self.assertTrue(TESTS[0].ok, "If you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0")
 
     def test_ensure_correct_order(self):
         """unittest: ensure_correct_order"""
+        print(output_arr[1])
         self.assertTrue(TESTS[1].ok)
 
     def test_special_equals(self):
         """unittest: special equals"""
+        print(output_arr[2])
         self.assertTrue(TESTS[2].ok)
 
     def test_string_with_q(self):
         """autograde string with q"""
+        print(output_arr[3])
         self.assertTrue(TESTS[3].ok)
 
     def test_no_arguments(self):
         """unittest: no arguments"""
+        print(output_arr[4])
         self.assertTrue(TESTS[4].ok)
 
     def test_returns(self):
         """unittest: returns"""
+        print(output_arr[5])
         self.assertTrue(TESTS[5].ok)
 
     def test_makes_syscall(self):
         """unittest: makes syscall"""
+        print(output_arr[6])
         self.assertTrue(TESTS[6].ok)
 
     def test_all(self):
         """unittest: all"""
+        print(output_arr[7])
         self.assertTrue(TESTS[7].ok)
 
     def test_in_current_directory(self):
         """unittest: in current dir"""
+        print(output_arr[8])
         self.assertTrue(TESTS[8].ok)
 
     def test_recursive(self):
         """unittest: recursive"""
+        print(output_arr[9])
         self.assertTrue(TESTS[9].ok)
 
 

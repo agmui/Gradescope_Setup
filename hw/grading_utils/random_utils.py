@@ -63,7 +63,7 @@ def capture_output(func):
             func()  # Call the original function
         except BaseException as error:
             print("--test crashed--")
-            print("error:\n", error)
+            print("error/return code:\n", error)
             print("----------------")
             err = error
 

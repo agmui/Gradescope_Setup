@@ -54,4 +54,6 @@ RUN git clone https://github.com/agmui/Gradescope_Setup
 
 # to push
 #docker tag os-gradescope-autograders agmui/os-gradescope-autograders
-#docker push agmui/os-gradescope-autograders:tagname
+#docker push agmui/os-gradescope-autograders:latest
+
+#image name to input into gradescope: agmui/os-gradescope-autograders:latest
