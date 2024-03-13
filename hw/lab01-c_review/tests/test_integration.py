@@ -5,7 +5,8 @@ from gradescope_utils.autograder_utils.decorators import weight, tags, number, v
 sys.path.insert(0, '../..')  # adds the hw project dir to the python path
 from hw.grading_utils.integrationlib import test_run
 
-os.chdir("user")
+os.chdir("src/csse332-labs/xv6-riscv/user")
+# os.chdir("src/josh/user")
 
 
 class TestIntegration(unittest.TestCase):
@@ -17,7 +18,7 @@ class TestIntegration(unittest.TestCase):
     def test_arraylist(self):
         """autograder arraylist test"""
         # ========== arraylist ==========
-        print("========== arraylist.c ==========")
+        print("========== arraylist.c ==========") # TODO put file names and test names
         arraylist_decision_graph = {
             'head': ['root'],
             'root': []
@@ -111,7 +112,7 @@ class TestIntegration(unittest.TestCase):
         print("========== al_resize ==========")
         decision_graph = {
             'head': ['malloc_first', 'cap_first'],
-            'malloc_first': ['memcopy', 'for_copy'],
+            'malloc_first': ['for_copy','memcopy'],
             'cap_first': [],
             'for_copy': [],
             'memcopy': []
@@ -132,8 +133,8 @@ class TestIntegration(unittest.TestCase):
             ],
             'for_copy': [
                 "for(.*)",
-                [".*->list[i].*", ".*->list.*+.*i"],
-                ".*->capacity\*2;",
+                [".*->list.*[i].*", ".*->list.*+.*i"],
+                [".*->capacity\*2;",".*->capacity\*=2;"],
                 "free(.*)"
             ],
             'memcopy': [
