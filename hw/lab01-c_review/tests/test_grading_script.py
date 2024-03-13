@@ -2,13 +2,15 @@ import os
 import sys
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit
-from art import *
 
 sys.path.insert(0, '../..')  # adds the hw project dir to the python path
 from hw.grading_utils.gradelib import *  # this is allowed bc of the sys.path.insert
 from hw.grading_utils.gradelib import TESTS
 from hw.grading_utils.random_utils import capture_output
 
+#TODO: dont use chdir, try to force all files to
+# https://stackoverflow.com/questions/41742317/how-can-i-change-directory-with-python-pathlib
+prev_cwd = os.getcwd()
 os.chdir("src/csse332-labs/xv6-riscv") # this assumes you are running the file one directory level up
 
 r = Runner(save("xv6.out"))
@@ -102,6 +104,7 @@ def test_find_recursive():
 output = capture_output(run_tests)
 tests = TESTS
 
+os.chdir(prev_cwd)
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
@@ -110,7 +113,6 @@ class TestIntegration(unittest.TestCase):
     # writing aaah forces this test to be first
     def test_aaaaaah_run_grading_script(self):
         """running grade-lib-0.py"""
-        print(text2art("c review", "rand"))
         print(output)
         self.assertTrue(True)
 

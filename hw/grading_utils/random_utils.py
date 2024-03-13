@@ -3,8 +3,13 @@ import os.path
 SUBMISSION_BASE = '/autograder/submission/'
 
 
-def submitted_files(files_to_check: list, base=SUBMISSION_BASE):
-    """Check submitted files"""
+def submitted_files(files_to_check: list[str], base=SUBMISSION_BASE) -> int:
+    """
+
+    :param files_to_check: list of files to check it exists in /autograder/submission/ or base
+    :param base: location of where the file check is happening Default /autograder/submission
+    :return: number files missing
+    """
     missing_files = len(files_to_check)
 
     # r=fullpath, d=directories, f = files
@@ -26,6 +31,9 @@ def submitted_files(files_to_check: list, base=SUBMISSION_BASE):
 
     print("if this autograder breaks pleas email: muian@rose-hulman.edu and tell them they are and idiot\n"
           "(for example this case right here)")
+
+    if missing_files == 0:
+        print('All required files submitted!!')
     return missing_files
 
 

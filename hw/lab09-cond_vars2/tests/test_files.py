@@ -1,14 +1,16 @@
 import unittest
+import sys
 from gradescope_utils.autograder_utils.decorators import weight
-from gradescope_utils.autograder_utils.files import check_submitted_files
+from art import *
+
+sys.path.insert(0, '../..')  # adds the hw project dir to the python path
+from hw.grading_utils.random_utils import submitted_files
 
 
 class TestFiles(unittest.TestCase):
     @weight(0)
     def test_submitted_files(self):
         """Check submitted files"""
-        missing_files = check_submitted_files(['priority.c', 'threeJobs.c', 'band.c', 'littleredhen.c'])
-        for path in missing_files:
-            print('Missing {0}'.format(path))
-        self.assertEqual(len(missing_files), 0, 'Missing some required files!')
-        print('All required files submitted!')
+        print(text2art("[Challenge] Condition Variables 2", "rand"))
+        files = ['priority.c', 'threeJobs.c', 'band.c', 'littleredhen.c']
+        self.assertequal(submitted_files(files), 0, 'missing some required files!')
