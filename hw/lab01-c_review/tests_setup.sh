@@ -1,15 +1,20 @@
 #!/bin/bash
 
 # shellcheck disable=SC2164
-SRC_DIR=/autograder/hw/test_suite/src
-cd $SRC_DIR
+cd $SRC_DIR # Defined in Gradescope_setup/autograder/run_autograder
 
-clone_dir clab xv6-riscv https://github.com/rhit-csse332/csse332-labs.git
+clone_dir clab xv6-riscv https://github.com/rhit-csse332/csse332-labs.git > /dev/null # TODO: decide to hide
+#SVN is no longer supported (https://github.blog/2023-01-20-sunsetting-subversion-support/)
 #svn export https://github.com/rhit-csse332/csse332-labs/branches/clab/xv6-riscv/ > /dev/null
 
 #TODO: only move the 4 .c files
-mv $SRC_DIR/user/*.c $SRC_DIR/csse332-labs/xv6-riscv/user/
-#cp -r /autograder/submission/*.c $SRC_DIR/csse332-labs/xv6-riscv/user/
+#mv $SRC_DIR/user/*.c $SRC_DIR/csse332-labs/xv6-riscv/user/
+cp -r /autograder/submission/user/*c $SRC_DIR/csse332-labs/xv6-riscv/user/
+
 cd $SRC_DIR/csse332-labs/xv6-riscv/
 make clean > /dev/null
 make > /dev/null
+
+cd $SRC_DIR/..
+echo "--- running run_tests.py ---"
+python3 run_tests.py

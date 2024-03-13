@@ -23,7 +23,7 @@ class TestIntegration(unittest.TestCase):
         print(f.read())
         f.close()
         print(text2art('''
-        If you change a
+        If you change
         global var before
         locking...
         I will come for you
