@@ -4,7 +4,7 @@ import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, visibility
 
 
-os.chdir("src")
+# os.chdir("src")
 
 
 class TestIntegration(unittest.TestCase):
