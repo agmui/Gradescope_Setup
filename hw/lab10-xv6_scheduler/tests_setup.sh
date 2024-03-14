@@ -7,6 +7,7 @@ clone_dir klist xv6-riscv https://github.com/rhit-csse332/csse332-labs.git
 
 #cp -r $SRC_DIR/* $SRC_DIR/csse332-labs/xv6-riscv/ > /dev/null
 cp -r /autograder/submission/* $SRC_DIR/csse332-labs/xv6-riscv/
+
 cd $SRC_DIR/csse332-labs/xv6-riscv/
 make clean > /dev/null
 make > /dev/null

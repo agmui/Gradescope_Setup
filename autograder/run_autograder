@@ -31,8 +31,6 @@ mkdir -p /autograder/hw/test_suite/src # ensures src is there
 cp -r /Gradescope_Setup/hw/$ASSIGNMENT/* /autograder/hw/test_suite/
 cp -r /Gradescope_Setup/hw/grading_utils/ /autograder/hw/
 
-# TODO: no need to cp over just have each lab do the cp (note without cp it breaks docker read only)
-#cp -r /autograder/submission/* $SRC_DIR
 #TODO: make submissions dir read only?
 
 #================= run tests_setup.sh that were just pulled from git =================================

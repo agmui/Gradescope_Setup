@@ -2,7 +2,9 @@
 
 # shellcheck disable=SC2164
 cd $SRC_DIR # Defined in Gradescope_setup/autograder/run_autograder
+
 cp -r /autograder/submission/* $SRC_DIR
+
 make clean > /dev/null
 make > /dev/null
 
