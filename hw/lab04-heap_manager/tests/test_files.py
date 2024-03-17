@@ -12,5 +12,5 @@ class TestFiles(unittest.TestCase):
     def test_submitted_files(self):
         """Check submitted files"""
         print(text2art("Heap Manager", "rand"))
-        files = ['rhmalloc.c']
+        files = ['user/rhmalloc.c']
         self.assertEqual(submitted_files(files), 0, 'missing some required files!')
