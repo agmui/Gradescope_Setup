@@ -20,3 +20,7 @@ cd $SRC_DIR/csse332-labs/xv6-riscv/
 make clean > /dev/null
 make > /dev/null
 #strace -e fork,clone --decode-pids=comm -f -o output.log expect ./test.exp
+
+cd $SRC_DIR/..
+echo "--- running run_tests.py ---"
+python3 run_tests.py
