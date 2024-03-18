@@ -54,7 +54,7 @@ class TestIntegration(unittest.TestCase):
     @number("2")
     def test_cowtest(self):
         """cowtest"""
-        subprocess.run("cowsay this do be my lab".split(), subprocess.STDOUT)
+        subprocess.run("cowsay this do be my lab".split(), capture_output=True)
         print(output_arr[0])
         self.assertTrue(TESTS[0].ok)
 
