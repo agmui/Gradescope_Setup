@@ -109,9 +109,9 @@ class TestIntegration(unittest.TestCase):
     def setUp(self):
         print("if you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help")
 
-    # writing aaah forces this test to be first #TODO
+    #TODO: use @number instead of aaaaaa
     def test_aaaaaah_run_grading_script(self):
-        """running grade-lib-0.py"""
+        """output of grade-lib-0.py"""
         print(output)
         self.assertIsNone(error, "you did not pass all the tests :c")
 

@@ -69,11 +69,12 @@ class TestIntegration(unittest.TestCase):
     def setUp(self):
         print("================= please go to: =================")
         print("https://docs.google.com/forms/d/e/1FAIpQLSfhQQLJKwMup5vkAd9BBnEZTGOpYZHjvfSJg8V4YlQKp9TufA/viewform")
-        print("thank you")
+        print("thank you\n")
 
     @weight(0)
     @number("1")
     def test_run_grade_lab_buddy(self):
+        """output of grade-lab-buddy.py"""
         print(output)
         self.assertIsNone(error, "you did not pass all the tests :c")
 
