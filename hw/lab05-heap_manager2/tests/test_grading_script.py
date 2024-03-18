@@ -73,7 +73,7 @@ class TestIntegration(unittest.TestCase):
 
     @weight(0)
     @number("1")
-    def test_aaaa(self):
+    def test_run_grade_lab_buddy(self):
         print(output)
         self.assertIsNone(error, "you did not pass all the tests :c")
 
