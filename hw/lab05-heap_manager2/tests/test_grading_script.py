@@ -1,17 +1,14 @@
 import os
-import subprocess
+import sys
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit
-from art import *
-from gradelib import *
-from gradelib import TESTS
+sys.path.insert(0, '../..')  # adds the hw project dir to the python path
+from hw.grading_utils.gradelib import *  # this is allowed bc of the sys.path.insert
+from hw.grading_utils.gradelib import TESTS
+from hw.grading_utils.random_utils import capture_output
 
+prev_cwd = os.getcwd()
 os.chdir("src/csse332-labs/xv6-riscv")
-# os.system("apt update -y > /dev/null && apt upgrade -y > /dev/null")
-# os.system(
-#     "apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu > /dev/null")
-# os.system("tar xf submit-lab-buddy.tar")
-# os.system("make > /dev/null")
 
 r = Runner(save("xv6.out"))
 
@@ -64,11 +61,9 @@ def test_stress_overlapping():
     r.match("^test_stress_overlapping\\(\\d+\\): OK\.",
             no=[".*Assertion FAILED.*"])
 
-
-try:
-    run_tests()
-finally:
-    pass
+output, error = capture_output(run_tests)
+output_arr = output.split('\n')
+os.chdir(prev_cwd)
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
