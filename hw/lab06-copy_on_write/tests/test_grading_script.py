@@ -1,4 +1,5 @@
 import os
+import subprocess
 import sys
 import re
 import unittest
@@ -53,7 +54,7 @@ class TestIntegration(unittest.TestCase):
     @number("2")
     def test_cowtest(self):
         """cowtest"""
-        os.system("cowsay this do be my lab")
+        subprocess.run("cowsay this do be my lab".split())
         self.assertTrue(TESTS[0].ok)
 
     @number("3")

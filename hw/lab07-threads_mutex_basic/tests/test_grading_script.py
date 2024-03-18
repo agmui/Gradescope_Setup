@@ -13,7 +13,7 @@ os.chdir("src")
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
-        print("if you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help")
+        print("if you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help\n")
 
     @weight(0)
     @number("1")
@@ -31,7 +31,7 @@ class TestIntegration(unittest.TestCase):
 
         process = subprocess.Popen(['./thread_factoring.bin'], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                    encoding='UTF-8')
-        result, error = process.communicate(input="143\n2")
+        result, error = process.communicate(input="143\n2") #TODO: add timeouts
         print(result)
         self.assertTrue(True)
 
