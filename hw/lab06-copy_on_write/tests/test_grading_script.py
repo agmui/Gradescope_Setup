@@ -1,5 +1,6 @@
 import os
 import sys
+import re
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit
 sys.path.insert(0, '../..')  # adds the hw project dir to the python path
