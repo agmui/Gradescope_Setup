@@ -4,6 +4,7 @@ import sys
 import re
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit
+
 sys.path.insert(0, '../..')  # adds the hw project dir to the python path
 from hw.grading_utils.gradelib import *  # this is allowed bc of the sys.path.insert
 from hw.grading_utils.gradelib import TESTS
@@ -14,21 +15,25 @@ os.chdir("src/csse332-labs/xv6-riscv")
 
 r = Runner(save("xv6.out"))
 
+
 @test(0, "running cowtest")
 def test_cowtest():
     r.run_qemu(shell_script([
         'cowtest'
     ]))
 
+
 @test(40, "simple", parent=test_cowtest)
 def test_simple():
     matches = re.findall("^simple: ok$", r.qemu.output, re.M)
     assert_equal(len(matches), 2, "Number of appearances of 'simple: ok'")
 
+
 @test(40, "three", parent=test_cowtest)
 def test_three():
     matches = re.findall("^three: ok$", r.qemu.output, re.M)
     assert_equal(len(matches), 3, "Number of appearances of 'three: ok'")
+
 
 @test(20, "file", parent=test_cowtest)
 def test_file():
@@ -54,7 +59,8 @@ class TestIntegration(unittest.TestCase):
     @number("2")
     def test_cowtest(self):
         """cowtest"""
-        subprocess.run("cowsay this do be my lab".split(), capture_output=True)
+        output = subprocess.run("cowsay this do be my lab".split(), capture_output=True, encoding='UTF-8')
+        print(output.stdout)
         print(output_arr[0])
         self.assertTrue(TESTS[0].ok)
 
@@ -75,7 +81,6 @@ class TestIntegration(unittest.TestCase):
         """file test"""
         print(output_arr[3])
         self.assertTrue(TESTS[3].ok)
-
 
 
 if __name__ == '__main__':
