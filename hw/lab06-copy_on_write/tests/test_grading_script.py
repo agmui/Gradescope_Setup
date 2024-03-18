@@ -42,8 +42,8 @@ os.chdir(prev_cwd)
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
-        print("================= please go to: =================")
-        print("https://docs.google.com/forms/d/e/1FAIpQLSfhQQLJKwMup5vkAd9BBnEZTGOpYZHjvfSJg8V4YlQKp9TufA/viewform")
+        print("================= please go to to finish the lab: =================")
+        print("https://docs.google.com/forms/d/e/1FAIpQLSfhQQLJKwMup5vkAd9BBnEZTGOpYZHjvfSJg8V4YlQKp9TufA/viewform\n")
 
     @number("1")
     def test_aaaa(self):
@@ -54,22 +54,26 @@ class TestIntegration(unittest.TestCase):
     @number("2")
     def test_cowtest(self):
         """cowtest"""
-        subprocess.run("cowsay this do be my lab".split())
+        subprocess.run("cowsay this do be my lab".split(), subprocess.STDOUT)
+        print(output_arr[0])
         self.assertTrue(TESTS[0].ok)
 
     @number("3")
     def test_simple(self):
         """simple test"""
+        print(output_arr[1])
         self.assertTrue(TESTS[1].ok)
 
     @number("4")
     def test_three(self):
         """three test"""
+        print(output_arr[2])
         self.assertTrue(TESTS[2].ok)
 
     @number("5")
     def test_file(self):
         """file test"""
+        print(output_arr[3])
         self.assertTrue(TESTS[3].ok)
 
 
