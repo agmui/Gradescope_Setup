@@ -72,38 +72,58 @@ class TestIntegration(unittest.TestCase):
         print("thank you")
 
     @weight(0)
+    @number("1")
+    def test_aaaa(self):
+        print(output)
+        self.assertIsNone(error, "you did not pass all the tests :c")
+
+    @weight(0)
+    @number("2")
     def test_get_buddy(self):
         """autograder get buddy tests"""
+        print(output_arr[0])
         self.assertTrue(TESTS[0].ok)
 
     @weight(0)
+    @number("3")
     def test_basic_alloc(self):
         """autograder basic alloc tests"""
+        print(output_arr[1])
         self.assertTrue(TESTS[1].ok)
 
     @weight(0)
+    @number("4")
     def test_basic_free(self):
         """autograder basic free tests"""
+        print(output_arr[2])
         self.assertTrue(TESTS[2].ok)
 
     @weight(0)
+    @number("5")
     def test_wrong_size_coalesce(self):
         """autograder wrong size coalesce tests"""
+        print(output_arr[3])
         self.assertTrue(TESTS[3].ok)
 
     @weight(0)
+    @number("6")
     def test_graceful(self):
         """autograder gracefully run out of memory tests"""
+        print(output_arr[4])
         self.assertTrue(TESTS[4].ok)
 
     @weight(0)
+    @number("7")
     def test_stress_big_heap(self):
         """autograder stress big heap chunks tests"""
+        print(output_arr[5])
         self.assertTrue(TESTS[5].ok)
 
     @weight(0)
+    @number("8")
     def test_stress_overlap(self):
         """autograder stress overlapping tests"""
+        print(output_arr[6])
         self.assertTrue(TESTS[6].ok)
 
 

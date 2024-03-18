@@ -1,16 +1,13 @@
 import os
-import subprocess
 import sys
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit
-from art import *
 sys.path.insert(0, '../..')  # adds the hw project dir to the python path
 from hw.grading_utils.gradelib import *  # this is allowed bc of the sys.path.insert
 from hw.grading_utils.gradelib import TESTS
 from hw.grading_utils.random_utils import capture_output
 
 
-# os.chdir("/autograder/source/src/xv6-riscv")
 prev_cwd = os.getcwd()
 os.chdir("src/csse332-labs/xv6-riscv") # this assumes you are running the file one directory level up
 

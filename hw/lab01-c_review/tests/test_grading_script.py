@@ -115,6 +115,7 @@ class TestIntegration(unittest.TestCase):
         print(output)
         self.assertIsNone(error, "you did not pass all the tests :c")
 
+    #TODO: add numbers and points
     def test_add_with_pointers(self):
         """unittest: add with pointers"""
         print(output_arr[0])

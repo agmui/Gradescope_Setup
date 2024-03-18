@@ -13,4 +13,4 @@ class TestFiles(unittest.TestCase):
         """Check submitted files"""
         print(text2art("[Challenge]Copy-on-write", "rand"))
         files = ['kernel/kalloc.c', 'kernel/trap.c', 'kernel/vm.c', 'user/simplefork.c']
-        self.assertequal(submitted_files(files), 0, 'missing some required files!')
+        self.assertEqual(submitted_files(files), 0, 'missing some required files!')

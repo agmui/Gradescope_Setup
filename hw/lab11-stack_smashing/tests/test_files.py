@@ -13,4 +13,4 @@ class TestFiles(unittest.TestCase):
         """Check submitted files"""
         print(text2art("Stack Smashing", "rand"))
         files = ['part1.py', 'part2.py', 'part3.py', 'part4.py', 'part5.py']  # TODO: add last .py file
-        self.assertequal(submitted_files(files), 0, 'missing some required files!')
+        self.assertEqual(submitted_files(files), 0, 'missing some required files!')
