@@ -1,16 +1,14 @@
 import os
+import sys
 import unittest
-import re
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit
-from art import *
-from gradelib import *
-from gradelib import TESTS
+sys.path.insert(0, '../..')  # adds the hw project dir to the python path
+from hw.grading_utils.gradelib import *  # this is allowed bc of the sys.path.insert
+from hw.grading_utils.gradelib import TESTS
+from hw.grading_utils.random_utils import capture_output
 
+prev_cwd = os.getcwd()
 os.chdir("src/csse332-labs/xv6-riscv")
-# os.system("apt update -y > /dev/null && apt upgrade -y > /dev/null")
-# os.system("apt install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu > /dev/null")
-# os.system("tar xf submit-lab-5.tar")
-# os.system("make > /dev/null")
 
 r = Runner(save("xv6.out"))
 
@@ -35,27 +33,41 @@ def test_file():
     r.match('^file: ok$')
 
 
-run_tests()
+output, error = capture_output(run_tests)
+output_arr = output.split('\n')
+os.chdir(prev_cwd)
+
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
-        pass
+        print("================= please go to: =================")
+        print("https://docs.google.com/forms/d/e/1FAIpQLSfhQQLJKwMup5vkAd9BBnEZTGOpYZHjvfSJg8V4YlQKp9TufA/viewform")
 
+    @number("1")
+    def test_aaaa(self):
+        """output of grade-lab-<TODO: add file name>.py"""
+        print(output)
+        self.assertIsNone(error, "you did not pass all the tests :c")
+
+    @number("2")
     def test_cowtest(self):
         """cowtest"""
         os.system("cowsay this do be my lab")
         self.assertTrue(TESTS[0].ok)
 
+    @number("3")
     def test_simple(self):
-        """simple"""
+        """simple test"""
         self.assertTrue(TESTS[1].ok)
 
+    @number("4")
     def test_three(self):
-        """three"""
+        """three test"""
         self.assertTrue(TESTS[2].ok)
 
+    @number("5")
     def test_file(self):
-        """file"""
+        """file test"""
         self.assertTrue(TESTS[3].ok)
 
 

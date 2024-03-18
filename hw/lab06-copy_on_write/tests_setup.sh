@@ -8,6 +8,7 @@ clone_dir cow xv6-riscv https://github.com/rhit-csse332/csse332-labs.git
 
 #mv $SRC_DIR/* $SRC_DIR/csse332-labs/xv6-riscv/
 #cp -r $SRC_DIR/* $SRC_DIR/csse332-labs/xv6-riscv/ > /dev/null #TODO: find out if this can just be mv
+#TODO: only cp the needed files ['kernel/kalloc.c', 'kernel/trap.c', 'kernel/vm.c', 'user/simplefork.c']
 cp -r /autograder/submission/* $SRC_DIR/csse332-labs/xv6-riscv/
 
 cd $SRC_DIR/csse332-labs/xv6-riscv/
