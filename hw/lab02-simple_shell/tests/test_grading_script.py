@@ -22,6 +22,7 @@ os.chdir("src")
 
 # ================= preprocess =============
 
+#TODO: check if submissions even exit properly bc sometimes exit does not work for some.
 f = open("output.txt")
 shell_output = f.read()
 # print(shell_output)

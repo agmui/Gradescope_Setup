@@ -36,5 +36,7 @@ send -- "pgrep simpleshell\n"
 expect "% "
 send -- "ps -a\n"
 expect "% "
+send -- "this command does not exist\n"
+expect "% "
 send -- "exit\n"
 expect eof
