@@ -22,6 +22,8 @@ assignment_dict["(Challenge) Condition Variables 2"]=lab09-cond_vars2
 assignment_dict["Scheduler Activity"]=lab10-xv6_scheduler
 assignment_dict["(Challenge) ext2"]=lab12-ext2
 
+assignment_dict["Exam 1 Part 1"]=exam1
+
 ASSIGNMENT=${assignment_dict[$ASSIGNMENT_NAME]}
 
 cd /Gradescope_Setup

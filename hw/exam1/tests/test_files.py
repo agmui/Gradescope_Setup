@@ -11,6 +11,6 @@ class TestFiles(unittest.TestCase):
     @weight(0)
     def test_submitted_files(self):
         """Check submitted files"""
-        print(text2art("c review", "rand"))
+        print(text2art("EXAM 1 PART 1", "rand"))
         files = ['processbatch.c']
         self.assertEqual(submitted_files(files), 0, 'Missing some required files!')
