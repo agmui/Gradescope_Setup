@@ -6,47 +6,20 @@ import unittest
 from art import *
 from gradescope_utils.autograder_utils.decorators import weight, number
 
-os.system("apt -y update > /dev/null")
-os.system("apt -y upgrade > /dev/null")
-os.system("apt install -y psmisc > /dev/null")
-os.chdir("src")
-cwd = os.getcwd()
-os.system("tar xf exam1.tar")
+os.chdir('src')
 
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
-        os.chdir(cwd)
+        pass
 
     @weight(0)
     def test_make_problem(self):
         """make_problem"""
-        print()
-        print(text2art("Exam One", "rand"))
-        print()
-        os.chdir("make_problem")
-        os.system("make clean")
-        os.system("make")
-        file_name = "./main"
-        if os.path.exists('main.bin'):
-            file_name = './main.bin'
-        process = subprocess.Popen([file_name], stdout=subprocess.PIPE, encoding='UTF-8')
+        process = subprocess.Popen("./processbatch.bin 1.txt 2.txt 3.txt 4.txt 5.txt".split(), stdout=subprocess.PIPE, encoding='UTF-8')
         result, error = process.communicate()
         print(result)
-        self.assertTrue("─────────▀▀▀▀────────▀▀▀▀" in result)
-
-    @weight(0)
-    def test_prodcon(self):
-        """prodcon.c test"""
-        os.system("sed '/printf(\"Master Process/i setvbuf(stdout, NULL, _IONBF, 0);' prodcon.c > prodcon_hacked.c")
-        os.system("gcc -o prodcon.bin prodcon_hacked.c")
-
-        process = subprocess.Popen(['./prodcon.bin'], stdout=subprocess.PIPE, encoding='UTF-8')
-        result, error = process.communicate()
-        print(result)
-        reg = r'Master Process \(PID \d+\) finished\.'
-        result_arr = result.split('\n')
-        self.assertTrue(re.match(reg, result_arr[-2]))
+        self.assertTrue(len(result))
 
 
 if __name__ == '__main__':

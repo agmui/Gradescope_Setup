@@ -1,9 +1,14 @@
 #!/bin/bash
 
 # shellcheck disable=SC2164
-SRC_DIR=/autograder/source/src
-cd $SRC_DIR
-svn export https://github.com/rhit-csse332/csse332-labs/branches/clab/xv6-riscv/ > /dev/null
-mv $SRC_DIR/user/*.c $SRC_DIR/xv6-riscv/user/
-cd $SRC_DIR/xv6-riscv/
+cd $SRC_DIR # Defined in Gradescope_setup/autograder/run_autograder
+
+cp -r /autograder/submission/processbatch.c $SRC_DIR/
+
+cd $SRC_DIR/
+make clean > /dev/null
 make > /dev/null
+
+cd $SRC_DIR/..
+echo "--- running run_tests.py ---"
+python3 run_tests.py
