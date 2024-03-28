@@ -3,10 +3,10 @@ import re
 import subprocess
 import unittest
 
-from art import *
 from gradescope_utils.autograder_utils.decorators import weight, number
 
 os.chdir('src')
+
 
 class TestIntegration(unittest.TestCase):
     def setUp(self):
@@ -23,7 +23,7 @@ class TestIntegration(unittest.TestCase):
                                    encoding='UTF-8',
                                    # shell=True
                                    )
-        result,error = process.communicate()
+        result, error = process.communicate()
 
         print(result)
         print(error)
