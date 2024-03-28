@@ -7,7 +7,6 @@ cp -r /autograder/submission/processbatch.c $SRC_DIR/
 
 cd $SRC_DIR/
 echo '#include "exam.h"'$'\n'"$(cat processbatch.c)" > processbatch.c # inserts #include "exam.h" at the top of the file
-cat processbatch.c
 #make clean > /dev/null
 make > /dev/null
 
