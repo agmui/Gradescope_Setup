@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
+#include "exam.h"
 
 // You should not need to edit this file
 

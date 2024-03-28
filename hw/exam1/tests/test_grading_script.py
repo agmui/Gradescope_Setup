@@ -8,17 +8,25 @@ from gradescope_utils.autograder_utils.decorators import weight, number
 
 os.chdir('src')
 
-
 class TestIntegration(unittest.TestCase):
     def setUp(self):
         pass
 
     @weight(0)
     def test_make_problem(self):
-        """make_problem"""
-        process = subprocess.Popen("./processbatch.bin 1.txt 2.txt 3.txt 4.txt 5.txt".split(), stdout=subprocess.PIPE, encoding='UTF-8')
-        result, error = process.communicate()
+        """Processing files"""
+
+        process = subprocess.Popen("./processbatch.bin 1.txt 2.txt 3.txt 4.txt 5.txt".split(),
+                                   bufsize=0,
+                                   stdout=subprocess.PIPE,
+                                   stderr=subprocess.STDOUT,
+                                   encoding='UTF-8',
+                                   # shell=True
+                                   )
+        result,error = process.communicate()
+
         print(result)
+        print(error)
         self.assertTrue(len(result))
 
 
