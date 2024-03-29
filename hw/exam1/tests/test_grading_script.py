@@ -15,6 +15,8 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     def test_make_problem(self):
         """Processing files"""
+        #NOTE: os.system just works and has no buffering issues
+        # os.system("./processbatch.bin 1.txt 2.txt 3.txt 4.txt 5.txt")
 
         process = subprocess.Popen("./processbatch.bin 1.txt 2.txt 3.txt 4.txt 5.txt".split(),
                                    bufsize=0,

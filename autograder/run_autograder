@@ -23,6 +23,7 @@ assignment_dict["Scheduler Activity"]=lab10-xv6_scheduler
 assignment_dict["(Challenge) ext2"]=lab12-ext2
 
 assignment_dict["Exam 1 Part 1"]=exam1
+assignment_dict["Exam 1 Part 2"]=exam1_pt2
 
 ASSIGNMENT=${assignment_dict[$ASSIGNMENT_NAME]}
 
