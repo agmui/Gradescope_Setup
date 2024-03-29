@@ -161,3 +161,4 @@ unit tests run in alphabetic order
 * make running localy easy
 * set up template dir correctly
 * if any bash file errors stop everything
+* use buildx for docker

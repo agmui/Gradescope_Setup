@@ -15,7 +15,7 @@ RUN apt-get update #&& apt-get upgrade -y
 
 # The base image defines the CMD and ENTRYPOINT, so don't redefine those
 RUN apt-get install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu # for xv6 labs
-RUN apt-get install -y cowsay expect # for simpleshell labs
+RUN apt-get install -y cowsay expect psmisc # for simpleshell labs
 # adds cowsay to path
 ENV PATH="${PATH}:/usr/games"
 
