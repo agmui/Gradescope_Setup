@@ -25,6 +25,9 @@ assignment_dict["(Challenge) ext2"]=lab12-ext2
 assignment_dict["Exam 1 Part 1"]=exam1
 assignment_dict["Exam 1 Part 2"]=exam1_pt2
 
+assignment_dict["Exam 2 Part 1"]=exam2_pt1
+assignment_dict["Exam 2 Part 2"]=exam2_pt2
+
 ASSIGNMENT=${assignment_dict[$ASSIGNMENT_NAME]}
 
 cd /Gradescope_Setup
