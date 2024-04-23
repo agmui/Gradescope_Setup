@@ -12,9 +12,9 @@ def submitted_files(files_to_check: list[str], base=SUBMISSION_BASE) -> int:
     """
     missing_files = len(files_to_check)
 
-    # r=fullpath, d=directories, f = files
-    for r, d, f in os.walk(SUBMISSION_BASE):  # os.walk returns list of directory and files
-        file_relative_path = r.replace(SUBMISSION_BASE, '')  # removes the first part of the full path
+    # r=fullpath, d=directories, f=files
+    for r, d, f in os.walk(base):  # os.walk returns list of directory and files
+        file_relative_path = r.replace(base, '')  # removes the first part of the full path
         for file in f:
             file_joined_path = os.path.join(file_relative_path, file)  # adds the remaking part of the path
             if file_joined_path in files_to_check:  # check if the file is needed
@@ -22,7 +22,7 @@ def submitted_files(files_to_check: list[str], base=SUBMISSION_BASE) -> int:
                 files_to_check.remove(file_joined_path)
                 missing_files -= 1
             else:
-                print("????:", file)
+                print("????:", file_joined_path)
     for file in files_to_check:
         print(f'MISSING: {file}')
 
@@ -37,8 +37,8 @@ def submitted_files(files_to_check: list[str], base=SUBMISSION_BASE) -> int:
     return missing_files
 
 
-# Define a wrapper function to capture the output
-def capture_output(func):
+# TODO: support args or make it a decorator
+def capture_output(func, *args, **kwargs):
     """
     Captures all print/stdout from given function and returns it in a buffer and whether the function crashed
 
@@ -60,7 +60,7 @@ def capture_output(func):
         so we are forced to have two try: except: blocks.
         """
         try:
-            func()  # Call the original function
+            func(args, kwargs)  # Call the original function
         except BaseException as error:
             print("--test crashed--")
             print("error/return code:\n", error)
