@@ -35,6 +35,8 @@ class TestIntegration(unittest.TestCase):
         print(result)
         self.assertTrue(True)
 
+    @weight(0)
+    @number("2")
     def test_thread_sorting(self):
         """sorting"""
         process = subprocess.Popen(['./thread_sort.bin', '6', '5'], stdout=subprocess.PIPE, encoding='UTF-8')
@@ -42,6 +44,8 @@ class TestIntegration(unittest.TestCase):
         print(result)
         self.assertTrue(True)
 
+    @weight(0)
+    @number("3")
     def test_basic_mutex(self):
         """basic mutex"""
         process = subprocess.Popen(['./basic_mutex.bin'], stdout=subprocess.PIPE, encoding='UTF-8')
@@ -49,6 +53,8 @@ class TestIntegration(unittest.TestCase):
         print(result)
         self.assertTrue(True)
 
+    @weight(0)
+    @number("4")
     def test_ReadBluePurple(self):
         """red blue purple"""
         process = subprocess.Popen(['./red_blue_purple.bin'], stdout=subprocess.PIPE, encoding='UTF-8')
