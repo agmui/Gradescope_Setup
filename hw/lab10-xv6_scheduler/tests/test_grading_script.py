@@ -40,7 +40,9 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_make_grade(self):
         """autograder forkforkfork tests"""
-        map(print,output_arr)#FIXME: print(output_arr[0])
+        for i in output_arr:
+            print(i)
+        #FIXME: print(output_arr[0])
         self.assertTrue(TESTS[0].ok)
 
 
