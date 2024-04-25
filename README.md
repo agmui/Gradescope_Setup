@@ -162,3 +162,4 @@ unit tests run in alphabetic order
 * set up template dir correctly
 * if any bash file errors stop everything
 * use buildx for docker
+* formatter for student code?
