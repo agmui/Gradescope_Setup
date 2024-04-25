@@ -60,7 +60,7 @@ def capture_output(func, *args, **kwargs):
         so we are forced to have two try: except: blocks.
         """
         try:
-            func(args, kwargs)  # Call the original function
+            func(*args, **kwargs)  # Call the original function
         except BaseException as error:
             print("--test crashed--")
             print("error/return code:\n", error)
