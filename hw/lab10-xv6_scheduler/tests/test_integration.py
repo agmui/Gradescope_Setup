@@ -255,7 +255,7 @@ class TestIntegration(unittest.TestCase):
         #                                   format_arr)
         # format_output(truncated_file_arr, format_arr, offset)
         #
-        errors = test_run("proc.h", "struct proc{",
+        errors = test_run("proc.h", "struct proc {",
                           proc_struct_decision_graph, proc_struct_graph_convert)
         self.assertTrue(len(errors) == 0)
 
