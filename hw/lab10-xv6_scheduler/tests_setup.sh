@@ -6,7 +6,7 @@ cd $SRC_DIR # Defined in Gradescope_setup/autograder/run_autograder
 clone_dir klist xv6-riscv https://github.com/rhit-csse332/csse332-labs.git
 
 #cp -r $SRC_DIR/* $SRC_DIR/csse332-labs/xv6-riscv/ > /dev/null
-cp -r /autograder/submission/* $SRC_DIR/csse332-labs/xv6-riscv/
+cp -r /autograder/submission/* $SRC_DIR/csse332-labs/xv6-riscv/kernel
 
 cd $SRC_DIR/csse332-labs/xv6-riscv/
 make clean > /dev/null
