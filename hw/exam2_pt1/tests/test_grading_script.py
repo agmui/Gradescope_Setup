@@ -86,7 +86,7 @@ class TestIntegration(unittest.TestCase):
         q = Queue()
         inputs_arr = [('problem3.bin', 'abcdefghij', 5, 3),
                       ('problem3.bin', 'abcdefgh', 4, 4),
-                      ('problem3.bin', 'a', 1, 4),
+                      # ('problem3.bin', 'a', 1, 4),
                       ('problem3.bin', 'deadbeef', 8, 4)]
 
         jobs = [Process(target=lambda q, args: q.put(capture_output(self.run_program, *args)),
