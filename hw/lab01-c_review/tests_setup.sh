@@ -11,6 +11,7 @@ clone_dir clab xv6-riscv https://github.com/rhit-csse332/csse332-labs.git > /dev
 #mv $SRC_DIR/user/*.c $SRC_DIR/csse332-labs/xv6-riscv/user/
 cp -r /autograder/submission/user/*c $SRC_DIR/csse332-labs/xv6-riscv/user/
 
+#TODO: maybe move the build into python along with the file sub dir searching?
 cd $SRC_DIR/csse332-labs/xv6-riscv/
 make clean > /dev/null
 make > /dev/null

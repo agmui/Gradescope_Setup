@@ -88,7 +88,6 @@ def test_stress_overlapping():
     r.match(no=[".*Assertion FAILED.*"])
 
 
-# run_tests()
 output, error = capture_output(run_tests)
 output_arr = output.split('\n')
 os.chdir(prev_cwd)

@@ -11,6 +11,8 @@ prev_cwd = os.getcwd()
 os.chdir("src/csse332-labs/xv6-riscv")
 
 r = Runner(save("xv6.out"))
+#TODO: submission that broke
+#https://www.gradescope.com/courses/742262/assignments/4143123/submissions/242113952?view=results#
 
 
 @test(10, "buddy_allocator, test get buddy")

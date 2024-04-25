@@ -15,6 +15,9 @@ class TestIntegration(unittest.TestCase):
     def setUp(self):
         print("if you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help\n")
 
+    #TODO: write more tests + parralize util lib
+    # many people get things wrong in this lab bc there is a lack of
+    # tests to check for parallelization
     @weight(0)
     @number("1")
     def test_thread_factoring(self):

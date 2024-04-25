@@ -11,7 +11,7 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     @visibility('hidden')
     def test_arraylist(self):
-        """autograder arraylist test"""
+        """autograder integration test"""
         self.assertTrue(True)
 
 if __name__ == '__main__':

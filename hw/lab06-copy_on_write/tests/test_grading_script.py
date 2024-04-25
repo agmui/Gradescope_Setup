@@ -10,6 +10,8 @@ from hw.grading_utils.gradelib import *  # this is allowed bc of the sys.path.in
 from hw.grading_utils.gradelib import TESTS
 from hw.grading_utils.random_utils import capture_output
 
+#TODO: uncomment simplefork.c for part 3
+
 prev_cwd = os.getcwd()
 os.chdir("src/csse332-labs/xv6-riscv")
 

@@ -4,6 +4,7 @@
 cd $SRC_DIR # Defined in Gradescope_setup/autograder/run_autograder
 
 # TODO: make it a global func like clone_dir (also maybe add a second from_dir arg)
+# TODO: maybe do this in python after the cp but before build just run a util python func
 find_and_mv () {
   DESTINATION="$1"   # Save first argument in a variable
   shift            # Shift all arguments to the left (original $1 gets lost)
