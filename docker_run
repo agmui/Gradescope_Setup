@@ -1,17 +1,21 @@
 #!/bin/bash
-
 docker run --rm -it -v ./autograder/temp_sub:/autograder/submission \
                     -v ./autograder/temp_rez:/autograder/results \
                     -v ./autograder/sample_output.json:/autograder/submission_metadata.json \
                     -v ./hw:/Gradescope_Setup/hw:ro \
                     os-gradescope-autograders:latest \
                     /autograder/run_autograder;
+
+Color_Off='\033[0m'       # Text Reset
+Yellow='\033[0;33m'       # Yellow
+BGreen='\033[1;32m'       # Green
+
 echo --------results.json------------
 LENGTH=`jq '.tests | length' autograder/temp_rez/results.json`
 for (( i = 0 ; i < $LENGTH; i++ ))
 do
   jq -r .tests[$i].output autograder/temp_rez/results.json
-  echo =================================================================================================================
+  echo -e $Yellow====[$Color_Off $BGreen $(jq -r .tests[$i].name autograder/temp_rez/results.json) "$Color_Off" $Yellow]=======================================================$Color_Off
   echo
 done
 

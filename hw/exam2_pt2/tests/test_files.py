@@ -7,7 +7,7 @@ class TestFiles(unittest.TestCase):
     @weight(0)
     def test_submitted_files(self):
         """Check submitted files"""
-        missing_files = check_submitted_files(['submit-lab-0.tar','submit-lab-0.patch'])
+        missing_files = check_submitted_files(['coffee_pot.c', 'relay_race.c', 'marcopolo.c'])
         for path in missing_files:
             print('Missing {0}'.format(path))
         self.assertEqual(len(missing_files), 0, 'Missing some required files!')

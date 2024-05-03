@@ -163,3 +163,5 @@ unit tests run in alphabetic order
 * if any bash file errors stop everything
 * use buildx for docker
 * formatter for student code?
+* consider trying to get around output buffering: `python3 -c "import os; os.system(\"./coffee_pot.bin\")"`
+* add color to bash and python https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
