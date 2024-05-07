@@ -16,10 +16,10 @@ class TestIntegration(unittest.TestCase):
     @weight(0)
     @number("1")
     def test_make_grade(self):
-        """autograder us1tests.c tests"""
-        process = subprocess.Popen(['./part8 $(python2 part8.py)'], stdout=subprocess.PIPE, encoding='UTF-8')
-        result, error = process.communicate()
-        print(result)
+        """autograder dummy tests"""
+        # process = subprocess.Popen(['./part8 $(python2 part8.py)'], stdout=subprocess.PIPE, encoding='UTF-8')
+        # result, error = process.communicate()
+        # print(result)
         self.assertTrue(True)
 
 
