@@ -5,9 +5,9 @@ from gradescope_utils.autograder_utils.decorators import weight, tags, number, p
 from art import *
 import asyncio # TODO: add to reqirements.txt
 
-os.system("apt update -y > /dev/null && apt upgrade -y > /dev/null")
-os.system("apt install -y gdb gdb-multiarch gcc-multilib python2")
-os.system("bash -c \"$(curl -fsSL https://gef.blah.cat/sh)\"")
+# os.system("apt update -y > /dev/null && apt upgrade -y > /dev/null")
+# os.system("apt install -y gdb gdb-multiarch gcc-multilib python2")
+# os.system("bash -c \"$(curl -fsSL https://gef.blah.cat/sh)\"")
 os.chdir("src")
 class TestIntegration(unittest.TestCase):
     def setUp(self):
