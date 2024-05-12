@@ -165,3 +165,6 @@ unit tests run in alphabetic order
 * formatter for student code?
 * consider trying to get around output buffering: `python3 -c "import os; os.system(\"./coffee_pot.bin\")"`
 * add color to bash and python https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
+* add funny easter egg 1/100 art peepe printout
+* add helpful err msg ex: if it cant find the assignment name/folder
+* increase cpu number in grade scope

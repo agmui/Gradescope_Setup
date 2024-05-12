@@ -6,8 +6,8 @@ cd $SRC_DIR
 clone_dir main ext2 https://github.com/rhit-csse332/csse332-labs.git
 rm $SRC_DIR/csse332-labs/ext2/ext2access.c
 
-#cp -r $SRC_DIR/* $SRC_DIR/csse332-labs/ext2/ > /dev/null
-cp -r /autograder/submission/* $SRC_DIR/csse332-labs/xv6-riscv/
+cp -r /autograder/submission/ext2access.c $SRC_DIR/csse332-labs/ext2/ > /dev/null
+#cp -r /autograder/submission/*.c $SRC_DIR/csse332-labs/xv6-riscv/
 
 cd $SRC_DIR/csse332-labs/ext2/
 make clean > /dev/null

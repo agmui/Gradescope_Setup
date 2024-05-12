@@ -14,8 +14,8 @@ echo --------results.json------------
 LENGTH=`jq '.tests | length' autograder/temp_rez/results.json`
 for (( i = 0 ; i < $LENGTH; i++ ))
 do
-  jq -r .tests[$i].output autograder/temp_rez/results.json
   echo -e $Yellow====[$Color_Off $BGreen $(jq -r .tests[$i].name autograder/temp_rez/results.json) "$Color_Off" $Yellow]=======================================================$Color_Off
+  jq -r .tests[$i].output autograder/temp_rez/results.json
   echo
 done
 
