@@ -17,6 +17,16 @@ class TestIntegration(unittest.TestCase):
 
     @weight(0)
     @number("1")
+    def test_testcode(self):
+        """autograder testcode tests"""
+        process = subprocess.Popen('./testcode 451_filesystem.ext2'.split(), stdout=subprocess.PIPE,
+                                   encoding='UTF-8')
+        result, error = process.communicate()
+        print(result)
+        self.assertTrue(True)
+        process.terminate()#TODO: add terminate to all subprocessPopen
+    @weight(0)
+    @number("2")
     def test_filereader(self):
         """autograder file reader tests"""
         process = subprocess.Popen('./filereader 451_filesystem.ext2 /small-file.txt'.split(), stdout=subprocess.PIPE,
