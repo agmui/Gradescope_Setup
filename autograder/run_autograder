@@ -30,6 +30,7 @@ assignment_dict["Exam 2 Part 1"]=exam2_pt1
 assignment_dict["Exam 2 Part 2"]=exam2_pt2
 
 ASSIGNMENT=${assignment_dict[$ASSIGNMENT_NAME]}
+#TODO: check if $ASSIGNMENT exisits and can be found
 
 cd /Gradescope_Setup
 git pull >/dev/null
