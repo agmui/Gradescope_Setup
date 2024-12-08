@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+
+set -e -u -o pipefail # exit on fail
+BLUE=$(tput -T xterm-256color setaf 4)
+RESET=$(tput -T xterm-256color sgr0)
+export PS4='[$BLUE$BASH_SOURCE$RESET:$LINENO] '
+set -x # turns on logging
+
 # Set up autograder files
 
 #svn up /autograder/hw > /dev/null #svn is no longer supported
@@ -9,34 +16,36 @@ export SRC_DIR=/autograder/hw/test_suite/src # TODO: decide if this should be in
 
 #================= getting the right assignment from github =================================
 ASSIGNMENT_NAME=$(cat $AUTOGRADER_ROOT/submission_metadata.json | jq -r '.assignment.title')
-declare -A assignment_dict
-assignment_dict["C Review and xv6 Introduction"]=lab01-c_review
-assignment_dict["Simple Shell"]=lab02-simple_shell
-assignment_dict["Process Lab"]=lab03-process_lab
-assignment_dict["Heap Manager"]=lab04-heap_manager
-assignment_dict["(Challenge) Heap Manager II"]=lab05-heap_manager2
-assignment_dict["[Challenge] Copy-on-write"]=lab06-copy_on_write
-assignment_dict["Threads & Mutex Basics"]=lab07-threads_mutex_basic
-assignment_dict["Condition Variables Basics"]=lab08-cond_vars_basic
-assignment_dict["(Challenge) Condition Variables 2"]=lab09-cond_vars2
-assignment_dict["Scheduler Activity"]=lab10-xv6_scheduler
-assignment_dict["(Challenge) Stack Smashing"]=lab11-stack_smashing
-assignment_dict["(Challenge) ext2"]=lab12-ext2
 
-assignment_dict["Exam 1 Part 1"]=exam1
-assignment_dict["Exam 1 Part 2"]=exam1_pt2
+declare -A assignment_dict=(
+["Lab 01: C Review and xv6 Introduction"]=lab01-c_review
+["Lab 02: Simple Shell"]=lab02-simple_shell
+["Lab 03: Process Lab"]=lab03-process_lab
+["Lab 04: Heap Manager"]=lab04-heap_manager
+["Lab 05: (Challenge) Heap Manager II"]=lab05-heap_manager2
+["Lab 06: [Challenge] Copy-on-write"]=lab06-copy_on_write
+["Lab 07: Threads & Mutex Basics"]=lab07-threads_mutex_basic
+["Lab 08: Condition Variables Basics"]=lab08-cond_vars_basic
+["Lab 09: (Challenge) Condition Variables 2"]=lab09-cond_vars2
+["Lab 10: Scheduler Activity"]=lab10-xv6_scheduler
+["Lab 11: (Challenge) Stack Smashing"]=lab11-stack_smashing
+["Lab 12: (Challenge) ext2"]=lab12-ext2
 
-assignment_dict["Exam 2 Part 1"]=exam2_pt1
-assignment_dict["Exam 2 Part 2"]=exam2_pt2
+["Exam 1 Part 1"]=exam1
+["Exam 1 Part 2"]=exam1_pt2
+
+["Exam 2 Part 1"]=exam2_pt1
+["Exam 2 Part 2"]=exam2_pt2
+)
 
 ASSIGNMENT=${assignment_dict[$ASSIGNMENT_NAME]}
-#TODO: check if $ASSIGNMENT exisits and can be found
+#TODO: check if $ASSIGNMENT exists and can be found
 
 cd /Gradescope_Setup
 git pull >/dev/null
 cd ..
 mkdir -p /autograder/hw/test_suite/src # ensures src is there
-cp -r /Gradescope_Setup/hw/$ASSIGNMENT/* /autograder/hw/test_suite/
+cp -r /Gradescope_Setup/hw/"$ASSIGNMENT"/* /autograder/hw/test_suite/
 cp -r /Gradescope_Setup/hw/grading_utils/ /autograder/hw/
 
 #TODO: make submissions dir read only?
@@ -49,6 +58,7 @@ echo "--- running tests_setup.sh ---"
 bash tests_setup.sh
 
 #================= printing out student name and id =================================
+set +x # turn off logging
 STUDENT_NAME=$(jq '.users[0].name' $AUTOGRADER_ROOT/submission_metadata.json \
                   | tr -d '"' | tr -d ',' | awk '{$1=$1;print}') # removing the "
 STUDENT_ID=$(jq '.users[0].email' $AUTOGRADER_ROOT/submission_metadata.json \

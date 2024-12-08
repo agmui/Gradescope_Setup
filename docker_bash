@@ -1,8 +1,9 @@
 #!/bin/bash
 
+# TODO: fix the sample_submission_metadata.json arg (could change file name)
 docker run --rm -it -v ./autograder/temp_sub:/autograder/submission \
                     -v ./autograder/temp_rez:/autograder/results \
-                    -v ./autograder/sample_output.json:/autograder/submission_metadata.json \
+                    -v ./autograder/sample_submission_metadata.json:/autograder/submission_metadata.json \
                     -v ./hw:/Gradescope_Setup/hw:ro \
                     --workdir /autograder \
                     os-gradescope-autograders:latest bash

@@ -1,4 +1,5 @@
 import os.path
+from .bcolors import *
 
 SUBMISSION_BASE = '/autograder/submission/'
 
@@ -18,22 +19,22 @@ def submitted_files(files_to_check: list[str], base=SUBMISSION_BASE) -> int:
         for file in f:
             file_joined_path = os.path.join(file_relative_path, file)  # adds the remaking part of the path
             if file_joined_path in files_to_check:  # check if the file is needed
-                print("found:", file)
+                print(f"{OKGREEN}found: {file}{ENDC}")
                 files_to_check.remove(file_joined_path)
                 missing_files -= 1
             else:
-                print("????:", file_joined_path)
+                print(f"{WARNING}????: {file_joined_path}{ENDC}")
     for file in files_to_check:
         print(f'MISSING: {file}')
 
     print('---')
-    print(f'missing {missing_files} files\n')
+    print(f'{FAIL}missing {missing_files} files{ENDC}\n')
 
     print("if this autograder breaks pleas email/text on teams: muian@rose-hulman.edu and tell them they are and idiot\n"
           "(for example this case right here)")
 
     if missing_files == 0:
-        print('\nAll required files submitted!!')
+        print(f'\n{OKGREEN}All required files submitted!!{ENDC}')
     return missing_files
 
 
@@ -62,9 +63,9 @@ def capture_output(func, *args, **kwargs):
         try:
             func(*args, **kwargs)  # Call the original function
         except BaseException as error:
-            print("--test crashed--")
-            print("error/return code:\n", error)
-            print("----------------")
+            print(f"{FAIL}--test crashed--{ENDC}")
+            print(f"{FAIL}error/return code:{ENDC}\n {error}")
+            print(f"{FAIL}----------------{ENDC}")
             err = error
 
     return buffer.getvalue(), err

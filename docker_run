@@ -1,10 +1,13 @@
 #!/bin/bash
+# TODO: fix the sample_submission_metadata.json arg (could change file name)
 docker run --rm -it -v ./autograder/temp_sub:/autograder/submission \
                     -v ./autograder/temp_rez:/autograder/results \
-                    -v ./autograder/sample_output.json:/autograder/submission_metadata.json \
+                    -v ./autograder/sample_submission_metadata.json:/autograder/submission_metadata.json \
                     -v ./hw:/Gradescope_Setup/hw:ro \
                     os-gradescope-autograders:latest \
                     /autograder/run_autograder;
+
+#TODO: dont print out results if above crashed
 
 Color_Off='\033[0m'       # Text Reset
 Yellow='\033[0;33m'       # Yellow

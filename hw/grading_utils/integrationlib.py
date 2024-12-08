@@ -1,5 +1,6 @@
 import re
 from .minify import minify_source
+from .bcolors import *
 
 
 # TODO: (minify) remove white space in file before scan
@@ -13,28 +14,6 @@ from .minify import minify_source
 # TODO: do multi line or replacement
 # top section does not contain the pattern the bottem pattern gets taken up so by consequence there is a "out of order"
 # error in the first section and a missing error in the second section
-
-# for colored output
-class bcolors:
-    HEADER = ''
-    OKBLUE = ''
-    OKCYAN = ''
-    OKGREEN = ''
-    WARNING = ''
-    FAIL = ''
-    ENDC = ''
-    BOLD = ''
-    UNDERLINE = ''
-
-    # HEADER = '\033[95m'
-    # OKBLUE = '\033[94m'
-    # OKCYAN = '\033[96m'
-    # OKGREEN = '\033[92m'
-    # WARNING = '\033[93m'
-    # FAIL = '\033[91m'
-    # ENDC = '\033[0m'
-    # BOLD = '\033[1m'
-    # UNDERLINE = '\033[4m'
 
 
 def init_ordered(file_location: str, bounding_func: str) -> [list, int]:
@@ -197,14 +176,14 @@ def format_output(file_arr, format_arr, total_offset):
     for i, line in enumerate(file_arr):
         match format_arr[i]:
             case 'o':
-                print(f'{bcolors.OKGREEN}\tok  {total_offset + i + 1:4d} | {line}{bcolors.ENDC}\n', end='')
+                print(f'{OKGREEN}\tok  {total_offset + i + 1:4d} | {line}{ENDC}\n', end='')
             case 'w':
-                print(f'{bcolors.WARNING}out of order{total_offset + i + 1:4d} | {line} {bcolors.ENDC}\n', end='')
+                print(f'{WARNING}out of order{total_offset + i + 1:4d} | {line} {ENDC}\n', end='')
             case 'n':
                 print(f'\t    {total_offset + i + 1:4d} | {line}\n', end='')
             case _:  # missing/error case
                 print(f'\t    {total_offset + i + 1:4d} | {line}\n', end='')
-                print(f'{bcolors.FAIL}\t missing {format_arr[i]}{bcolors.ENDC}\n', end='')
+                print(f'{FAIL}\t missing {format_arr[i]}{ENDC}\n', end='')
 
 
 def test_run(filename: str, function_name: str, decision_graph: dict, graph_convert: dict):
