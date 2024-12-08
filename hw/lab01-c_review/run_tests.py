@@ -13,7 +13,7 @@ def test(json_data):
         "name": "image",
         "number": "1",
         "output_format": "html",
-        "output": '<img alt="tux" src="../grading_utils/Tux.svg.png">'
+        "output": '<img alt="tux" src="../hw/grading_utils/Tux.svg.png">'
     })
 
 if __name__ == '__main__':
