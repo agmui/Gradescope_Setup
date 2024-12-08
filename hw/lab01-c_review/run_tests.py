@@ -11,9 +11,9 @@ def test(json_data):
         # test_json["output_format"] = "html"
     json_data["tests"].insert(1, {
         "name": "image",
-        "number": "1",
-        "output_format": "html",
-        "output": '<img alt="tux" src="../hw/grading_utils/Tux.svg.png">'
+        "status": "passed",
+        "output": '<img alt="tux" src="/autograder/hw/grading_utils/Tux.svg.png">',
+        "output_format": "html"
     })
 
 if __name__ == '__main__':
