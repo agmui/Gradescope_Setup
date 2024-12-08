@@ -38,8 +38,18 @@ declare -A assignment_dict=(
 ["Exam 2 Part 2"]=exam2_pt2
 )
 
-ASSIGNMENT=${assignment_dict[$ASSIGNMENT_NAME]}
-#TODO: check if $ASSIGNMENT exists and can be found
+# check if assignment name is in dictionary
+if ! [[ ${assignment_dict["$ASSIGNMENT_NAME"]+_} ]]; then
+  set +x
+  RED=$(tput -T xterm-256color setaf 1)
+  echo
+  echo "$RED"\[ERROR\] Can not find assignment name "$ASSIGNMENT_NAME"
+  echo Did you recently change the name of the assignment in gradescope?
+  echo If so change the run_autograder script.
+  exit 1
+fi
+
+ASSIGNMENT=${assignment_dict["$ASSIGNMENT_NAME"]}
 
 cd /Gradescope_Setup
 git pull >/dev/null
