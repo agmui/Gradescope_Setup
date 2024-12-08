@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e -u -o pipefail
-GREEN=$(tput setaf 2)
-RESET=$(tput sgr0)
+GREEN=$(tput -T xterm-256color setaf 2)
+RESET=$(tput -T xterm-256color sgr0)
 export PS4='[$GREEN$BASH_SOURCE$RESET:$LINENO] '
 set -x
 
