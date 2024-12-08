@@ -112,7 +112,7 @@ class TestIntegration(unittest.TestCase):
     #TODO: use @number instead of aaaaaa
     def test_aaaaaah_run_grading_script(self):
         """output of grade-lib-0.py"""
-        print(output)
+        print(output) #TODO: add color
         self.assertIsNone(error, "you did not pass all the tests :c")
 
     #TODO: add numbers and points
