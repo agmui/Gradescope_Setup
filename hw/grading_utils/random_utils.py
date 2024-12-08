@@ -25,10 +25,10 @@ def submitted_files(files_to_check: list[str], base=SUBMISSION_BASE) -> int:
             else:
                 print(f"{WARNING}????: {file_joined_path}{ENDC}")
     for file in files_to_check:
-        print(f'MISSING: {file}')
+        print(f'{FAIL}MISSING: {file}{ENDC}')
 
     print('---')
-    print(f'{FAIL}missing {missing_files} files{ENDC}\n')
+    print(f'{BOLD}{OKCYAN}missing {missing_files} files{ENDC}\n')
 
     print("if this autograder breaks pleas email/text on teams: muian@rose-hulman.edu and tell them they are and idiot\n"
           "(for example this case right here)")
