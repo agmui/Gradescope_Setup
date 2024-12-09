@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# shellcheck disable=SC2164
-cd $SRC_DIR # Defined in Gradescope_setup/autograder/run_autograder
+cd "$SRC_DIR" # Defined in Gradescope_setup/autograder/run_autograder
 
 #clone_dir clab xv6-riscv https://github.com/rhit-csse332/csse332-labs.git
 
@@ -13,6 +12,10 @@ make > /dev/null
 export PATH
 expect ./test.exp > output.txt
 #strace -e fork,clone --decode-pids=comm -f -o output.log expect ./test.exp
+
+#generates gif https://github.com/charmbracelet/vhs?tab=readme-ov-file
+sudo apt install vhs
+vhs cassette.tape -o out.gif
 
 cd $SRC_DIR/..
 echo "--- running run_tests.py ---"
