@@ -5,7 +5,6 @@ RESET=$(tput -T xterm-256color sgr0)
 export PS4='[$GREEN$BASH_SOURCE$RESET:$LINENO] '
 set -x
 
-# shellcheck disable=SC2164
 cd "$SRC_DIR" # Defined in Gradescope_setup/autograder/run_autograder
 
 clone_dir clab xv6-riscv https://github.com/rhit-csse332/csse332-labs.git > /dev/null # TODO: decide to hide
