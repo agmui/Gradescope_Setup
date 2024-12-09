@@ -7,7 +7,7 @@ def editOutput(json_data):
         test_json["output_format"] = "ansi"
         # test_json["output_format"] = "md"
         # test_json["output_format"] = "html"
-    with open("../src/base64gif.txt") as gif:
+    with open("/autograder/hw/test_suite/src/base64gif.txt") as gif:
         acc = ""
         for line in gif:
             acc +=line
