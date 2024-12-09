@@ -115,7 +115,9 @@ class TestIntegration(unittest.TestCase):
         #         break
         # if i != None:
         #     found_notification = True
-        err_msg = "no background notification:" + rez.group() if rez is not None else "could not find"
+        #TODO: fix err msg
+        err_msg = "no background notification:" + rez.group() if found_notification else ("Could not find \"Background command finish\" printout."
+                                                                                          "\nMake sure \"Background command finished\" gets printed out when BG./donothing finishes")
         self.assertTrue(found_notification, err_msg)
 
     @weight(0)
