@@ -10,7 +10,7 @@ def editOutput(json_data):
     with open("/autograder/hw/test_suite/src/base64gif.txt") as gif:
         acc = ""
         for line in gif:
-            acc +=line
+            acc += line[:-1]
         json_data["tests"].insert(0, { # inserts image as base64 format
             "status": "passed",
             # "output": '<img alt="gif" src="/autograder/hw/test_suite/src/out.gif">',
