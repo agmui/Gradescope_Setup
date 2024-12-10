@@ -12,5 +12,5 @@ Enter
 Sleep 5s
 Type "ps -a"
 Enter
-Sleep 500ms
+Sleep 1s
 

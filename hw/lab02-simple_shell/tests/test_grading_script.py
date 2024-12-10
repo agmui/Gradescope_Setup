@@ -150,7 +150,7 @@ class TestIntegration(unittest.TestCase):
 
     @weight(0)
     @number("6")
-    def test_zombie(self):
+    def test_repeat(self):
         """repeat"""
 
         print_html_gif("base64test6.txt")
