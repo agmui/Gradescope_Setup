@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e -u -o pipefail
+#set -e -u -o pipefail # TODO: decide bc in the expect call things could fail
 GREEN=$(tput -T xterm-256color setaf 2)
 RESET=$(tput -T xterm-256color sgr0)
 export PS4='[$GREEN$BASH_SOURCE$RESET:$LINENO] '
