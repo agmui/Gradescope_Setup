@@ -27,6 +27,7 @@ expect "Do nothing program finished!\n"
 #expect "% "
 #send -- "ps\n"
 expect "% "
+sleep 4
 send -- "BGsleep 2\n"
 expect "% "
 send -- "echo uwu\n"
