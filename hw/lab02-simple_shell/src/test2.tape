@@ -4,7 +4,7 @@ Set Height 300
 Set Framerate 12
 
 Set Shell bash
-Sleep 1s
+Sleep 0.5s
 Type "./simpleshell"
 Enter
 Sleep 1s
@@ -13,4 +13,4 @@ Enter
 Sleep 500ms
 Type "ps -a"
 Enter
-Sleep 5s
+Sleep 5.5s
