@@ -1,6 +1,6 @@
 Set FontSize 10
 Set Width 600
-Set Height 300
+Set Height 200
 Set Framerate 11
 
 Set Shell bash
