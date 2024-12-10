@@ -20,18 +20,20 @@ expect ./test.exp > output.txt &
 
 #generates gif: https://github.com/charmbracelet/vhs?tab=readme-ov-file
 apt-get install -y ./vhs_0.8.0_amd64.deb > /dev/null
-vhs cassette.tape -o out.gif > /dev/null 2>&1 &
-base64 -w 0 out.gif  > base64gif.txt &
 
 vhs test1.tape -o test1.gif > /dev/null &
-base64 -w 0 test1.gif  > base64test1.txt &
 vhs test2.tape -o test2.gif > /dev/null &
-base64 -w 0 test2.gif  > base64test2.txt &
 vhs test3.tape -o test3.gif > /dev/null &
-base64 -w 0 test3.gif  > base64test3.txt &
 vhs test4.tape -o test4.gif > /dev/null &
-base64 -w 0 test4.gif  > base64test4.txt &
 vhs test5.tape -o test5.gif > /dev/null &
+
+vhs cassette.tape -o out.gif > /dev/null 2>&1
+base64 -w 0 out.gif  > base64gif.txt
+
+base64 -w 0 test1.gif  > base64test1.txt &
+base64 -w 0 test2.gif  > base64test2.txt &
+base64 -w 0 test3.gif  > base64test3.txt &
+base64 -w 0 test4.gif  > base64test4.txt &
 base64 -w 0 test5.gif  > base64test5.txt &
 
 cd $SRC_DIR/..
