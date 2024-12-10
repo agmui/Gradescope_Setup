@@ -7,7 +7,7 @@ Set Shell bash
 Sleep 0.5s
 Type "./simpleshell"
 Enter
-Sleep 1s
+Sleep 0.5s
 Type "BG./donothing"
 Enter
 Sleep 500ms

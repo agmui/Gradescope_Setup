@@ -4,13 +4,13 @@ Set Height 300
 Set Framerate 12
 
 Set Shell bash
-Sleep 50ms
+Sleep 5ms
 Type "./simpleshell"
 Enter
-Sleep 50ms
+Sleep 5ms
 Type "ps -a"
 Enter
-Sleep 500ms
+Sleep 400ms
 Type "BG./donothing"
 Enter
 Sleep 500ms
@@ -19,8 +19,8 @@ Enter
 Sleep 500ms
 Type "ps -a"
 Enter
-Sleep 6.5s
+Sleep 6s
 Type "ps -a"
 Enter
-Sleep 900ms
+Sleep 500ms
 

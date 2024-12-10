@@ -4,10 +4,10 @@ Set Height 300
 Set Framerate 12
 
 Set Shell bash
-Sleep 1s
+Sleep 0.5s
 Type "./simpleshell"
 Enter
-Sleep 1s
+Sleep 0.5s
 Type "BGsleep 2"
 Enter
 Sleep 500ms
