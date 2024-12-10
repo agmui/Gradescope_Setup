@@ -18,9 +18,10 @@ export PATH
 expect ./test.exp > output.txt
 #strace -e fork,clone --decode-pids=comm -f -o output.log expect ./test.exp
 
-#generates gif https://github.com/charmbracelet/vhs?tab=readme-ov-file
-#apt install vhs
-#vhs cassette.tape -o out.gif
+#generates gif: https://github.com/charmbracelet/vhs?tab=readme-ov-file
+apt install ./vhs_0.8.0_amd64.deb ffmpeg
+vhs cassette.tape -o out.gif
+base64 out.gif > base64gif.txt
 
 cd $SRC_DIR/..
 echo "--- running run_tests.py ---"
