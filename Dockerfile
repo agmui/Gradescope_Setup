@@ -11,13 +11,21 @@ FROM ${BASE_REPO}:${TAG}
 # ======================= installing dependencies ===========================
 # Do whatever setup was needed in setup.sh, including installing apt packages
 # Cleans up the apt cache afterwards in the same step to keep the image small
+
+
 RUN apt-get update #&& apt-get upgrade -y
 
 # The base image defines the CMD and ENTRYPOINT, so don't redefine those
 RUN apt-get install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu # for xv6 labs
-RUN apt-get install -y cowsay expect psmisc ffmpeg ttyd # for simpleshell labs
+RUN apt-get install -y cowsay expect psmisc ffmpeg # for simpleshell labs
 # adds cowsay to path
 ENV PATH="${PATH}:/usr/games"
+# install ttyd for vhs
+RUN wget https://github.com/tsl0922/ttyd/releases/download/1.7.3/ttyd.x86_64 -O ttyd && \
+    mv ttyd /usr/local/bin/ttyd && \
+    chmod +x /usr/local/bin/ttyd
+# gets vhs to work on server
+ENV VHS_NO_SANDBOX="true"
 
 RUN apt-get install -y python3 python3-pip python3-dev jq
 RUN pip3 install gradescope-utils art asyncio
