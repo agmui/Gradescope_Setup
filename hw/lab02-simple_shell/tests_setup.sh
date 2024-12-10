@@ -14,7 +14,7 @@ expect ./test.exp > output.txt
 #strace -e fork,clone --decode-pids=comm -f -o output.log expect ./test.exp
 
 #generates gif https://github.com/charmbracelet/vhs?tab=readme-ov-file
-sudo apt install vhs
+apt install vhs
 vhs cassette.tape -o out.gif
 
 cd $SRC_DIR/..
