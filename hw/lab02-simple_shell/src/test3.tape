@@ -8,6 +8,9 @@ Sleep 0.5s
 Type "./simpleshell"
 Enter
 Sleep 1s
+Type "BG./donothing"
+Enter
+Sleep 500ms
 Type "echo uwu"
 Enter
 Sleep 7s
