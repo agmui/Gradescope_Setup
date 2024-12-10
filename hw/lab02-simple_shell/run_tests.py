@@ -18,6 +18,7 @@ def editOutput(json_data):
             # "output": gif.read(),
             "output_format": "html"
         })
+        print(acc)
 
 if __name__ == '__main__':
     suite = unittest.defaultTestLoader.discover('tests')
