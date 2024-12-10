@@ -4,11 +4,11 @@ from gradescope_utils.autograder_utils.json_test_runner import JSONTestRunner
 
 def editOutput(json_data):
     for test_json in json_data["tests"]:
-        test_json["output_format"] = "ansi"
+        # test_json["output_format"] = "ansi"
         # test_json["output_format"] = "md"
-        # test_json["output_format"] = "html"
+        test_json["output_format"] = "html"
     with open("/autograder/hw/test_suite/src/base64gif.txt") as gif:
-        json_data["tests"].insert(0, { # inserts gif as base64 format
+        json_data["tests"].insert(1, { # inserts gif as base64 format
             "status": "passed",
             "output": f'<img alt="gif" src="data:image/gif;base64,{gif.read()}">',
             "output_format": "html"
