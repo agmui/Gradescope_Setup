@@ -7,9 +7,6 @@ Set Shell bash
 Sleep 500ms
 Type "./simpleshell"
 Enter
-Sleep 900ms
-Type "ls" # TODO: replace with better command
-Enter
 Sleep 500ms
 Type "cowsay hi"
 Enter
