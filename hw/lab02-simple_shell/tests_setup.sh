@@ -1,4 +1,9 @@
 #!/bin/bash
+set -e -u -o pipefail
+GREEN=$(tput -T xterm-256color setaf 2)
+RESET=$(tput -T xterm-256color sgr0)
+export PS4='[$GREEN$BASH_SOURCE$RESET:$LINENO] '
+set -x
 
 cd "$SRC_DIR" # Defined in Gradescope_setup/autograder/run_autograder
 
