@@ -29,11 +29,13 @@ vhs test2.tape -o test2.gif > /dev/null
 vhs test3.tape -o test3.gif > /dev/null
 vhs test4.tape -o test4.gif > /dev/null
 vhs test5.tape -o test5.gif > /dev/null
+vhs test6.tape -o test6.gif > /dev/null
 base64 -w 0 test1.gif  > base64test1.txt &
 base64 -w 0 test2.gif  > base64test2.txt &
 base64 -w 0 test3.gif  > base64test3.txt &
 base64 -w 0 test4.gif  > base64test4.txt &
 base64 -w 0 test5.gif  > base64test5.txt &
+base64 -w 0 test6.gif  > base64test6.txt &
 
 cd $SRC_DIR/..
 echo "--- running run_tests.py ---"

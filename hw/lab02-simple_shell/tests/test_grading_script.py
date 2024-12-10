@@ -148,6 +148,16 @@ class TestIntegration(unittest.TestCase):
         # self.assertTrue(zombie_rez, "simpleshell or ./donothing is a zombie and did not exit")
         self.assertTrue(True)
 
+    @weight(0)
+    @number("6")
+    def test_zombie(self):
+        """repeat"""
+
+        print_html_gif("base64test6.txt")
+
+        zombie_rez = False
+        print("checking if commands can repeat")
+        self.assertTrue(True)
 
 
 if __name__ == '__main__':
