@@ -4,10 +4,10 @@ Set Height 300
 Set Framerate 12
 
 Set Shell bash
-Sleep 1s
+Sleep 500ms
 Type "./simpleshell"
 Enter
-Sleep 1s
+Sleep 900ms
 Type "ls" # TODO: replace with better command
 Enter
 Sleep 500ms
