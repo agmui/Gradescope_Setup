@@ -21,7 +21,7 @@ expect ./test.exp > output.txt
 #generates gif: https://github.com/charmbracelet/vhs?tab=readme-ov-file
 apt install  ./vhs_0.8.0_amd64.deb > /dev/null
 vhs cassette.tape -o out.gif > /dev/null
-base64 out.gif > base64gif.txt
+base64 -w 0 out.gif  > base64gif.txt
 
 cd $SRC_DIR/..
 echo "--- running run_tests.py ---"
