@@ -19,7 +19,7 @@ expect ./test.exp > output.txt &
 #strace -e fork,clone --decode-pids=comm -f -o output.log expect ./test.exp
 
 #generates gif: https://github.com/charmbracelet/vhs?tab=readme-ov-file
-apt-get install -y ./vhs_0.8.0_amd64.deb > /dev/null
+apt-get install -y ./vhs_0.8.0_amd64.deb > /dev/null #TOOD: move to Docker file
 
 vhs cassette.tape -o out.gif > /dev/null 2>&1
 base64 -w 0 out.gif  > base64gif.txt

@@ -3,7 +3,7 @@ import os
 from gradescope_utils.autograder_utils.json_test_runner import JSONTestRunner
 
 def editOutput(json_data):
-    json_data["test"][0]["output_format"] ="ansi"
+    json_data["tests"][0]["output_format"] ="ansi"
     for test_json in json_data["tests"][1:]:
         # test_json["output_format"] = "ansi"
         # test_json["output_format"] = "md"
