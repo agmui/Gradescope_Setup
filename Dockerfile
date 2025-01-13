@@ -52,6 +52,7 @@ RUN chmod +x /autograder/run_autograder
 RUN git clone https://github.com/agmui/Gradescope_Setup # TODO: use --depth 1 to reduce size
 
 
+# whenever run_autograder changes you need to rebuild and push again
 # to build:
 # docker build -t os-gradescope-autograders .
 
