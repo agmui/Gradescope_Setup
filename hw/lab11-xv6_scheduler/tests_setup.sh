@@ -37,8 +37,10 @@ find_and_mv () {
 
 
 if [ -d /autograder/submissions/kernel ]; then
+  echo 'has ker'
   cp -r /autograder/submission/* $SRC_DIR/csse332-labs/xv6-riscv/kernel
 else
+  echo 'does not had ker'
   cp -r /autograder/submission/* $SRC_DIR/csse332-labs/xv6-riscv/
 fi
 #cp -r $SRC_DIR/* $SRC_DIR/csse332-labs/xv6-riscv/ > /dev/null
