@@ -15,7 +15,8 @@ export AUTOGRADER_ROOT=/autograder
 export SRC_DIR=/autograder/hw/test_suite/src # TODO: decide if this should be in docker file or not
 
 #================= getting the right assignment from github =================================
-ASSIGNMENT_NAME=$(cat $AUTOGRADER_ROOT/submission_metadata.json | jq -r '.assignment.title')
+# causes a weird double print or [[ in set -x that can't be removed
+ASSIGNMENT_NAME=$(jq -r '.assignment.title' $AUTOGRADER_ROOT/submission_metadata.json)
 
 declare -A assignment_dict=(
 ["Lab 01: C Review and xv6 Introduction"]=lab01-c_review
