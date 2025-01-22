@@ -2,8 +2,8 @@
 
 set -e -u -o pipefail # exit on fail
 BLUE=$(tput -T xterm-256color setaf 4)
-RESET=$(tput -T xterm-256color sgr0)
-export PS4='[$BLUE$BASH_SOURCE$RESET:$LINENO] '
+#RESET=$(tput -T xterm-256color sgr0)
+export PS4='[$BLUE$BASH_SOURCE\033[0m:$LINENO] '
 set -x # turns on logging
 
 # Set up autograder files
@@ -24,14 +24,14 @@ declare -A assignment_dict=(
 ["Lab 03: Process Lab"]=lab03-process_lab
 #["Lab 04: Process Lab"]=lab04-debug_lab
 ["Lab 05: Heap Manager"]=lab05-heap_manager
-["Lab 06: (Challenge) Heap Manager II"]=lab06-heap_manager2
-["Lab 07: [Challenge] Copy-on-write"]=lab07-copy_on_write
-["Lab 08: Threads & Mutex Basics"]=lab08-threads_mutex_basic
-["Lab 09: Condition Variables Basics"]=lab09-cond_vars_basic
-["Lab 10: (Challenge) Condition Variables 2"]=lab10-cond_vars2
-["Lab 11: Scheduler Activity"]=lab11-xv6_scheduler
-["Lab 12: (Challenge) Stack Smashing"]=lab12-stack_smashing
-["Lab 13: (Challenge) ext2"]=lab13-ext2
+#["Lab 06: (Challenge) Heap Manager II"]=lab06-heap_manager2
+["[Challenge] Lab 06: Copy-on-Write"]=lab07-copy_on_write
+["Lab 07: Threads & Mutex Basics"]=lab08-threads_mutex_basic
+["Lab 08: Condition Variables Basics"]=lab09-cond_vars_basic
+["(Challenge) Lab 09: Condition Variables II"]=lab10-cond_vars2
+["Lab 10: Scheduler Activity"]=lab11-xv6_scheduler
+["(Challenge) Lab 11: Stack Smashing"]=lab12-stack_smashing
+["(Challenge) Lab 12: ext2"]=lab13-ext2
 
 ["Exam 1 Part 1"]=exam1
 ["Exam 1 Part 2"]=exam1_pt2
