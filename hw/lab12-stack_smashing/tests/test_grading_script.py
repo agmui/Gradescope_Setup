@@ -20,6 +20,23 @@ class TestIntegration(unittest.TestCase):
         # process = subprocess.Popen(['./part8 $(python2 part8.py)'], stdout=subprocess.PIPE, encoding='UTF-8')
         # result, error = process.communicate()
         # print(result)
+
+        output_str = """
+        --------------------
+        --- Please go to ---
+        --------------------
+        https://forms.gle/1arfiPaZPcCGAavb7
+        note: it is not a rick roll this time it is a very important poll
+        --------------------
+
+        LIVE DATA:
+        Q: Is pineapple on pizza the Morally correct
+        59.1% yes   40.9% no
+        -------
+        Q: Gas station sushi?
+        54.5% yes   45.5% no
+        """
+        print(output_str)
         self.assertTrue(True)
 
 
