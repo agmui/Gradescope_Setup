@@ -40,6 +40,23 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_make_grade(self):
         """autograder forkforkfork tests"""
+        output_str = """
+        --------------------
+        --- Please go to ---
+        --------------------
+        https://forms.gle/1arfiPaZPcCGAavb7
+        note: it is not a rick roll this time it is a very important poll
+        --------------------
+
+        LIVE DATA:
+        Q: Is pineapple on pizza the Morally correct
+        59.1% yes   40.9% no
+        -------
+        Q: Gas station sushi?
+        54.5% yes   45.5% no
+        """
+        print(output_str)
+
         for i in output_arr:
             print(i)
         #FIXME: print(output_arr[0])
