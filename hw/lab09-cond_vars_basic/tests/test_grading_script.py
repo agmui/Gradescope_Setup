@@ -5,6 +5,7 @@ from gradescope_utils.autograder_utils.decorators import weight, tags, number, p
 from art import *
 import asyncio  # TODO: add to reqirements.txt
 import re
+from hw.grading_utils.bcolors import *
 
 
 async def async_run_cmd(cmd):
@@ -109,6 +110,7 @@ class TestIntegration(unittest.TestCase):
         count = 0
         change: bool = False
         exceeded_count = False
+        # TODO: use colored output instead of tabs
         for i in output:
             if "is in the critical section" in i:
                 print('\t' + i)
@@ -226,55 +228,64 @@ class TestIntegration(unittest.TestCase):
         WE_num = 0
         Ambulances_inside = 0
         for i in output:
-            print(i)
             # for cars
             if "Car" in i:
                 if "entered tunnel in EW" in i:
+                    print(f"{OKBLUE}{i}{ENDC}")
                     if Ambulances_inside > 0:
-                        print("=== ERROR can't enter cuz Ambulance inside ===")
+                        print(f"{FAIL}=== ERROR can't enter cuz Ambulance inside ==={ENDC}")
                         error = True
                     EW_num += 1
                 elif "exited tunnel in EW" in i:
+                    print(f"{OKBLUE}{i}{ENDC}")
                     EW_num -= 1
                 elif "entered tunnel in WE" in i:
+                    print(f"{OKCYAN}{i}{ENDC}")
                     if Ambulances_inside > 0:
-                        print("=== ERROR can't enter cuz Ambulance inside ===")
+                        print(f"{FAIL}=== ERROR can't enter cuz Ambulance inside ==={ENDC}")
                         error = True
                     WE_num += 1
                 elif "exited tunnel in WE" in i:
+                    print(f"{OKCYAN}{i}{ENDC}")
                     WE_num -= 1
                 else:
-                    print("unknown output", i)
+                    error = True
+                    print(f"{WARNING}unknown output: {i}{ENDC}")
             # for ambulance
             elif "Ambulance" in i:
                 if "entered the tunnel in EW" in i:
+                    print(f"{OKGREEN}{i}{ENDC}")
                     Ambulances_inside += 1
-                    # EW_num += 1
+                    EW_num += 1
                 elif "exited the tunnel in EW" in i:
+                    print(f"{OKGREEN}{i}{ENDC}")
                     Ambulances_inside -= 1
-                    # EW_num -= 1
+                    EW_num -= 1
                 elif "entered the tunnel in WE" in i:
+                    print(f"{OKGREEN}{i}{ENDC}")
                     Ambulances_inside += 1
-                    # WE_num += 1
+                    WE_num += 1
                 elif "exited the tunnel in WE" in i:
+                    print(f"{OKGREEN}{i}{ENDC}")
                     Ambulances_inside -= 1
-                    # WE_num -= 1
+                    WE_num -= 1
                 else:
-                    print("unknown output:", i)
+                    error = True
+                    print(f"{WARNING}unknown output: {i}{ENDC}")
             if EW_num > 3:
-                print("=== ERROR too many in EW ===")
+                print(f"{FAIL}=== ERROR too many in EW ==={ENDC}")
                 error = True
             if WE_num > 1:
-                print("=== ERROR too many in WE ===")
+                print(f"{FAIL}=== ERROR too many in WE ==={ENDC}")
                 error = True
             if EW_num + WE_num + Ambulances_inside > 4:
                 print(
-                    f'=== ERROR total num cars inside, EW: {EW_num} WE: {WE_num} Ambulances: {Ambulances_inside} ===')
+                    f'{FAIL}=== ERROR total num cars inside, EW: {EW_num} WE: {WE_num} Ambulances: {Ambulances_inside} ==={ENDC}')
 
         if not error:
             print("\noutput correct!")
         else:
-            print("please make sure not to touch the print statements it breaks the autograder if you change it :'c")
+            print("please make sure lock and not to touch the print statements it breaks the autograder if you change it :'c")
         self.assertTrue(not error)
 
 
