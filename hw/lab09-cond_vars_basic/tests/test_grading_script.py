@@ -92,13 +92,13 @@ class TestIntegration(unittest.TestCase):
         for out in inorder_output:
             if ordered_output[count] in out:
                 count += 1
-                print('\t' + out)
+                print(f"{OKBLUE}{out}{ENDC}")
                 if count == 4:
                     break
             else:
                 print(out)
         if count != 4:
-            print("error output1 not correct:", count)
+            print(f"{FAIL}error output1 not correct: {count}{ENDC}")
             self.assertTrue(False)
         else:
             print("\noutput correct!")
@@ -113,26 +113,26 @@ class TestIntegration(unittest.TestCase):
         # TODO: use colored output instead of tabs
         for i in output:
             if "is in the critical section" in i:
-                print('\t' + i)
+                print(f"{HEADER}{i}{ENDC}")
                 count += 1
                 change = True
             elif "has left the critical section" in i:
-                print('\t' + i)
+                print(f"{HEADER}{i}{ENDC}")
                 count -= 1
                 change = True
             else:
-                print(i)
+                print(f"{OKBLUE}{i}{ENDC}")
             if count > 3:
-                print("== error count:", count, '==')
+                print(f"{FAIL}== error count:{count}=={ENDC}")
                 exceeded_count = True
         if count != 0:
-            print("error output not correct:", count)
+            print(f"{FAIL}error output not correct: {count}{ENDC}")
             self.assertTrue(False)
         if not change:
-            print("count not read output change:", change)
+            print(f"{FAIL}count not read output change: change{ENDC}")
             self.assertTrue(False)
         if exceeded_count:
-            print("error: exceeded count")
+            print(f"{FAIL}error: exceeded count{ENDC}")
             self.assertTrue(False)
         else:  # FIXME:
             print("\noutput correct!")
@@ -171,15 +171,17 @@ class TestIntegration(unittest.TestCase):
         unhappy = 0
         final_number = 0
         for i in output:
-            print(i)
             if "Just arrived" in i:
+                print(f"{OKBLUE}{i}{ENDC}")
                 continue
             elif "Entered first room" in i:
+                print(f"{OKCYAN}{i}{ENDC}")
                 room1 += 1
                 if room1 > 5:
                     print("=== ERROR: number of people in room1:", room1, "===")
                     error = True
             elif "Left first room" in i:
+                print(f"{OKCYAN}{i}{ENDC}")
                 room1 -= 1
             elif "Joined the waiting room for second room" in i:
                 waiting_room2 += 1
@@ -187,6 +189,7 @@ class TestIntegration(unittest.TestCase):
                     print("=== ERROR: number of people in waiting room:", waiting_room2, "===")
                     error = True
             elif "Entered second room" in i:
+                print(f"{OKGREEN}{i}{ENDC}")
                 if waiting_room2 > 0:
                     waiting_room2 -= 1
                 room2 += 1
@@ -194,6 +197,7 @@ class TestIntegration(unittest.TestCase):
                     print("=== ERROR: number of people in room2:", room2, "===")
                     error = True
             elif "Left second room" in i:
+                print(f"{OKGREEN}{i}{ENDC}")
                 room2 -= 1
             elif "waiting room is full" in i:
                 unhappy += 1
