@@ -160,7 +160,7 @@ class TestIntegration(unittest.TestCase):
         print("======output checking=======")
         output = rooms_output["output"].split('\n')[:-1]
         if len(output) <= 0:
-            print("no output!!?!")
+            print(f"{FAIL}no output!!?!{ENDC}")
             self.assertTrue(False)
             return
 
@@ -178,7 +178,7 @@ class TestIntegration(unittest.TestCase):
                 print(f"{OKCYAN}{i}{ENDC}")
                 room1 += 1
                 if room1 > 5:
-                    print("=== ERROR: number of people in room1:", room1, "===")
+                    print(f"{FAIL}=== ERROR: number of people in room1: {room1}==={ENDC}")
                     error = True
             elif "Left first room" in i:
                 print(f"{OKCYAN}{i}{ENDC}")
@@ -186,7 +186,7 @@ class TestIntegration(unittest.TestCase):
             elif "Joined the waiting room for second room" in i:
                 waiting_room2 += 1
                 if waiting_room2 > 2:
-                    print("=== ERROR: number of people in waiting room:", waiting_room2, "===")
+                    print(f"{FAIL}=== ERROR: number of people in waiting room: {waiting_room2} ==={ENDC}")
                     error = True
             elif "Entered second room" in i:
                 print(f"{OKGREEN}{i}{ENDC}")
@@ -194,7 +194,7 @@ class TestIntegration(unittest.TestCase):
                     waiting_room2 -= 1
                 room2 += 1
                 if room2 > 2:
-                    print("=== ERROR: number of people in room2:", room2, "===")
+                    print(f"{FAIL}=== ERROR: number of people in room2: {room2} ==={ENDC}")
                     error = True
             elif "Left second room" in i:
                 print(f"{OKGREEN}{i}{ENDC}")
@@ -202,16 +202,16 @@ class TestIntegration(unittest.TestCase):
             elif "waiting room is full" in i:
                 unhappy += 1
                 if waiting_room2 < 2:
-                    print("=== ERROR: waiting room was not full:", waiting_room2, "===")
+                    print(f"{FAIL}=== ERROR: waiting room was not full: {waiting_room2} ==={ENDC}")
                     error = True
             elif "Everything finished" in i:
                 final_number = int(re.findall(r'\d+', i)[0])
                 continue
             else:
-                print("unknown output:", i)
+                print(f"{WARNING}unknown output: {i}{ENDC}")
 
         if final_number > 6 or 3 > final_number:
-            print("number of unhappy customers is sus:", final_number)
+            print(f"{WARNING}number of unhappy customers is sus: {final_number}{ENDC}")
 
         if not error:
             print("\noutput correct!")
