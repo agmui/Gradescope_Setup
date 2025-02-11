@@ -12,5 +12,5 @@ class TestFiles(unittest.TestCase):
     def test_submitted_files(self):
         """Check submitted files"""
         print(text2art("Scheduler Activity", "rand"))
-        files = ['proc.c', 'proc.h']
+        files = ['kernel/proc.c', 'kernel/proc.h']
         self.assertEqual(submitted_files(files), 0, 'missing some required files!')

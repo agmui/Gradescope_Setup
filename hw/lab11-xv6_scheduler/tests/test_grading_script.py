@@ -50,10 +50,10 @@ class TestIntegration(unittest.TestCase):
 
         LIVE DATA:
         Q: Is pineapple on pizza the Morally correct
-        59.1% yes   40.9% no
+        53.1% yes   46.9% no
         -------
         Q: Gas station sushi?
-        54.5% yes   45.5% no
+        53.1% yes   49.9% no
         """
         print(output_str)
 
