@@ -49,7 +49,9 @@ ADD autograder/run_autograder /autograder/run_autograder
 RUN dos2unix /autograder/run_autograder
 RUN chmod +x /autograder/run_autograder
 
-RUN git clone https://github.com/agmui/Gradescope_Setup # TODO: use --depth 1 to reduce size
+# forces to not use cache for the git clone when devleoping
+ADD https://github.com/agmui/Gradescope_Setup git_front_page.html
+RUN git clone --depth=1 https://github.com/agmui/Gradescope_Setup
 
 
 # whenever run_autograder changes you need to rebuild and push again
