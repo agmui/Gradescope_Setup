@@ -19,7 +19,7 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_testcode(self):
         """autograder testcode tests"""
-        process = subprocess.Popen('./testcode 451_filesystem.ext2'.split(), stdout=subprocess.PIPE,
+        process = subprocess.Popen('valgrind --leak-check=yes ./testcode 451_filesystem.ext2'.split(), stdout=subprocess.PIPE,
                                    encoding='UTF-8')
         result, error = process.communicate()
         print(result)
