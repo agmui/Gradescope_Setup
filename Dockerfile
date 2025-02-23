@@ -50,7 +50,7 @@ RUN dos2unix /autograder/run_autograder
 RUN chmod +x /autograder/run_autograder
 
 # forces to not use cache for the git clone when devleoping
-ADD https://github.com/agmui/Gradescope_Setup git_front_page.html
+#ADD https://github.com/agmui/Gradescope_Setup git_front_page.html
 RUN git clone --depth=1 https://github.com/agmui/Gradescope_Setup
 
 

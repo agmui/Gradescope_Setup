@@ -4,8 +4,6 @@ import unittest
 from gradescope_utils.autograder_utils.decorators import weight, tags, number, partial_credit
 from art import *
 import asyncio  # TODO: add to reqirements.txt
-from gradelib import *
-from gradelib import TESTS
 import re
 
 os.chdir("src/csse332-labs/ext2")
