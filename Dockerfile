@@ -13,7 +13,7 @@ FROM ${BASE_REPO}:${TAG}
 # Cleans up the apt cache afterwards in the same step to keep the image small
 
 
-RUN apt-get update #&& apt-get upgrade -y
+RUN apt-get --fix-missing update #&& apt-get upgrade -y
 
 # The base image defines the CMD and ENTRYPOINT, so don't redefine those
 RUN apt-get install -y build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu # for xv6 labs
