@@ -142,6 +142,19 @@ upload
 gradescope does not print ps -a for what ever reason idk so for simple shell gud luck
 
 unit tests run in alphabetic order
+
+### docker run node:
+if you get this error just rebuild again
+```
+From https://github.com/agmui/Gradescope_Setup
+   1cd6ee2..3789656  main       -> origin/main
+error: Your local changes to the following files would be overwritten by merge:
+	hw/lab01-c_review/run_tests.py
+	hw/lab13-ext2/tests/test_grading_script.py
+Please commit your changes or stash them before you merge.
+Aborting
+```
+
 ##### TODO:
 * custom code highlights for specific functions
 * provide default file if file not submitted
@@ -149,9 +162,7 @@ unit tests run in alphabetic order
 * add try catch block for xv6 runner
 * if file not uploaded do a try catch statment and don't run tests
 * set timers for test if they loop forever
-* make set contains
 * test fail help msg
-* check for over sending files
 * set up automatic styling and deadspace removal for integration tests
 * implement partial credit
 * setup github deploy_key
@@ -162,7 +173,6 @@ unit tests run in alphabetic order
 * some weird timeout OK msg from xv6 grader `== Test buddy_allocator, test basic alloc == Timeout! buddy_allocator, test basic alloc: FAIL (30.1s) `
 * make running localy easy
 * set up template dir correctly
-* if any bash file errors stop everything
 * use buildx for docker
 * formatter for student code?
 * consider trying to get around output buffering: `python3 -c "import os; os.system(\"./coffee_pot.bin\")"`
