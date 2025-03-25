@@ -12,7 +12,7 @@ def editOutput(json_data):
         json_data["tests"].insert(1, { # inserts gif as base64 format
             "status": "passed",
             # "output": f'<img alt="gif" src="data:image/gif;base64,{gif.read()}">',
-            "output": '<img alt="tux" src="https://raw.githubusercontent.com/agmui/Gradescope_Setup/refs/heads/main/img/autograder_images/vim_example.png">',
+            "output": '<h1>Weekly OS memes:</h1>\n<img width="400" alt="tux" src="https://raw.githubusercontent.com/agmui/Gradescope_Setup/refs/heads/main/img/autograder_images/vim_example.png">',
             "output_format": "html"
         })
 
