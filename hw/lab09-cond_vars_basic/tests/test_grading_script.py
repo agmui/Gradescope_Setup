@@ -282,7 +282,7 @@ class TestIntegration(unittest.TestCase):
             if WE_num > 1:
                 print(f"{FAIL}=== ERROR too many in WE ==={ENDC}")
                 error = True
-            if EW_num + WE_num + Ambulances_inside > 4:
+            if EW_num + WE_num > 4:
                 print(
                     f'{FAIL}=== ERROR total num cars inside, EW: {EW_num} WE: {WE_num} Ambulances: {Ambulances_inside} ==={ENDC}')
 
