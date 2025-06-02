@@ -94,10 +94,10 @@ os.chdir(prev_cwd)
 
 
 class TestIntegration(unittest.TestCase):
-    def setUp(self):
-        print("================= please go to: =================")
-        print("https://docs.google.com/forms/d/e/1FAIpQLSfhQQLJKwMup5vkAd9BBnEZTGOpYZHjvfSJg8V4YlQKp9TufA/viewform")
-        print("thank you")
+    # def setUp(self):
+    #     print("================= please go to: =================")
+    #     print("https://docs.google.com/forms/d/e/1FAIpQLSfhQQLJKwMup5vkAd9BBnEZTGOpYZHjvfSJg8V4YlQKp9TufA/viewform")
+    #     print("thank you")
 
     #TODO: use @number instead of aaaaaa
     def test_aaaa(self):

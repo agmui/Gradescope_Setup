@@ -1,6 +1,9 @@
 # Gradescope Setup
 
-Configurations for setup and writing tests in CSSE332 Gradescope.
+RHIT Gradescope setup for CSSE332
+
+Has automatic git setup so when updating test cases you just need to commit and push
+to see changes in Gradescope's autograder
 
 
 ##### Table of Contents  
@@ -35,20 +38,58 @@ Configurations for setup and writing tests in CSSE332 Gradescope.
         ├──  test_files.py
         ├ ... (other tests)
         └──  test_grading_script.py
+Gradescope_Setup
+├── autograder
+│   ├── autograder.zip  TODO:
+│   ├── clone_dir
+│   ├── run_autograder
+│   ├── sample_submission_metadata.json
+│   ├── setup.sh
+│   ├── temp_rez
+│   └── temp_sub
+├── docker_bash
+├── Dockerfile
+├── docker_run
+├── hw
+│   ├── exam1
+│   ├── grading_utils
+│   ├── lab01-c_review
+│   ├── lab02-simple_shell
+│   └── template
+├── img
+├── local_grading_script(old).sh TODO:
+└── README.md
+
 </pre>
+
+
+TODO: sort this note
+but on server side we rename the specific lab to `test_suite`
+but the dir structure stays the same if it relitive to `hw` and `grrading_utils`
+
+add note/link to number annotations/maybe basic new assignment walkthough
 
 <a name="deps"/>  
 
 ## Run order
-(idk some harness stuff)->run_autograder -> setup.sh -> tests_setup.sh -> run_tests.py -> test_files.py, test_grading_script.py, test_integration.py
+(idk some harness stuff) -> Dockerfile ->run_autograder -> setup.sh -> labXX-some_assignment/tests_setup.sh -> run_tests.py -> test_files.py, test_grading_script.py, test_integration.py
 
+Dockerfile:
+1. install deps
+
+run_autograder:
+TODO:
+
+setup.sh:
+TODO:
 ## Dependencies
-python 3.7 or greater
+* python 3.7 or greater
+* Docker
 
 <a name="newHW"/>  
 
 ## Adding a New Assignment
-Copy and paste the `template` folder in `hw` and rename it to whatever
+Copy and paste the `template` folder in `hw` and rename it to whatever for example lab69-new_homework
 
 <a name="tests"/>  
 
@@ -56,11 +97,10 @@ Copy and paste the `template` folder in `hw` and rename it to whatever
 
 Each assignment folder has this
 <pre>
-/autograder
-├──  run_tests.py                      (doesn't rly matter, just runs all tests and formats output)
-├──  requirements.txt                  (python dependences)
-├──  src                               (student's work and hw source files)
-└──  tests                             (folder with all tests)
+labXX-some_lab
+├──  run_tests.py                      (runs all files in tests folder and formats output)
+├──  src                              (student's work and hw source files)
+└──  tests                            (folder with all tests)
     ├──  test_files.py                 (checks if student submitted all files)
     ├──  test_leaderboard.py           (leaderboard that I have yet to use :') )
     ├──  test_integration.py           (my over engineried autograder :) )
@@ -125,16 +165,15 @@ For example to run `test_grading_script.py` for c_review run `python3 tests/test
 <a name="upload"/>  
 
 ## Uploading to Gradescope
-the bare minimum gradescope needs is a zip file with `run_autograder` and `setup.sh`
 
-To setup which assignment to grade go into `setup.sh` and change the
-variable `assignment` to a directory name in the `hw` directory.
-
-To upload to gradescope just zip `run_autograder` and `setup.sh` in a file and
-upload
+paste in the docker hub location in gradescope
 
 (image)
 
+#### Note:
+since the setup.sh and labXX-some_lab/tests_setup.sh both automatically pull in
+the most recent changes simply commit to update the test cases.
+This works for any file except the Docker file and setup.sh.
 
 * bc of src dir rembember to put `os.chdir("src")` somewhere in your python test files
 
@@ -143,7 +182,26 @@ gradescope does not print ps -a for what ever reason idk so for simple shell gud
 
 unit tests run in alphabetic order
 
-### docker run node:
+## Docker
+whenever run_autograder changes you need to rebuild and push again
+to build:
+docker build -t os-gradescope-autograders .
+
+to run localy:
+./docker_run
+ or
+./docker_bash
+
+to push
+#docker tag os-gradescope-autograders agmui/os-gradescope-autograders
+#docker push agmui/os-gradescope-autograders:latest
+
+image name to input into gradescope: agmui/os-gradescope-autograders:latest
+
+# Debugging
+
+## Docker git sync issue
+
 if you get this error just rebuild again
 ```
 From https://github.com/agmui/Gradescope_Setup
@@ -155,7 +213,13 @@ Please commit your changes or stash them before you merge.
 Aborting
 ```
 
-##### TODO:
+this is because you have made a change local
+
+since `./docker_bash` and `./docker_run` mount the `hw` folder when they 
+try to pull it will break if there are conflicting changes
+
+
+# TODO:
 * custom code highlights for specific functions
 * provide default file if file not submitted
 * use subprocess.run() for everything along with input [link](https://stackoverflow.com/questions/39187886/what-is-the-difference-between-subprocess-popen-and-subprocess-run)
@@ -167,12 +231,12 @@ Aborting
 * implement partial credit
 * setup github deploy_key
 * change hw dir name to tests
-* change assignment dir (in hw) to have labXX_ prefix
+~~* change assignment dir (in hw) to have labXX_ prefix~~
 * run valgrind
 * remove unwanted files from submition so gradescope does not display them
 * some weird timeout OK msg from xv6 grader `== Test buddy_allocator, test basic alloc == Timeout! buddy_allocator, test basic alloc: FAIL (30.1s) `
-* make running localy easy
-* set up template dir correctly
+~~* make running localy easy~~
+~~* set up template dir correctly~~
 * use buildx for docker
 * formatter for student code?
 * consider trying to get around output buffering: `python3 -c "import os; os.system(\"./coffee_pot.bin\")"`

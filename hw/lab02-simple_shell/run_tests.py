@@ -1,6 +1,9 @@
 import unittest
 import os
 from gradescope_utils.autograder_utils.json_test_runner import JSONTestRunner
+import sys
+sys.path.insert(0, '../..')  # adds the hw project dir to the python path
+from hw.grading_utils import random_utils
 
 def editOutput(json_data):
     json_data["tests"][0]["output_format"] ="ansi"
@@ -21,5 +24,5 @@ if __name__ == '__main__':
     with open('/autograder/results/results.json', 'w') as f:
         JSONTestRunner(visibility='visible',
                        stdout_visibility=True,
-                       post_processor=editOutput,
+                       post_processor=random_utils.editOutput,
                        stream=f).run(suite)

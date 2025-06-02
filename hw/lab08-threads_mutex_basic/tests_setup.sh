@@ -1,4 +1,10 @@
 #!/bin/bash
+set -e -u -o pipefail
+GREEN=$(tput -T xterm-256color setaf 2)
+RESET=$(tput -T xterm-256color sgr0)
+export PS4='[$GREEN$BASH_SOURCE$RESET:$LINENO] '
+set -x
+
 
 # shellcheck disable=SC2164
 cd $SRC_DIR # Defined in Gradescope_setup/autograder/run_autograder
@@ -20,7 +26,7 @@ find_and_mv () {
       continue
     fi
     file_path=$(find "$DESTINATION" -maxdepth 20 -name "$f" -print -quit)
-    if  [ -z "$filepath" ]; then
+    if  [ -z "$file_path" ]; then
       echo found path: "$file_path"
       mv $file_path $DESTINATION
     else
@@ -44,6 +50,19 @@ gcc -pthread -ggdb factoring.c -o thread_factoring.bin
 gcc -pthread -ggdb threadSort.c -o thread_sort.bin
 gcc -pthread -ggdb add_a_lot.c -o basic_mutex.bin
 gcc -pthread -ggdb red_blue_purple.c -o red_blue_purple.bin
+
+
+# ====remapping main====
+gcc -c red_blue_purple_tests.c
+objcopy --redefine-sym main=oldmain red_blue_purple_tests.o
+objcopy --redefine-sym red_blue_purple_tests=main red_blue_purple_tests.o
+gcc red_blue_purple_tests.o -o test && ./test
+rm *.o
+echo "=== running ./test ==="
+./test
+echo "=============="
+# =====================
+
 
 cd $SRC_DIR/..
 echo "--- running run_tests.py ---"

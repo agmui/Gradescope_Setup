@@ -11,6 +11,6 @@ class TestFiles(unittest.TestCase):
     @weight(0)
     def test_submitted_files(self):
         """Check submitted files"""
-        print(text2art("[Challenge] Condition Variables 2", "rand"))
+        # print(text2art("[Challenge] Condition Variables 2", "rand"))
         files = ['priority.c', 'threeJobs.c', 'band.c', 'littleredhen.c']
         self.assertEqual(submitted_files(files), 0, 'missing some required files!')

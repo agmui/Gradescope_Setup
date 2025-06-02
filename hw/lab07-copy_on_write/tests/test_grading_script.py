@@ -48,9 +48,9 @@ os.chdir(prev_cwd)
 
 
 class TestIntegration(unittest.TestCase):
-    def setUp(self):
-        print("================= please go to to finish the lab: =================")
-        print("https://docs.google.com/forms/d/e/1FAIpQLSfhQQLJKwMup5vkAd9BBnEZTGOpYZHjvfSJg8V4YlQKp9TufA/viewform\n")
+    # def setUp(self):
+    #     print("================= please go to to finish the lab: =================")
+    #     print("https://docs.google.com/forms/d/e/1FAIpQLSfhQQLJKwMup5vkAd9BBnEZTGOpYZHjvfSJg8V4YlQKp9TufA/viewform\n")
 
     @number("1")
     def test_aaaa(self):

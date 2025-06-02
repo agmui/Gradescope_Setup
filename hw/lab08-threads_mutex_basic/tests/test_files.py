@@ -11,6 +11,6 @@ class TestFiles(unittest.TestCase):
     @weight(0)
     def test_submitted_files(self):
         """Check submitted files"""
-        print(text2art("Threads & Mutex Basics", "rand"))
+        # print(text2art("Threads & Mutex Basics", "rand"))
         files = ['add_a_lot.c', 'red_blue_purple.c', 'factoring.c', 'threadSort.c']
         self.assertEqual(submitted_files(files), 0, 'missing some required files!')

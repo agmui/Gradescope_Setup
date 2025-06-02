@@ -12,8 +12,8 @@ os.chdir("src")
 
 
 class TestIntegration(unittest.TestCase):
-    def setUp(self):
-        print("if you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help\n")
+    # def setUp(self):
+    #     print("if you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help\n")
 
     #TODO: write more tests + parralize util lib
     # many people get things wrong in this lab bc there is a lack of
@@ -22,15 +22,15 @@ class TestIntegration(unittest.TestCase):
     @number("1")
     def test_thread_factoring(self):
         """factoring"""
-        f = open('../tests/face.txt')
-        print(f.read())
-        f.close()
-        print(text2art('''
-        If you change
-        global var before
-        locking...
-        I will come for you
-        in your sleep'''))
+        # f = open('../tests/face.txt')
+        # print(f.read())
+        # f.close()
+        # print(text2art('''
+        # If you change
+        # global var before
+        # locking...
+        # I will come for you
+        # in your sleep'''))
 
         process = subprocess.Popen(['./thread_factoring.bin'], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                    encoding='UTF-8')

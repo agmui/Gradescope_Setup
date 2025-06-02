@@ -11,6 +11,6 @@ class TestFiles(unittest.TestCase):
     @weight(0)
     def test_submitted_files(self):
         """Check submitted files"""
-        print(text2art("Stack Smashing", "rand"))
+        # print(text2art("Stack Smashing", "rand"))
         files = ['part1.py', 'part2.py', 'part3.py', 'part4.py', 'part5.py', 'part8.py']
         self.assertEqual(submitted_files(files), 0, 'missing some required files!')

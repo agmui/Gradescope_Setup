@@ -7,7 +7,7 @@ import asyncio # TODO: add to reqirements.txt
 
 
 async def async_run_cmd(cmd):
-    print("running:", cmd)
+    print("running:", cmd) #TODO: if the file is not present dont say running
     proc = await asyncio.create_subprocess_shell(
         cmd,
         stdout=asyncio.subprocess.PIPE,

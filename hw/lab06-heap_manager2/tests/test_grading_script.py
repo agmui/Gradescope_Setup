@@ -68,10 +68,10 @@ output_arr = output.split('\n')
 os.chdir(prev_cwd)
 
 class TestIntegration(unittest.TestCase):
-    def setUp(self):
-        print("================= please go to: =================")
-        print("https://docs.google.com/forms/d/e/1FAIpQLSfhQQLJKwMup5vkAd9BBnEZTGOpYZHjvfSJg8V4YlQKp9TufA/viewform")
-        print("thank you\n")
+    # def setUp(self):
+    #     print("================= please go to: =================")
+    #     print("https://docs.google.com/forms/d/e/1FAIpQLSfhQQLJKwMup5vkAd9BBnEZTGOpYZHjvfSJg8V4YlQKp9TufA/viewform")
+    #     print("thank you\n")
 
     @weight(0)
     @number("1")

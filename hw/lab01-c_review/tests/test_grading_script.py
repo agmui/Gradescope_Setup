@@ -106,13 +106,13 @@ output_arr = output.split('\n')
 os.chdir(prev_cwd)
 
 class TestIntegration(unittest.TestCase):
-    def setUp(self):
-        print("if you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help")
+    # def setUp(self):
+    #     print("if you have questions go to: https://www.youtube.com/watch?v=xvFZjo5PgG0 for help")
 
     #TODO: use @number instead of aaaaaa
     def test_aaaaaah_run_grading_script(self):
         """output of grade-lib-0.py"""
-        print(output) #TODO: add color
+        print(output) #TODO: add color there is a --color flag in gradelib.py
         self.assertIsNone(error, "you did not pass all the tests :c")
 
     #TODO: add numbers and points
