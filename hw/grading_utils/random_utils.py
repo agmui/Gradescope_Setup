@@ -83,6 +83,10 @@ def submitted_files(files_to_check: list[str], base=SUBMISSION_BASE) -> int:
     return missing_files
 
 def editOutput(json_data):
+    for test_json in json_data["tests"]:
+        test_json["output_format"] = "ansi"
+        # test_json["output_format"] = "md"
+        # test_json["output_format"] = "html"
     with open(SUBMISSION_METADATA, 'r') as f:
         submission_metadata = json.load(f)
         assignment_title: str = submission_metadata["assignment"]["title"]
