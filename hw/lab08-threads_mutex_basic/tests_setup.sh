@@ -53,7 +53,7 @@ gcc -pthread -ggdb red_blue_purple.c -o red_blue_purple.bin
 
 
 # ====remapping main====
-gcc -c red_blue_purple_tests.c
+gcc -c red_blue_purple.c -o red_blue_purple_tests.o
 objcopy --redefine-sym main=oldmain red_blue_purple_tests.o
 objcopy --redefine-sym red_blue_purple_tests=main red_blue_purple_tests.o
 gcc red_blue_purple_tests.o -o test && ./test
