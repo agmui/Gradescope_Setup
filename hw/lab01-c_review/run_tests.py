@@ -1,5 +1,4 @@
 import unittest
-import os
 from gradescope_utils.autograder_utils.json_test_runner import JSONTestRunner
 import sys
 sys.path.insert(0, '../..')  # adds the hw project dir to the python path

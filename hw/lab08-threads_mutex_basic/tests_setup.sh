@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e -u -o pipefail
-GREEN=$(tput -T xterm-256color setaf 2)
-RESET=$(tput -T xterm-256color sgr0)
-export PS4='[$GREEN$BASH_SOURCE$RESET:$LINENO] '
-set -x
+#GREEN=$(tput -T xterm-256color setaf 2)
+#RESET=$(tput -T xterm-256color sgr0)
+#export PS4='[$GREEN$BASH_SOURCE$RESET:$LINENO] '
+#set -x
 
 
 # shellcheck disable=SC2164
