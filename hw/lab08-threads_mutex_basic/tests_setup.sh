@@ -52,14 +52,14 @@ gcc -pthread -ggdb add_a_lot.c -o basic_mutex.bin
 gcc -pthread -ggdb red_blue_purple.c -o red_blue_purple.bin
 
 
-# ====remapping main====
+# ==== remapping main ==== #TODO: integrate this for all thread labs
 gcc -c red_blue_purple_tests.c
 objcopy --redefine-sym main=oldmain red_blue_purple_tests.o
 objcopy --redefine-sym red_blue_purple_tests=main red_blue_purple_tests.o
 gcc red_blue_purple_tests.o -o test
 rm *.o
 echo "=== running ./test ==="
-./test
+./test # TODO: this should be run inside of the python test suite for prettier output
 echo "=============="
 # =====================
 
