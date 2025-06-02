@@ -99,7 +99,7 @@ def editOutput(json_data):
             (("heap",), github_link+"heap_example.png"),
             (("copy-on-write", "copy on write","cow"), github_link+"heap2_example.jpeg"),
             (("threads", "mutex"), github_link+"pthreads_example.jpg"),
-            (("basics", "cond", "condition", "variables"), github_link + "mutex_example.jpg"),
+            (("basics",), github_link + "mutex_example.jpg"),
             (("cond", "condition", "variables"), github_link + "deadlock_example.jpg"),
             (("scheduler", "sched"), github_link + "scheduler_example.jpeg"),
             (("ext2", "filesystem", "file system"), github_link + "ext_example.png"),
